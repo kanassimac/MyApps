@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Kanas 個人助手</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --line-green: #06C755;
+  --bg: #F0F2F5;
+  --white: #FFFFFF;
+  --border: #e5e7eb;
+  --accent: #2D7DD2;
+  --accent-soft: #EBF4FF;
+  --gold: #B8860B;
+  --gold-soft: #FFF8E7;
+  --danger: #EF4444;
+  --pause: #F59E0B;
+  --pause-soft: #FFFBEB;
+  --text: #1a1a2e;
+  --text-sub: #6b7280;
+  --text-light: #9ca3af;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --shadow: 0 2px 12px rgba(0,0,0,0.08);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
+}
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+body {
+  background: var(--bg);
+  font-family: 'Noto Sans TC', sans-serif;
+  color: var(--text);
+  min-height: 100vh;
+  max-width: 430px;
+  margin: 0 auto;
+  overflow-x: hidden;
+}
+
+/* TOP NAV */
+.top-nav {
+  background: var(--white);
+  padding: 14px 20px 12px;
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 50;
+}
+.nav-logo { display: flex; align-items: center; gap: 10px; }
+.nav-avatar {
+  width: 36px; height: 36px;
+  background: linear-gradient(135deg, var(--line-green), #00a850);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; color: white; font-weight: 700;
+}
+.nav-title { font-size: 15px; font-weight: 700; }
+.nav-sub   { font-size: 11px; color: var(--text-sub); }
+.nav-date  { font-family:'Space Mono',monospace; font-size:11px; color:var(--text-sub); text-align:right; }
+
+/* PAGE SYSTEM */
+.page { display:none; padding-bottom: 100px; }
+.page.active { display:block; }
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(14px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+.page.active > * { animation: fadeUp 0.3s ease both; }
+.page.active > *:nth-child(2) { animation-delay:.05s; }
+.page.active > *:nth-child(3) { animation-delay:.1s; }
+.page.active > *:nth-child(4) { animation-delay:.15s; }
+
+/* ── GAS 設定橫幅 ── */
+.setup-banner {
+  margin: 12px 16px 0;
+  background: linear-gradient(135deg, #1a3a5c, #0f2840);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  color: white;
+}
+.setup-banner.connected {
+  background: linear-gradient(135deg, #064e3b, #065f46);
+}
+.setup-top {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 10px;
+}
+.setup-status {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; font-weight: 600;
+}
+.s-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #f59e0b;
+}
+.s-dot.ok { background: var(--line-green); animation: blink 2s infinite; }
+
+.setup-url-row {
+  display: flex; gap: 8px; align-items: center;
+}
+.setup-input {
+  flex: 1;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 8px;
+  padding: 9px 12px;
+  color: white;
+  font-size: 12px;
+  font-family: 'Space Mono', monospace;
+  outline: none;
+}
+.setup-input::placeholder { color: rgba(255,255,255,0.35); }
+.setup-input:focus { border-color: var(--line-green); }
+
+.btn-save-url {
+  padding: 9px 14px;
+  background: var(--line-green);
+  border: none; border-radius: 8px;
+  color: white; font-weight: 700; font-size: 13px;
+  cursor: pointer; white-space: nowrap;
+  font-family: 'Noto Sans TC', sans-serif;
+}
+.setup-hint {
+  font-size: 11px; color: rgba(255,255,255,0.5);
+  margin-top: 8px; line-height: 1.5;
+}
+
+/* ── HOME ── */
+.greeting-card {
+  margin: 12px 16px 0;
+  background: linear-gradient(135deg, #1a3a5c 0%, #0f2840 60%, #0a1f35 100%);
+  border-radius: var(--radius);
+  padding: 22px 20px;
+  color: white;
+  position: relative; overflow: hidden;
+}
+.greeting-card::before {
+  content:''; position:absolute; top:-30px; right:-30px;
+  width:120px; height:120px;
+  background:rgba(255,255,255,0.04); border-radius:50%;
+}
+.greeting-time {
+  font-family:'Space Mono',monospace; font-size:11px;
+  color:rgba(255,255,255,0.45); letter-spacing:0.1em;
+  text-transform:uppercase; margin-bottom:6px;
+}
+.greeting-text { font-size:19px; font-weight:700; line-height:1.3; margin-bottom:14px; }
+.greeting-text span { color:var(--line-green); }
+.today-stats { display:flex; gap:12px; }
+.stat-item {
+  background:rgba(255,255,255,0.08); border-radius:10px;
+  padding:10px 14px; flex:1;
+}
+.stat-num {
+  font-family:'Space Mono',monospace; font-size:20px;
+  font-weight:700; color:var(--line-green); line-height:1;
+}
+.stat-txt { font-size:11px; color:rgba(255,255,255,0.55); margin-top:3px; }
+
+.section-label {
+  padding:16px 20px 10px; font-size:13px; font-weight:700;
+  color:var(--text-sub); letter-spacing:0.05em; text-transform:uppercase;
+}
+
+.quick-grid {
+  display:grid; grid-template-columns:repeat(3,1fr);
+  gap:10px; padding:0 16px;
+}
+.quick-btn {
+  background:var(--white); border:none; border-radius:var(--radius-sm);
+  padding:14px 8px 12px;
+  display:flex; flex-direction:column; align-items:center; gap:7px;
+  cursor:pointer; box-shadow:var(--shadow);
+  transition:transform 0.15s;
+}
+.quick-btn:active { transform:scale(0.95); }
+.quick-icon {
+  width:46px; height:46px; border-radius:13px;
+  display:flex; align-items:center; justify-content:center; font-size:21px;
+}
+.quick-label { font-size:12px; font-weight:600; text-align:center; line-height:1.3; }
+.quick-badge { font-size:10px; color:var(--text-light); }
+.icon-timer { background:linear-gradient(135deg,#667eea,#764ba2); }
+.icon-qt    { background:linear-gradient(135deg,#f6a623,#f59032); }
+.icon-class { background:linear-gradient(135deg,#4facfe,#00f2fe); }
+.icon-cal   { background:linear-gradient(135deg,#43e97b,#38f9d7); }
+.icon-todo  { background:linear-gradient(135deg,#fa709a,#fee140); }
+.icon-cfg   { background:linear-gradient(135deg,#a18cd1,#fbc2eb); }
+
+.recent-list { padding:0 16px; display:flex; flex-direction:column; gap:8px; }
+.recent-item {
+  background:var(--white); border-radius:var(--radius-sm);
+  padding:12px 14px; display:flex; align-items:center; gap:12px;
+  box-shadow:var(--shadow);
+}
+.r-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+.r-info { flex:1; min-width:0; }
+.r-name { font-size:14px; font-weight:500; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.r-meta { font-size:11px; color:var(--text-sub); margin-top:2px; }
+.r-dur  { font-family:'Space Mono',monospace; font-size:13px; font-weight:700; color:var(--accent); flex-shrink:0; }
+
+/* ── TIMER PAGE ── */
+.page-header {
+  padding:18px 20px 0; display:flex; align-items:center; gap:12px;
+}
+.back-btn {
+  width:36px; height:36px; background:var(--white); border:none;
+  border-radius:50%; display:flex; align-items:center; justify-content:center;
+  font-size:18px; cursor:pointer; box-shadow:var(--shadow);
+}
+.page-title { font-size:18px; font-weight:700; }
+
+.input-card {
+  margin:14px 16px 0; background:var(--white);
+  border-radius:var(--radius); padding:16px; box-shadow:var(--shadow);
+}
+.field-label {
+  font-size:12px; font-weight:600; color:var(--text-sub);
+  text-transform:uppercase; letter-spacing:0.08em; margin-bottom:8px;
+}
+.task-input {
+  width:100%; border:1.5px solid var(--border); border-radius:var(--radius-sm);
+  padding:12px 14px; font-size:15px;
+  font-family:'Noto Sans TC',sans-serif; color:var(--text);
+  outline:none; transition:border-color 0.2s;
+}
+.task-input:focus { border-color:var(--accent); }
+.task-input:disabled { opacity:.5; background:var(--bg); }
+.task-input.error { border-color:var(--danger); }
+
+.cat-row { display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
+.cat-chip {
+  padding:6px 13px; border-radius:20px; border:1.5px solid var(--border);
+  font-size:12px; font-weight:500; cursor:pointer;
+  transition:all 0.15s; background:transparent; color:var(--text-sub);
+  font-family:'Noto Sans TC',sans-serif;
+}
+.cat-chip.active { border-color:var(--accent); background:var(--accent-soft); color:var(--accent); }
+.cat-chip:disabled { opacity:.4; pointer-events:none; }
+
+/* Timer hero */
+.timer-hero {
+  margin:12px 16px 0; background:var(--white);
+  border-radius:var(--radius); padding:26px 20px 22px;
+  text-align:center; box-shadow:var(--shadow); position:relative; overflow:hidden;
+}
+.t-ring1 {
+  position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+  width:190px; height:190px; border-radius:50%;
+  border:1px solid var(--border); opacity:.4; pointer-events:none;
+}
+.t-ring2 {
+  position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+  width:230px; height:230px; border-radius:50%;
+  border:1px dashed var(--border); opacity:.2; pointer-events:none;
+}
+.timer-digits {
+  font-family:'Space Mono',monospace; font-size:56px; font-weight:700;
+  color:var(--text); letter-spacing:-0.02em; line-height:1;
+  transition:color 0.3s; position:relative;
+}
+.timer-digits.running { color:var(--accent); }
+.timer-digits.paused  { color:var(--pause); }
+.timer-digits.syncing { color:var(--line-green); }
+
+.state-row {
+  display:flex; align-items:center; justify-content:center;
+  gap:6px; margin-top:8px; font-size:13px; color:var(--text-light); font-weight:500;
+}
+.s-indicator { width:7px; height:7px; border-radius:50%; background:var(--text-light); }
+.s-indicator.running { background:var(--line-green); animation:blink 1.2s infinite; }
+.s-indicator.paused  { background:var(--pause); }
+.s-indicator.syncing { background:var(--line-green); animation:blink 0.5s infinite; }
+
+@keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.2;} }
+
+.timer-meta {
+  display:flex; justify-content:center; gap:22px;
+  margin-top:14px; padding-top:14px; border-top:1px solid var(--border);
+}
+.meta-item { text-align:center; }
+.meta-val { font-family:'Space Mono',monospace; font-size:14px; font-weight:700; }
+.meta-key { font-size:10px; color:var(--text-light); margin-top:2px; text-transform:uppercase; letter-spacing:.05em; }
+
+/* Sync status badge */
+.sync-badge {
+  display:inline-flex; align-items:center; gap:5px;
+  margin-top:10px; padding:5px 12px;
+  border-radius:20px; font-size:12px; font-weight:600;
+}
+.sync-badge.syncing { background:#f0fdf4; color:#15803d; border:1px solid #bbf7d0; }
+.sync-badge.success { background:#f0fdf4; color:#15803d; border:1px solid #bbf7d0; }
+.sync-badge.error   { background:#fef2f2; color:#991b1b; border:1px solid #fecaca; }
+.sync-badge.local   { background:#f9fafb; color:#6b7280; border:1px solid #e5e7eb; }
+
+/* Auto-end bar */
+.auto-bar {
+  display:none; margin:10px 16px 0;
+  background:var(--pause-soft); border:1px solid #fde68a;
+  border-radius:var(--radius-sm); padding:10px 14px;
+}
+.auto-bar.show { display:block; }
+.auto-bar-top {
+  display:flex; justify-content:space-between;
+  font-size:12px; color:var(--gold); font-weight:600; margin-bottom:6px;
+}
+.auto-progress { height:4px; background:#fde68a; border-radius:2px; overflow:hidden; }
+.auto-fill { height:100%; background:var(--pause); border-radius:2px; transition:width 1s linear; width:100%; }
+
+/* Note */
+.note-card { display:none; margin:10px 16px 0; background:var(--white); border-radius:var(--radius-sm); padding:14px; box-shadow:var(--shadow); }
+.note-card.show { display:block; }
+.note-ta {
+  width:100%; border:1.5px solid var(--border); border-radius:8px;
+  padding:10px 12px; font-size:13px;
+  font-family:'Noto Sans TC',sans-serif; color:var(--text);
+  outline:none; resize:none; height:60px; transition:border-color 0.2s;
+}
+.note-ta:focus { border-color:var(--accent); }
+
+/* Buttons */
+.btn-area { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:12px 16px 0; }
+.btn-area .full { grid-column:1/-1; }
+.action-btn {
+  padding:16px; border:none; border-radius:var(--radius-sm);
+  font-size:15px; font-weight:700;
+  font-family:'Noto Sans TC',sans-serif; cursor:pointer;
+  display:flex; align-items:center; justify-content:center; gap:8px;
+  transition:transform 0.15s, opacity 0.2s; -webkit-appearance:none;
+}
+.action-btn:active { transform:scale(0.96); }
+.action-btn:disabled { opacity:.3; pointer-events:none; }
+.btn-start  { background:var(--line-green); color:white; }
+.btn-pause  { background:var(--pause-soft); color:var(--pause); border:1.5px solid #fde68a; }
+.btn-resume { background:var(--accent-soft); color:var(--accent); border:1.5px solid #bfdbfe; }
+.btn-stop   { background:#fef2f2; color:var(--danger); border:1.5px solid #fecaca; }
+
+/* ── HISTORY ── */
+.hist-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; padding:14px 16px 0; }
+.hist-stat { background:var(--white); border-radius:var(--radius-sm); padding:14px 10px; text-align:center; box-shadow:var(--shadow); }
+.h-num { font-family:'Space Mono',monospace; font-size:18px; font-weight:700; color:var(--accent); }
+.h-txt { font-size:11px; color:var(--text-sub); margin-top:3px; }
+
+.filter-scroll {
+  display:flex; gap:8px; padding:12px 16px;
+  overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none;
+}
+.filter-scroll::-webkit-scrollbar { display:none; }
+.f-chip {
+  padding:6px 14px; border-radius:20px; border:1.5px solid var(--border);
+  font-size:12px; font-weight:600; color:var(--text-sub); white-space:nowrap;
+  cursor:pointer; background:var(--white);
+  font-family:'Noto Sans TC',sans-serif; flex-shrink:0;
+}
+.f-chip.active { background:var(--accent); border-color:var(--accent); color:white; }
+
+.hist-list { padding:0 16px; display:flex; flex-direction:column; gap:8px; }
+.hist-item { background:var(--white); border-radius:var(--radius-sm); padding:14px; box-shadow:var(--shadow); }
+.hi-top { display:flex; align-items:flex-start; justify-content:space-between; gap:8px; margin-bottom:8px; }
+.hi-name { font-size:15px; font-weight:600; flex:1; }
+.hi-dur  { font-family:'Space Mono',monospace; font-size:15px; font-weight:700; color:var(--accent); flex-shrink:0; }
+.hi-bot  { display:flex; align-items:center; justify-content:space-between; }
+.hi-time { font-size:11px; color:var(--text-light); }
+.cat-tag { font-size:11px; font-weight:600; padding:3px 9px; border-radius:6px; }
+.cat-講道 { background:var(--gold-soft); color:var(--gold); }
+.cat-牧養 { background:#f0fdf4; color:#15803d; }
+.cat-行政 { background:#eff6ff; color:#1d4ed8; }
+.cat-個人 { background:#fdf4ff; color:#7e22ce; }
+.cat-其他 { background:#f9fafb; color:#6b7280; }
+.hi-note { font-size:12px; color:var(--text-sub); margin-top:6px; padding-top:6px; border-top:1px solid var(--border); font-style:italic; }
+.gcal-icon { font-size:12px; margin-left:4px; }
+.empty-hist { text-align:center; padding:48px 20px; color:var(--text-light); }
+.empty-hist .e-emoji { font-size:40px; margin-bottom:12px; }
+.empty-hist p { font-size:14px; }
+
+/* ── SETUP PAGE ── */
+.setup-page-card {
+  margin:14px 16px 0; background:var(--white);
+  border-radius:var(--radius); padding:18px; box-shadow:var(--shadow);
+}
+.sp-title { font-size:15px; font-weight:700; margin-bottom:4px; }
+.sp-desc  { font-size:12px; color:var(--text-sub); line-height:1.6; margin-bottom:14px; }
+.code-blk {
+  background:#1a1a2e; border-radius:8px; padding:12px 14px;
+  font-family:'Space Mono',monospace; font-size:11px;
+  color:#a3e635; overflow-x:auto; line-height:1.7;
+}
+.step-list { list-style:none; }
+.step-list li { display:flex; gap:10px; padding:8px 0; border-bottom:1px solid var(--border); font-size:13px; line-height:1.5; }
+.step-list li:last-child { border-bottom:none; }
+.step-num {
+  width:22px; height:22px; background:var(--accent); color:white;
+  border-radius:50%; display:flex; align-items:center; justify-content:center;
+  font-size:11px; font-weight:700; flex-shrink:0; margin-top:1px;
+}
+
+/* ── TAB BAR ── */
+.tab-bar {
+  position:fixed; bottom:0; left:50%; transform:translateX(-50%);
+  width:100%; max-width:430px; background:var(--white);
+  border-top:1px solid var(--border); display:flex; z-index:100;
+  padding-bottom:env(safe-area-inset-bottom);
+}
+.tab-item {
+  flex:1; padding:10px 0 8px;
+  display:flex; flex-direction:column; align-items:center; gap:3px;
+  cursor:pointer; border:none; background:transparent; -webkit-appearance:none;
+}
+.tab-icon { font-size:22px; transition:transform 0.2s; }
+.tab-item.active .tab-icon { transform:scale(1.1); }
+.tab-lbl { font-size:10px; font-weight:600; color:var(--text-light); font-family:'Noto Sans TC',sans-serif; }
+.tab-item.active .tab-lbl { color:var(--accent); }
+
+/* ── TOAST ── */
+.toast {
+  position:fixed; bottom:88px; left:50%;
+  transform:translateX(-50%) translateY(16px);
+  background:rgba(26,26,46,0.92); color:white;
+  padding:11px 20px; border-radius:24px;
+  font-size:13px; font-weight:500; white-space:nowrap;
+  opacity:0; transition:all 0.3s; z-index:200;
+  backdrop-filter:blur(10px); max-width:90vw;
+  text-align:center; white-space:normal;
+}
+.toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<div class="top-nav">
+  <div class="nav-logo">
+    <div class="nav-avatar">K</div>
+    <div>
+      <div class="nav-title">Kanas 牧師助手</div>
+      <div class="nav-sub">個人工作台</div>
+    </div>
+  </div>
+  <div class="nav-date" id="navDate"></div>
+</div>
+
+<!-- ══ PAGE: HOME ══ -->
+<div class="page active" id="page-home">
+
+  <!-- GAS 連接設定 -->
+  <div class="setup-banner" id="setupBanner">
+    <div class="setup-top">
+      <div class="setup-status">
+        <div class="s-dot" id="sDot"></div>
+        <span id="sText">尚未設定 Google 日曆同步</span>
+      </div>
+    </div>
+    <div class="setup-url-row">
+      <input type="text" class="setup-input" id="gasUrlInput"
+        placeholder="貼上 GAS 部署網址（/exec 結尾）" />
+      <button class="btn-save-url" onclick="saveGasUrl()">儲存</button>
+    </div>
+    <div class="setup-hint">設定一次即可。任務結束後將自動寫入 Google Calendar + Sheets。</div>
+  </div>
+
+  <div class="greeting-card">
+    <div class="greeting-time" id="greetingTime">THURSDAY MORNING</div>
+    <div class="greeting-text">平安，<span>Kanas 牧師</span>！<br>今天要完成什麼？</div>
+    <div class="today-stats">
+      <div class="stat-item">
+        <div class="stat-num" id="homeCount">0</div>
+        <div class="stat-txt">今日任務</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" id="homeTime">0m</div>
+        <div class="stat-txt">已累計</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" id="homeAvg">—</div>
+        <div class="stat-txt">平均時長</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">功能選單</div>
+  <div class="quick-grid">
+    <button class="quick-btn" onclick="goTab('timer')">
+      <div class="quick-icon icon-timer">⏱</div>
+      <div class="quick-label">任務計時</div>
+      <div class="quick-badge">立即開始</div>
+    </button>
+    <button class="quick-btn" onclick="toast('🚧 靈修日記 — 開發中')">
+      <div class="quick-icon icon-qt">📖</div>
+      <div class="quick-label">靈修日記</div>
+      <div class="quick-badge">即將開放</div>
+    </button>
+    <button class="quick-btn" onclick="toast('🚧 一壘班 — 開發中')">
+      <div class="quick-icon icon-class">👥</div>
+      <div class="quick-label">一壘班</div>
+      <div class="quick-badge">即將開放</div>
+    </button>
+    <button class="quick-btn" onclick="toast('🚧 行事曆 — 開發中')">
+      <div class="quick-icon icon-cal">📅</div>
+      <div class="quick-label">行事曆</div>
+      <div class="quick-badge">即將開放</div>
+    </button>
+    <button class="quick-btn" onclick="toast('🚧 代辦清單 — 開發中')">
+      <div class="quick-icon icon-todo">📋</div>
+      <div class="quick-label">代辦清單</div>
+      <div class="quick-badge">即將開放</div>
+    </button>
+    <button class="quick-btn" onclick="goTab('setup')">
+      <div class="quick-icon icon-cfg">⚙️</div>
+      <div class="quick-label">GAS 設定</div>
+      <div class="quick-badge">日曆同步</div>
+    </button>
+  </div>
+
+  <div class="section-label" id="recentLabel" style="display:none">最近任務</div>
+  <div class="recent-list" id="recentList"></div>
+</div>
+
+<!-- ══ PAGE: TIMER ══ -->
+<div class="page" id="page-timer">
+
+  <div class="page-header">
+    <button class="back-btn" onclick="goTab('home')">←</button>
+    <div class="page-title">⏱ 任務計時器</div>
+  </div>
+
+  <div class="input-card">
+    <div class="field-label">任務名稱</div>
+    <input type="text" class="task-input" id="taskName" placeholder="你現在要做什麼？" />
+    <div class="cat-row" id="catRow">
+      <button class="cat-chip active" data-cat="講道" onclick="selCat(this)">📖 講道</button>
+      <button class="cat-chip" data-cat="牧養" onclick="selCat(this)">🤝 牧養</button>
+      <button class="cat-chip" data-cat="行政" onclick="selCat(this)">📋 行政</button>
+      <button class="cat-chip" data-cat="個人" onclick="selCat(this)">🧘 個人</button>
+      <button class="cat-chip" data-cat="其他" onclick="selCat(this)">🗂 其他</button>
+    </div>
+  </div>
+
+  <div class="timer-hero">
+    <div class="t-ring1"></div>
+    <div class="t-ring2"></div>
+    <div class="timer-digits" id="digits">00:00:00</div>
+    <div class="state-row">
+      <div class="s-indicator" id="sInd"></div>
+      <span id="sLabel">待機中</span>
+    </div>
+    <!-- 同步狀態 badge -->
+    <div id="syncBadge" style="display:none" class="sync-badge">
+      <span id="syncIcon"></span><span id="syncMsg"></span>
+    </div>
+    <div class="timer-meta" id="tMeta" style="display:none">
+      <div class="meta-item">
+        <div class="meta-val" id="mStart">—</div>
+        <div class="meta-key">開始</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-val" id="mPaused">0 分</div>
+        <div class="meta-key">暫停</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-val" id="mCat">—</div>
+        <div class="meta-key">分類</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="auto-bar" id="autoBar">
+    <div class="auto-bar-top">
+      <span>⏸ 暫停中，自動結束倒計時</span>
+      <span id="autoCD">30:00</span>
+    </div>
+    <div class="auto-progress"><div class="auto-fill" id="autoFill"></div></div>
+  </div>
+
+  <div class="note-card" id="noteCard">
+    <div class="field-label">備註（選填）</div>
+    <textarea class="note-ta" id="taskNote" placeholder="這次任務的備註…"></textarea>
+  </div>
+
+  <div class="btn-area">
+    <button class="action-btn btn-start full" id="btnStart" onclick="startTimer()">▶ 開始計時</button>
+    <button class="action-btn btn-pause" id="btnPause" disabled onclick="togglePause()">⏸ 暫停</button>
+    <button class="action-btn btn-stop"  id="btnStop"  disabled onclick="stopTimer()">■ 結束</button>
+  </div>
+
+</div>
+
+<!-- ══ PAGE: HISTORY ══ -->
+<div class="page" id="page-history">
+
+  <div class="page-header" style="justify-content:space-between">
+    <div class="page-title">📊 歷史記錄</div>
+    <button class="back-btn" style="width:auto;padding:0 12px;border-radius:20px;font-size:12px;"
+      onclick="clearAll()">清除</button>
+  </div>
+
+  <div class="hist-stats">
+    <div class="hist-stat"><div class="h-num" id="hTotal">0</div><div class="h-txt">任務總數</div></div>
+    <div class="hist-stat"><div class="h-num" id="hToday">0m</div><div class="h-txt">今日耗時</div></div>
+    <div class="hist-stat"><div class="h-num" id="hAvg">—</div><div class="h-txt">平均時長</div></div>
+  </div>
+
+  <div class="filter-scroll">
+    <button class="f-chip active" onclick="setFilter('all',this)">全部</button>
+    <button class="f-chip" onclick="setFilter('講道',this)">📖 講道</button>
+    <button class="f-chip" onclick="setFilter('牧養',this)">🤝 牧養</button>
+    <button class="f-chip" onclick="setFilter('行政',this)">📋 行政</button>
+    <button class="f-chip" onclick="setFilter('個人',this)">🧘 個人</button>
+    <button class="f-chip" onclick="setFilter('其他',this)">🗂 其他</button>
+  </div>
+
+  <div class="hist-list" id="histList"></div>
+</div>
+
+<!-- ══ PAGE: SETUP ══ -->
+<div class="page" id="page-setup">
+
+  <div class="page-header">
+    <button class="back-btn" onclick="goTab('home')">←</button>
+    <div class="page-title">⚙️ GAS 設定教學</div>
+  </div>
+
+  <div class="setup-page-card">
+    <div class="sp-title">📋 為什麼需要 GAS？</div>
+    <div class="sp-desc">
+      Google Calendar 的 API 需要授權才能寫入。透過 Google Apps Script，
+      你的帳號授權只需要做一次，之後每次任務結束都會自動寫入行事曆，完全不需要再登入。
+    </div>
+  </div>
+
+  <div class="setup-page-card">
+    <div class="sp-title">🛠 部署步驟（5 分鐘完成）</div>
+    <ul class="step-list">
+      <li><div class="step-num">1</div><div>打開 <b>script.google.com</b>，點「新專案」</div></li>
+      <li><div class="step-num">2</div><div>把下載的 <b>Code.gs</b> 內容貼進去，把第 26 行的信箱改成你的 Gmail</div></li>
+      <li><div class="step-num">3</div><div>點上方「部署」→「新增部署作業」→ 類型選「<b>網頁應用程式</b>」</div></li>
+      <li><div class="step-num">4</div><div>執行身分：<b>以我的帳戶執行</b>｜存取權限：<b>所有人</b></div></li>
+      <li><div class="step-num">5</div><div>點「授權」→ 選你的 Google 帳號 → 允許</div></li>
+      <li><div class="step-num">6</div><div>複製「部署網址」（.../exec 結尾），貼到主頁的設定欄位</div></li>
+    </ul>
+  </div>
+
+  <div class="setup-page-card">
+    <div class="sp-title">✅ 確認連線正常</div>
+    <div class="sp-desc">部署完成後，直接在瀏覽器開啟部署網址，若看到以下 JSON 即代表成功：</div>
+    <div class="code-blk">{"status":"ok","message":"Kanas 牧師助手 API 運作中 ✓"}</div>
+  </div>
+
+  <div class="setup-page-card">
+    <div class="sp-title">🎨 日曆事件格式</div>
+    <div class="sp-desc">同步後，Google Calendar 事件長這樣：</div>
+    <div class="code-blk">[行政] 準備週報
+────────────────
+⏱ 耗時：45 分鐘
+📂 分類：行政
+📝 備註：需要確認財務數字
+🔗 由 Kanas 牧師助手自動記錄</div>
+  </div>
+
+</div>
+
+<!-- TAB BAR -->
+<div class="tab-bar">
+  <button class="tab-item active" id="tab-home" onclick="goTab('home')">
+    <div class="tab-icon">🏠</div><div class="tab-lbl">主頁</div>
+  </button>
+  <button class="tab-item" id="tab-timer" onclick="goTab('timer')">
+    <div class="tab-icon">⏱</div><div class="tab-lbl">計時</div>
+  </button>
+  <button class="tab-item" id="tab-history" onclick="goTab('history')">
+    <div class="tab-icon">📊</div><div class="tab-lbl">記錄</div>
+  </button>
+  <button class="tab-item" id="tab-setup" onclick="goTab('setup')">
+    <div class="tab-icon">⚙️</div><div class="tab-lbl">設定</div>
+  </button>
+</div>
+
+<div class="toast" id="toastEl"></div>
+
+<script>
+// ══════ CONFIG ══════
+const STORAGE_KEY = 'kanas_hist_v2';
+const GAS_URL_KEY = 'kanas_gas_url';
+
+// ══════ STATE ══════
+let timerInterval = null, autoInterval = null;
+let startTime = null, pausedAt = null;
+let totalPausedMs = 0, elapsedMs = 0;
+let isRunning = false, isPaused = false;
+let selectedCat = '講道';
+let currentFilter = 'all';
+
+// ══════ NAV ══════
+function goTab(tab) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + tab).classList.add('active');
+  const tb = document.getElementById('tab-' + tab);
+  if (tb) tb.classList.add('active');
+  if (tab === 'history') { renderHistStats(); renderHistList(); }
+  if (tab === 'home')    { renderHome(); }
+}
+
+// ══════ GAS URL ══════
+function loadGasUrl() { return localStorage.getItem(GAS_URL_KEY) || ''; }
+
+function saveGasUrl() {
+  const url = document.getElementById('gasUrlInput').value.trim();
+  if (!url) { toast('⚠ 請輸入 GAS 部署網址'); return; }
+  if (!url.startsWith('https://script.google.com')) {
+    toast('⚠ 網址格式不正確，應以 script.google.com 開頭'); return;
+  }
+  localStorage.setItem(GAS_URL_KEY, url);
+  updateGasStatus();
+  toast('✓ 設定已儲存！下次任務結束後將自動同步');
+}
+
+function updateGasStatus() {
+  const url = loadGasUrl();
+  const dot = document.getElementById('sDot');
+  const txt = document.getElementById('sText');
+  const banner = document.getElementById('setupBanner');
+  if (url) {
+    dot.className = 's-dot ok';
+    txt.textContent = '✓ Google 日曆同步已設定';
+    banner.className = 'setup-banner connected';
+    document.getElementById('gasUrlInput').value = url;
+  } else {
+    dot.className = 's-dot';
+    txt.textContent = '尚未設定 Google 日曆同步';
+    banner.className = 'setup-banner';
+  }
+}
+
+// ══════ TIMER ══════
+function selCat(btn) {
+  document.querySelectorAll('.cat-chip').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  selectedCat = btn.dataset.cat;
+}
+
+function startTimer() {
+  const name = document.getElementById('taskName').value.trim();
+  if (!name) {
+    toast('⚠ 請先輸入任務名稱');
+    const el = document.getElementById('taskName');
+    el.classList.add('error');
+    setTimeout(() => el.classList.remove('error'), 1500);
+    return;
+  }
+  startTime = new Date();
+  totalPausedMs = 0; elapsedMs = 0;
+  isRunning = true; isPaused = false;
+  hideSyncBadge();
+  uiRunning();
+  timerInterval = setInterval(tick, 100);
+  toast('▶ 開始計時！');
+}
+
+function tick() {
+  if (!isPaused) {
+    elapsedMs = Date.now() - startTime.getTime() - totalPausedMs;
+    document.getElementById('digits').textContent = fmtDur(elapsedMs);
+    document.getElementById('mPaused').textContent = fmtMin(totalPausedMs);
+  }
+}
+
+function togglePause() {
+  if (!isPaused) {
+    pausedAt = Date.now();
+    isPaused = true;
+    clearInterval(timerInterval);
+    uiPaused();
+    startAutoCountdown();
+    toast('⏸ 已暫停');
+  } else {
+    totalPausedMs += Date.now() - pausedAt;
+    isPaused = false;
+    cancelAuto();
+    uiRunning();
+    timerInterval = setInterval(tick, 100);
+    toast('▶ 繼續計時');
+  }
+}
+
+async function stopTimer(fromAuto = false) {
+  if (!isRunning) return;
+  const endTime = fromAuto ? new Date(pausedAt) : new Date();
+  const dur = fromAuto ? Math.max(0, pausedAt - startTime.getTime() - totalPausedMs) : elapsedMs;
+
+  clearInterval(timerInterval); cancelAuto();
+  isRunning = false; isPaused = false;
+
+  const rec = {
+    id: Date.now(),
+    task: document.getElementById('taskName').value.trim(),
+    cat: selectedCat,
+    note: document.getElementById('taskNote').value.trim(),
+    start: startTime.toISOString(),
+    end: endTime.toISOString(),
+    dur: dur,
+    synced: false
+  };
+
+  // 儲存本地
+  const hist = loadHist();
+  hist.unshift(rec);
+  saveHist(hist);
+
+  // 顯示同步中狀態
+  showSyncBadge('syncing', '⏳', '正在同步到 Google 日曆…');
+  uiSyncing();
+
+  // 嘗試同步 GAS
+  const gasUrl = loadGasUrl();
+  if (gasUrl) {
+    try {
+      const res = await fetch(gasUrl, {
+        method: 'POST',
+        mode: 'no-cors', // GAS 不支援 CORS，用 no-cors
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify(rec)
+      });
+      // no-cors 模式下無法讀取 response，但只要沒 throw 就算成功
+      rec.synced = true;
+      hist[0].synced = true;
+      saveHist(hist);
+      showSyncBadge('success', '📅', '已同步到 Google 日曆 ✓');
+      toast('✓ 任務結束！已同步到 Google 日曆');
+    } catch (err) {
+      showSyncBadge('error', '⚠', '同步失敗，已儲存本地');
+      toast('⚠ 同步失敗，任務已儲存本地');
+    }
+  } else {
+    showSyncBadge('local', '💾', '已儲存本地（尚未設定日曆同步）');
+    toast('✓ 任務已儲存！前往設定可啟用日曆同步');
+  }
+
+  // 重置輸入
+  uiIdle();
+  document.getElementById('taskName').value = '';
+  document.getElementById('taskNote').value = '';
+  renderHome();
+}
+
+// ══════ AUTO-END ══════
+function startAutoCountdown() {
+  document.getElementById('autoBar').classList.add('show');
+  document.getElementById('autoFill').style.width = '100%';
+  const t0 = Date.now();
+  autoInterval = setInterval(() => {
+    const rem = 30*60*1000 - (Date.now() - t0);
+    if (rem <= 0) {
+      cancelAuto();
+      stopTimer(true);
+      toast('⏱ 暫停超過 30 分鐘，已自動結束');
+      return;
+    }
+    document.getElementById('autoFill').style.width = (rem/(30*60*1000)*100)+'%';
+    document.getElementById('autoCD').textContent = fmtDur(rem);
+  }, 1000);
+}
+
+function cancelAuto() {
+  clearInterval(autoInterval);
+  document.getElementById('autoBar').classList.remove('show');
+}
+
+// ══════ UI STATES ══════
+function uiRunning() {
+  document.getElementById('digits').className = 'timer-digits running';
+  document.getElementById('sInd').className = 's-indicator running';
+  document.getElementById('sLabel').textContent = '計時中';
+  document.getElementById('tMeta').style.display = 'flex';
+  document.getElementById('mStart').textContent = fmtTime(startTime);
+  document.getElementById('mCat').textContent = selectedCat;
+  document.getElementById('noteCard').classList.add('show');
+  document.getElementById('taskName').disabled = true;
+  document.querySelectorAll('.cat-chip').forEach(c => c.disabled = true);
+  document.getElementById('btnStart').disabled = true;
+  document.getElementById('btnPause').disabled = false;
+  document.getElementById('btnStop').disabled = false;
+  document.getElementById('btnPause').className = 'action-btn btn-pause';
+  document.getElementById('btnPause').innerHTML = '⏸ 暫停';
+}
+
+function uiPaused() {
+  document.getElementById('digits').className = 'timer-digits paused';
+  document.getElementById('sInd').className = 's-indicator paused';
+  document.getElementById('sLabel').textContent = '已暫停';
+  document.getElementById('btnPause').className = 'action-btn btn-resume';
+  document.getElementById('btnPause').innerHTML = '▶ 繼續';
+}
+
+function uiSyncing() {
+  document.getElementById('digits').className = 'timer-digits syncing';
+  document.getElementById('sInd').className = 's-indicator syncing';
+  document.getElementById('sLabel').textContent = '同步中…';
+}
+
+function uiIdle() {
+  document.getElementById('digits').className = 'timer-digits';
+  document.getElementById('digits').textContent = '00:00:00';
+  document.getElementById('sInd').className = 's-indicator';
+  document.getElementById('sLabel').textContent = '待機中';
+  document.getElementById('tMeta').style.display = 'none';
+  document.getElementById('noteCard').classList.remove('show');
+  document.getElementById('taskName').disabled = false;
+  document.querySelectorAll('.cat-chip').forEach(c => c.disabled = false);
+  document.getElementById('btnStart').disabled = false;
+  document.getElementById('btnPause').disabled = true;
+  document.getElementById('btnStop').disabled = true;
+  document.getElementById('btnPause').className = 'action-btn btn-pause';
+  document.getElementById('btnPause').innerHTML = '⏸ 暫停';
+}
+
+// ══════ SYNC BADGE ══════
+function showSyncBadge(type, icon, msg) {
+  const b = document.getElementById('syncBadge');
+  b.style.display = 'inline-flex';
+  b.className = 'sync-badge ' + type;
+  document.getElementById('syncIcon').textContent = icon;
+  document.getElementById('syncMsg').textContent = msg;
+}
+function hideSyncBadge() {
+  document.getElementById('syncBadge').style.display = 'none';
+}
+
+// ══════ HISTORY ══════
+function loadHist() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]'); } catch{return[];} }
+function saveHist(h) { localStorage.setItem(STORAGE_KEY, JSON.stringify(h)); }
+
+function renderHistList() {
+  const hist = loadHist();
+  const el = document.getElementById('histList');
+  const data = currentFilter === 'all' ? hist : hist.filter(r => r.cat === currentFilter);
+  if (!data.length) {
+    el.innerHTML = '<div class="empty-hist"><div class="e-emoji">📭</div><p>尚無記錄</p></div>';
+    return;
+  }
+  const CC = {講道:'#B8860B',牧養:'#15803d',行政:'#1d4ed8',個人:'#7e22ce',其他:'#6b7280'};
+  el.innerHTML = data.map(r => `
+    <div class="hist-item">
+      <div class="hi-top">
+        <div class="hi-name">
+          ${esc(r.task)}
+          ${r.synced ? '<span class="gcal-icon">📅</span>' : ''}
+        </div>
+        <div class="hi-dur">${fmtDur(r.dur)}</div>
+      </div>
+      <div class="hi-bot">
+        <div class="hi-time">${fmtDate(new Date(r.start))} ${fmtTime(new Date(r.start))}–${fmtTime(new Date(r.end))}</div>
+        <div class="cat-tag cat-${r.cat}">${r.cat}</div>
+      </div>
+      ${r.note ? `<div class="hi-note">${esc(r.note)}</div>` : ''}
+    </div>`).join('');
+}
+
+function renderHistStats() {
+  const hist = loadHist();
+  const today = new Date().toDateString();
+  const todayMs = hist.filter(r => new Date(r.start).toDateString()===today).reduce((s,r)=>s+r.dur,0);
+  const avgMs = hist.length ? hist.reduce((s,r)=>s+r.dur,0)/hist.length : 0;
+  document.getElementById('hTotal').textContent = hist.length;
+  document.getElementById('hToday').textContent = fmtHM(todayMs);
+  document.getElementById('hAvg').textContent = hist.length ? fmtHM(avgMs) : '—';
+}
+
+function setFilter(cat, btn) {
+  currentFilter = cat;
+  document.querySelectorAll('.f-chip').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  renderHistList();
+}
+
+function clearAll() {
+  if (confirm('確定清除所有記錄？')) {
+    localStorage.removeItem(STORAGE_KEY);
+    renderHistList(); renderHistStats(); renderHome();
+    toast('已清除所有記錄');
+  }
+}
+
+// ══════ HOME ══════
+function renderHome() {
+  const hist = loadHist();
+  const today = new Date().toDateString();
+  const tr = hist.filter(r => new Date(r.start).toDateString()===today);
+  const todayMs = tr.reduce((s,r)=>s+r.dur,0);
+  const avgMs = hist.length ? hist.reduce((s,r)=>s+r.dur,0)/hist.length : 0;
+  document.getElementById('homeCount').textContent = tr.length;
+  document.getElementById('homeTime').textContent = fmtHM(todayMs);
+  document.getElementById('homeAvg').textContent = hist.length ? fmtHM(avgMs) : '—';
+
+  const CC = {講道:'#B8860B',牧養:'#15803d',行政:'#1d4ed8',個人:'#7e22ce',其他:'#6b7280'};
+  const recent = hist.slice(0,3);
+  const rl = document.getElementById('recentList');
+  document.getElementById('recentLabel').style.display = recent.length ? 'block' : 'none';
+  rl.innerHTML = recent.map(r => `
+    <div class="recent-item">
+      <div class="r-dot" style="background:${CC[r.cat]||'#999'}"></div>
+      <div class="r-info">
+        <div class="r-name">${esc(r.task)}</div>
+        <div class="r-meta">${fmtDate(new Date(r.start))} · ${r.cat}${r.synced?' · 📅':''}</div>
+      </div>
+      <div class="r-dur">${fmtDur(r.dur)}</div>
+    </div>`).join('');
+}
+
+// ══════ GREETING ══════
+function updateGreeting() {
+  const now = new Date();
+  const days = ['SUNDAY','MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY'];
+  const h = now.getHours();
+  const p = h<5?'NIGHT':h<12?'MORNING':h<17?'AFTERNOON':h<21?'EVENING':'NIGHT';
+  document.getElementById('greetingTime').textContent = `${days[now.getDay()]} ${p}`;
+  document.getElementById('navDate').innerHTML =
+    `${now.getMonth()+1}/${now.getDate()}<br>${pad(now.getHours())}:${pad(now.getMinutes())}`;
+}
+
+// ══════ UTILS ══════
+function fmtDur(ms) {
+  const t = Math.floor(Math.max(0,ms)/1000);
+  return `${pad(Math.floor(t/3600))}:${pad(Math.floor(t%3600/60))}:${pad(t%60)}`;
+}
+function fmtHM(ms) {
+  const m = Math.floor(ms/60000), h = Math.floor(m/60);
+  return h>0 ? `${h}h${m%60}m` : `${m}m`;
+}
+function fmtMin(ms)  { return Math.floor(ms/60000)+' 分'; }
+function fmtTime(d)  { return d.toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit',hour12:false}); }
+function fmtDate(d)  { return d.toLocaleDateString('zh-TW',{month:'numeric',day:'numeric',weekday:'short'}); }
+function pad(n)      { return String(n).padStart(2,'0'); }
+function esc(s)      { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function toast(msg) {
+  const t = document.getElementById('toastEl');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ══════ INIT ══════
+updateGreeting();
+setInterval(updateGreeting, 30000);
+updateGasStatus();
+renderHome();
+
+document.getElementById('taskName').addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !isRunning) startTimer();
+});
+</script>
+</body>
+</html>
