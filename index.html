@@ -196,8 +196,10 @@ body {
 .page-header { padding:18px 20px 0; display:flex; align-items:center; gap:12px; }
 .back-btn { width:36px; height:36px; background:var(--white); border:none; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; cursor:pointer; box-shadow:var(--shadow); }
 .page-title { font-size:18px; font-weight:700; }
-.input-card { margin:14px 16px 0; background:var(--white); border-radius:var(--radius); padding:16px; box-shadow:var(--shadow); }
+.input-card { margin:14px 16px 0; background:var(--white); border-radius:var(--radius); padding:16px; box-shadow:var(--shadow); position:relative; }
 .field-label { font-size:12px; font-weight:600; color:var(--text-sub); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:8px; }
+/* 輸入框 + 自動完成 */
+.task-input-wrap { position:relative; }
 .task-input {
   width:100%; border:1.5px solid var(--border); border-radius:var(--radius-sm);
   padding:12px 14px; font-size:15px;
@@ -207,6 +209,23 @@ body {
 .task-input:focus { border-color:var(--accent); }
 .task-input:disabled { opacity:.5; background:var(--bg); }
 .task-input.error { border-color:var(--danger); }
+.suggest-list {
+  display:none; position:absolute; top:100%; left:0; right:0; z-index:60;
+  background:var(--white); border:1.5px solid var(--border); border-top:none;
+  border-radius:0 0 var(--radius-sm) var(--radius-sm);
+  max-height:200px; overflow-y:auto;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
+.suggest-list.show { display:block; }
+.suggest-item {
+  padding:11px 14px; cursor:pointer; display:flex; align-items:center; justify-content:space-between;
+  font-size:14px; border-bottom:1px solid var(--border); transition:background 0.1s;
+}
+.suggest-item:last-child { border-bottom:none; }
+.suggest-item:active, .suggest-item:hover { background:var(--accent-soft); }
+.suggest-item .s-name { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.suggest-item .s-count { font-size:11px; color:var(--text-light); font-family:'Space Mono',monospace; flex-shrink:0; margin-left:8px; }
+.suggest-item .s-cat { font-size:10px; color:var(--text-light); margin-left:6px; flex-shrink:0; }
 .cat-row { display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
 .cat-chip {
   padding:6px 13px; border-radius:20px; border:1.5px solid var(--border);
@@ -216,6 +235,19 @@ body {
 }
 .cat-chip.active { border-color:var(--accent); background:var(--accent-soft); color:var(--accent); }
 .cat-chip:disabled { opacity:.4; pointer-events:none; }
+/* 「其他」自訂類別輸入框 */
+.custom-cat-wrap {
+  display:none; margin-top:8px;
+}
+.custom-cat-wrap.show { display:flex; gap:8px; align-items:center; }
+.custom-cat-input {
+  flex:1; border:1.5px solid var(--border); border-radius:var(--radius-sm);
+  padding:8px 12px; font-size:13px; font-family:'Noto Sans TC',sans-serif;
+  color:var(--text); outline:none; transition:border-color 0.2s;
+}
+.custom-cat-input:focus { border-color:var(--accent); }
+.custom-cat-input:disabled { opacity:.4; }
+.custom-cat-hint { font-size:11px; color:var(--text-light); white-space:nowrap; }
 .timer-hero { margin:12px 16px 0; background:var(--white); border-radius:var(--radius); padding:26px 20px 22px; text-align:center; box-shadow:var(--shadow); position:relative; overflow:hidden; }
 .t-ring1 { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:190px; height:190px; border-radius:50%; border:1px solid var(--border); opacity:.4; pointer-events:none; }
 .t-ring2 { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:230px; height:230px; border-radius:50%; border:1px dashed var(--border); opacity:.2; pointer-events:none; }
@@ -223,6 +255,20 @@ body {
 .timer-digits.running { color:var(--accent); }
 .timer-digits.paused  { color:var(--pause); }
 .timer-digits.syncing { color:var(--line-green); }
+/* 現在時間顯示 */
+.now-clock-row {
+  display:none; align-items:center; justify-content:center; gap:6px;
+  margin-top:6px; font-size:13px; color:var(--text-light);
+}
+.now-clock-row.show { display:flex; }
+.now-clock {
+  font-family:'Space Mono',monospace; font-size:40px; font-weight:700; color:var(--text-sub); letter-spacing:-0.02em; line-height:1;
+}
+.now-toggle {
+  background:none; border:none; cursor:pointer; font-size:14px; color:var(--text-light);
+  padding:2px 6px; border-radius:4px; transition:background 0.15s;
+}
+.now-toggle:active { background:var(--bg); }
 .state-row { display:flex; align-items:center; justify-content:center; gap:6px; margin-top:8px; font-size:13px; color:var(--text-light); font-weight:500; }
 .s-indicator { width:7px; height:7px; border-radius:50%; background:var(--text-light); }
 .s-indicator.running { background:var(--line-green); animation:blink 1.2s infinite; }
@@ -247,23 +293,63 @@ body {
 .note-card.show { display:block; }
 .note-ta { width:100%; border:1.5px solid var(--border); border-radius:8px; padding:10px 12px; font-size:13px; font-family:'Noto Sans TC',sans-serif; color:var(--text); outline:none; resize:none; height:60px; transition:border-color 0.2s; }
 .note-ta:focus { border-color:var(--accent); }
-.btn-area { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:12px 16px 0; }
-.btn-area .full { grid-column:1/-1; }
-.action-btn { padding:16px; border:none; border-radius:var(--radius-sm); font-size:15px; font-weight:700; font-family:'Noto Sans TC',sans-serif; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; transition:transform 0.15s, opacity 0.2s; -webkit-appearance:none; }
+/* 三按鈕同列 */
+.btn-area { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin:12px 16px 0; }
+.action-btn { padding:14px 4px; border:none; border-radius:var(--radius-sm); font-size:14px; font-weight:700; font-family:'Noto Sans TC',sans-serif; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; transition:transform 0.15s, opacity 0.2s; -webkit-appearance:none; }
 .action-btn:active { transform:scale(0.96); }
 .action-btn:disabled { opacity:.3; pointer-events:none; }
 .btn-start  { background:var(--line-green); color:white; }
 .btn-pause  { background:var(--pause-soft); color:var(--pause); border:1.5px solid #fde68a; }
 .btn-resume { background:var(--accent-soft); color:var(--accent); border:1.5px solid #bfdbfe; }
 .btn-stop   { background:#fef2f2; color:var(--danger); border:1.5px solid #fecaca; }
+/* 歷史記錄 */
 .hist-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; padding:14px 16px 0; }
 .hist-stat { background:var(--white); border-radius:var(--radius-sm); padding:14px 10px; text-align:center; box-shadow:var(--shadow); }
 .h-num { font-family:'Space Mono',monospace; font-size:18px; font-weight:700; color:var(--accent); }
 .h-txt { font-size:11px; color:var(--text-sub); margin-top:3px; }
+/* 日期區間篩選 */
+.date-range-bar { padding:10px 16px 0; }
+.range-quick { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px; }
+.rq-chip {
+  padding:5px 12px; border-radius:16px; border:1.5px solid var(--border);
+  font-size:11px; font-weight:600; cursor:pointer; background:var(--white);
+  color:var(--text-sub); font-family:'Noto Sans TC',sans-serif; transition:all 0.15s;
+}
+.rq-chip.active { background:var(--accent); border-color:var(--accent); color:white; }
+.range-custom { display:flex; gap:8px; align-items:center; }
+.range-input {
+  flex:1; border:1.5px solid var(--border); border-radius:8px; padding:7px 10px;
+  font-size:12px; font-family:'Noto Sans TC',sans-serif; color:var(--text); outline:none;
+  background:var(--white);
+}
+.range-input:focus { border-color:var(--accent); }
+.range-sep { font-size:12px; color:var(--text-light); }
 .filter-scroll { display:flex; gap:8px; padding:12px 16px; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
 .filter-scroll::-webkit-scrollbar { display:none; }
 .f-chip { padding:6px 14px; border-radius:20px; border:1.5px solid var(--border); font-size:12px; font-weight:600; color:var(--text-sub); white-space:nowrap; cursor:pointer; background:var(--white); font-family:'Noto Sans TC',sans-serif; flex-shrink:0; }
 .f-chip.active { background:var(--accent); border-color:var(--accent); color:white; }
+/* 任務子篩選 */
+.task-filter-scroll { display:none; gap:6px; padding:0 16px 8px; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; flex-wrap:wrap; }
+.task-filter-scroll::-webkit-scrollbar { display:none; }
+.task-filter-scroll.show { display:flex; }
+.tf-chip {
+  padding:4px 11px; border-radius:14px; border:1.5px solid var(--border);
+  font-size:11px; font-weight:500; cursor:pointer; background:var(--white);
+  color:var(--text-sub); font-family:'Noto Sans TC',sans-serif; flex-shrink:0; transition:all 0.15s;
+}
+.tf-chip.active { background:#dbeafe; border-color:#93c5fd; color:var(--accent); }
+/* 類別摘要 */
+.cat-summary { padding:0 16px 8px; }
+.cat-sum-item {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:8px 12px; background:var(--white); border-radius:8px;
+  margin-bottom:6px; box-shadow:var(--shadow);
+}
+.cat-sum-left { display:flex; align-items:center; gap:8px; }
+.cat-sum-dot { width:10px; height:10px; border-radius:50%; }
+.cat-sum-name { font-size:13px; font-weight:600; }
+.cat-sum-count { font-size:11px; color:var(--text-light); }
+.cat-sum-dur { font-family:'Space Mono',monospace; font-size:13px; font-weight:700; color:var(--accent); }
 .hist-list { padding:0 16px; display:flex; flex-direction:column; gap:8px; }
 .hist-item { background:var(--white); border-radius:var(--radius-sm); padding:14px; box-shadow:var(--shadow); }
 .hi-top { display:flex; align-items:flex-start; justify-content:space-between; gap:8px; margin-bottom:8px; }
@@ -288,6 +374,45 @@ body {
 .hi-btn-edit   { background:var(--accent-soft); color:var(--accent); }
 .hi-btn-resync { background:#f0fdf4; color:#15803d; }
 .hi-btn-del    { background:#fef2f2; color:var(--danger); }
+/* 多選 checkbox */
+.hi-select-wrap { display:none; align-items:center; margin-right:10px; }
+.hi-select-wrap.show { display:flex; }
+.hi-cb { width:20px; height:20px; accent-color:var(--accent); cursor:pointer; }
+/* 批量操作列 */
+.batch-bar {
+  display:none; position:sticky; top:56px; z-index:40;
+  background:var(--accent); color:white;
+  padding:10px 16px; margin:0;
+  align-items:center; justify-content:space-between; gap:8px;
+  font-size:13px; font-weight:600;
+}
+.batch-bar.show { display:flex; }
+.batch-actions { display:flex; gap:6px; }
+.batch-btn {
+  padding:6px 12px; border-radius:8px; border:none; font-size:12px; font-weight:600;
+  cursor:pointer; font-family:'Noto Sans TC',sans-serif; transition:opacity 0.15s;
+}
+.batch-btn:active { opacity:0.7; }
+.batch-btn-cat { background:rgba(255,255,255,0.2); color:white; }
+.batch-btn-del { background:rgba(239,68,68,0.9); color:white; }
+.batch-btn-sync { background:rgba(6,199,85,0.9); color:white; }
+.batch-btn-cancel { background:transparent; color:rgba(255,255,255,0.8); border:1px solid rgba(255,255,255,0.3); }
+.batch-select-all { display:flex; align-items:center; gap:6px; cursor:pointer; }
+.batch-select-all input { width:18px; height:18px; accent-color:white; cursor:pointer; }
+/* 批量改類別 modal */
+.batch-cat-modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:400; align-items:center; justify-content:center; backdrop-filter:blur(4px); }
+.batch-cat-modal.show { display:flex; }
+.batch-cat-sheet { background:var(--white); border-radius:var(--radius); padding:20px; width:90%; max-width:360px; }
+.batch-cat-title { font-size:15px; font-weight:700; margin-bottom:14px; }
+.batch-cat-options { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px; }
+.batch-cat-chip {
+  padding:8px 16px; border-radius:20px; border:1.5px solid var(--border);
+  font-size:13px; font-weight:500; cursor:pointer; background:transparent;
+  color:var(--text-sub); font-family:'Noto Sans TC',sans-serif; transition:all 0.15s;
+}
+.batch-cat-chip.active { border-color:var(--accent); background:var(--accent-soft); color:var(--accent); }
+.batch-cat-btns { display:flex; gap:10px; }
+.batch-cat-btns button { flex:1; padding:12px; border-radius:var(--radius-sm); font-size:14px; font-weight:700; font-family:'Noto Sans TC',sans-serif; cursor:pointer; border:none; }
 .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:300; align-items:flex-end; justify-content:center; backdrop-filter:blur(4px); }
 .modal-overlay.show { display:flex; }
 .modal-sheet { background:var(--white); border-radius:20px 20px 0 0; width:100%; max-width:430px; padding:0 0 40px; max-height:90vh; overflow-y:auto; animation:slideUp 0.3s ease; }
@@ -314,7 +439,6 @@ body {
 .setup-page-card { margin:14px 16px 0; background:var(--white); border-radius:var(--radius); padding:18px; box-shadow:var(--shadow); }
 .sp-title { font-size:15px; font-weight:700; margin-bottom:4px; }
 .sp-desc  { font-size:12px; color:var(--text-sub); line-height:1.6; margin-bottom:14px; }
-.code-blk { background:#1a1a2e; border-radius:8px; padding:12px 14px; font-family:'Space Mono',monospace; font-size:11px; color:#a3e635; overflow-x:auto; line-height:1.7; }
 .step-list { list-style:none; }
 .step-list li { display:flex; gap:10px; padding:8px 0; border-bottom:1px solid var(--border); font-size:13px; line-height:1.5; }
 .step-list li:last-child { border-bottom:none; }
@@ -355,6 +479,7 @@ body {
   <button class="pwa-banner-close" onclick="dismissPWA()">×</button>
 </div>
 
+<!-- ========== 主頁 ========== -->
 <div class="page active" id="page-home">
   <div class="setup-banner" id="setupBanner">
     <div class="setup-top">
@@ -369,7 +494,6 @@ body {
     </div>
     <div class="setup-hint">設定一次即可。任務結束後將自動寫入 Google Calendar。</div>
   </div>
-
   <div class="greeting-card">
     <div class="greeting-time" id="greetingTime">FRIDAY MORNING</div>
     <div class="greeting-text">平安，<span>Kanas 牧師</span>！<br>今天要完成什麼？</div>
@@ -379,7 +503,6 @@ body {
       <div class="stat-item"><div class="stat-num" id="homeAvg">—</div><div class="stat-txt">平均時長</div></div>
     </div>
   </div>
-
   <div class="section-label">功能選單</div>
   <div class="quick-grid">
     <button class="quick-btn" onclick="goTab('timer')"><div class="quick-icon icon-timer">⏱</div><div class="quick-label">任務計時</div><div class="quick-badge">立即開始</div></button>
@@ -389,11 +512,11 @@ body {
     <button class="quick-btn" onclick="toast('🚧 代辦清單 — 開發中')"><div class="quick-icon icon-todo">📋</div><div class="quick-label">代辦清單</div><div class="quick-badge">即將開放</div></button>
     <button class="quick-btn" onclick="goTab('setup')"><div class="quick-icon icon-cfg">⚙️</div><div class="quick-label">Webhook 設定</div><div class="quick-badge">日曆同步</div></button>
   </div>
-
   <div class="section-label" id="recentLabel" style="display:none">最近任務</div>
   <div class="recent-list" id="recentList"></div>
 </div>
 
+<!-- ========== 計時器頁 ========== -->
 <div class="page" id="page-timer">
   <div class="page-header">
     <button class="back-btn" onclick="goTab('home')">←</button>
@@ -401,18 +524,29 @@ body {
   </div>
   <div class="input-card">
     <div class="field-label">任務名稱</div>
-    <input type="text" class="task-input" id="taskName" placeholder="你現在要做什麼？" />
-    <div class="cat-row">
-      <button class="cat-chip active" data-cat="講道" onclick="selCat(this)">📖 講道</button>
+    <div class="task-input-wrap">
+      <input type="text" class="task-input" id="taskName" placeholder="你現在要做什麼？" autocomplete="off" />
+      <div class="suggest-list" id="suggestList"></div>
+    </div>
+    <div class="cat-row" id="catRow">
+      <button class="cat-chip" data-cat="講道" onclick="selCat(this)">📖 講道</button>
       <button class="cat-chip" data-cat="牧養" onclick="selCat(this)">🤝 牧養</button>
       <button class="cat-chip" data-cat="行政" onclick="selCat(this)">📋 行政</button>
-      <button class="cat-chip" data-cat="個人" onclick="selCat(this)">🧘 個人</button>
+      <button class="cat-chip active" data-cat="個人" onclick="selCat(this)">🧘 個人</button>
       <button class="cat-chip" data-cat="其他" onclick="selCat(this)">🗂 其他</button>
+    </div>
+    <div class="custom-cat-wrap" id="customCatWrap">
+      <input type="text" class="custom-cat-input" id="customCatInput" placeholder="輸入自訂類別名稱（留空則為「其他」）" />
+      <div class="custom-cat-hint">選填</div>
     </div>
   </div>
   <div class="timer-hero">
     <div class="t-ring1"></div><div class="t-ring2"></div>
     <div class="timer-digits" id="digits">00:00:00</div>
+    <div class="now-clock-row" id="nowClockRow">
+      <span class="now-clock" id="nowClock">--:--:--</span>
+      <button class="now-toggle" id="nowToggle" onclick="toggleNowClock()" title="隱藏/顯示">👁</button>
+    </div>
     <div class="state-row">
       <div class="s-indicator" id="sInd"></div>
       <span id="sLabel">待機中</span>
@@ -435,33 +569,61 @@ body {
     <textarea class="note-ta" id="taskNote" placeholder="這次任務的備註…"></textarea>
   </div>
   <div class="btn-area">
-    <button class="action-btn btn-start full" id="btnStart" onclick="startTimer()">▶ 開始計時</button>
+    <button class="action-btn btn-start" id="btnStart" onclick="startTimer()">▶ 開始</button>
     <button class="action-btn btn-pause" id="btnPause" disabled onclick="togglePause()">⏸ 暫停</button>
     <button class="action-btn btn-stop"  id="btnStop"  disabled onclick="stopTimer()">■ 結束</button>
   </div>
 </div>
 
+<!-- ========== 記錄頁 ========== -->
 <div class="page" id="page-history">
   <div class="page-header" style="justify-content:space-between">
     <div class="page-title">📊 歷史記錄</div>
-    <button class="back-btn" style="width:auto;padding:0 12px;border-radius:20px;font-size:12px;" onclick="clearAll()">清除</button>
+    <div style="display:flex;gap:6px;">
+      <button class="back-btn" style="width:auto;padding:0 12px;border-radius:20px;font-size:12px;" id="btnSelectMode" onclick="toggleSelectMode()">多選</button>
+      <button class="back-btn" style="width:auto;padding:0 12px;border-radius:20px;font-size:12px;" onclick="clearAll()">清除</button>
+    </div>
   </div>
   <div class="hist-stats">
-    <div class="hist-stat"><div class="h-num" id="hTotal">0</div><div class="h-txt">任務總數</div></div>
-    <div class="hist-stat"><div class="h-num" id="hToday">0m</div><div class="h-txt">今日耗時</div></div>
+    <div class="hist-stat"><div class="h-num" id="hTotal">0</div><div class="h-txt">篩選筆數</div></div>
+    <div class="hist-stat"><div class="h-num" id="hToday">0m</div><div class="h-txt">篩選耗時</div></div>
     <div class="hist-stat"><div class="h-num" id="hAvg">—</div><div class="h-txt">平均時長</div></div>
   </div>
-  <div class="filter-scroll">
-    <button class="f-chip active" onclick="setFilter('all',this)">全部</button>
-    <button class="f-chip" onclick="setFilter('講道',this)">📖 講道</button>
-    <button class="f-chip" onclick="setFilter('牧養',this)">🤝 牧養</button>
-    <button class="f-chip" onclick="setFilter('行政',this)">📋 行政</button>
-    <button class="f-chip" onclick="setFilter('個人',this)">🧘 個人</button>
-    <button class="f-chip" onclick="setFilter('其他',this)">🗂 其他</button>
+  <!-- 日期區間 -->
+  <div class="date-range-bar">
+    <div class="range-quick" id="rangeQuick">
+      <button class="rq-chip active" onclick="setRange('all',this)">全部</button>
+      <button class="rq-chip" onclick="setRange('today',this)">今天</button>
+      <button class="rq-chip" onclick="setRange('week',this)">一週內</button>
+      <button class="rq-chip" onclick="setRange('month',this)">一月內</button>
+      <button class="rq-chip" onclick="setRange('3month',this)">三月內</button>
+      <button class="rq-chip" onclick="setRange('custom',this)">自訂</button>
+    </div>
+    <div class="range-custom" id="rangeCustom" style="display:none">
+      <input type="date" class="range-input" id="rangeStart" onchange="applyCustomRange()" />
+      <span class="range-sep">～</span>
+      <input type="date" class="range-input" id="rangeEnd" onchange="applyCustomRange()" />
+    </div>
+  </div>
+  <div class="filter-scroll" id="filterScroll"></div>
+  <!-- 任務子篩選 -->
+  <div class="task-filter-scroll" id="taskFilterScroll"></div>
+  <!-- 類別摘要 -->
+  <div class="cat-summary" id="catSummary"></div>
+  <!-- 批量操作列 -->
+  <div class="batch-bar" id="batchBar">
+    <label class="batch-select-all"><input type="checkbox" id="cbSelectAll" onchange="toggleSelectAll()" /><span id="batchCount">已選 0 筆</span></label>
+    <div class="batch-actions">
+      <button class="batch-btn batch-btn-cat" onclick="openBatchCat()">分類</button>
+      <button class="batch-btn batch-btn-sync" onclick="batchSync()">同步</button>
+      <button class="batch-btn batch-btn-del" onclick="batchDelete()">刪除</button>
+      <button class="batch-btn batch-btn-cancel" onclick="toggleSelectMode()">取消</button>
+    </div>
   </div>
   <div class="hist-list" id="histList"></div>
 </div>
 
+<!-- ========== 設定頁 ========== -->
 <div class="page" id="page-setup">
   <div class="page-header">
     <button class="back-btn" onclick="goTab('home')">←</button>
@@ -484,6 +646,7 @@ body {
   </div>
 </div>
 
+<!-- ========== 編輯 Modal ========== -->
 <div class="modal-overlay" id="editModal" onclick="closeModalOnOverlay(event)">
   <div class="modal-sheet">
     <div class="modal-handle"></div>
@@ -498,13 +661,7 @@ body {
       </div>
       <div class="edit-field">
         <label>分類</label>
-        <div class="edit-cat-row">
-          <button class="edit-cat-chip" data-cat="講道" onclick="selEditCat(this)">📖 講道</button>
-          <button class="edit-cat-chip" data-cat="牧養" onclick="selEditCat(this)">🤝 牧養</button>
-          <button class="edit-cat-chip" data-cat="行政" onclick="selEditCat(this)">📋 行政</button>
-          <button class="edit-cat-chip" data-cat="個人" onclick="selEditCat(this)">🧘 個人</button>
-          <button class="edit-cat-chip" data-cat="其他" onclick="selEditCat(this)">🗂 其他</button>
-        </div>
+        <div class="edit-cat-row" id="editCatRow"></div>
       </div>
       <div class="edit-field">
         <label>開始 / 結束時間</label>
@@ -526,6 +683,18 @@ body {
   </div>
 </div>
 
+<!-- ========== 批量改類別 Modal ========== -->
+<div class="batch-cat-modal" id="batchCatModal" onclick="if(event.target===this)closeBatchCat()">
+  <div class="batch-cat-sheet">
+    <div class="batch-cat-title">📂 批量更改分類</div>
+    <div class="batch-cat-options" id="batchCatOptions"></div>
+    <div class="batch-cat-btns">
+      <button onclick="closeBatchCat()" style="background:var(--bg);color:var(--text-sub);">取消</button>
+      <button onclick="applyBatchCat()" style="background:var(--accent);color:white;">確認</button>
+    </div>
+  </div>
+</div>
+
 <div class="tab-bar">
   <button class="tab-item active" id="tab-home" onclick="goTab('home')"><div class="tab-icon">🏠</div><div class="tab-lbl">主頁</div></button>
   <button class="tab-item" id="tab-timer" onclick="goTab('timer')"><div class="tab-icon">⏱</div><div class="tab-lbl">計時</div></button>
@@ -538,22 +707,37 @@ body {
 <script>
 const STORAGE_KEY = 'kanas_hist_v2';
 const GAS_URL_KEY = 'kanas_gas_url';
-let timerInterval=null,autoInterval=null;
+const DEFAULT_CATS = ['講道','牧養','行政','個人','其他'];
+let timerInterval=null,autoInterval=null,nowClockInterval=null;
 let startTime=null,pausedAt=null;
 let totalPausedMs=0,elapsedMs=0;
 let isRunning=false,isPaused=false;
-let selectedCat='講道',currentFilter='all';
+let selectedCat='個人',currentFilter='all',currentTaskFilter='all';
+let currentRange='all',rangeStartDate=null,rangeEndDate=null;
+let selectMode=false,selectedIds=new Set();
+let batchCatChoice='';
+let nowClockVisible=true;
 
+// ===== 取得所有使用過的分類 =====
+function getAllCats(){
+  const hist=loadHist();
+  const cats=new Set(DEFAULT_CATS);
+  hist.forEach(r=>cats.add(r.cat));
+  return [...cats];
+}
+
+// ===== 頁面切換 =====
 function goTab(tab) {
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.tab-item').forEach(t=>t.classList.remove('active'));
   document.getElementById('page-'+tab).classList.add('active');
   const tb=document.getElementById('tab-'+tab);
   if(tb) tb.classList.add('active');
-  if(tab==='history'){renderHistStats();renderHistList();}
+  if(tab==='history'){renderFilterChips();renderHistPage();}
   if(tab==='home'){renderHome();}
 }
 
+// ===== Webhook =====
 function loadGasUrl(){return localStorage.getItem(GAS_URL_KEY)||'';}
 function saveGasUrl(){
   const url=document.getElementById('gasUrlInput').value.trim();
@@ -569,23 +753,97 @@ function updateGasStatus(){
   const txt=document.getElementById('sText');
   const banner=document.getElementById('setupBanner');
   if(url){
-    dot.className='s-dot ok';
-    txt.textContent='✓ Google 日曆同步已設定';
+    dot.className='s-dot ok';txt.textContent='✓ Google 日曆同步已設定';
     banner.className='setup-banner connected';
     document.getElementById('gasUrlInput').value=url;
   } else {
-    dot.className='s-dot';
-    txt.textContent='尚未設定 Google 日曆同步';
+    dot.className='s-dot';txt.textContent='尚未設定 Google 日曆同步';
     banner.className='setup-banner';
   }
 }
 
+// ===== 分類選擇（計時器頁） =====
 function selCat(btn){
-  document.querySelectorAll('.cat-chip').forEach(c=>c.classList.remove('active'));
+  document.querySelectorAll('#catRow .cat-chip').forEach(c=>c.classList.remove('active'));
   btn.classList.add('active');
   selectedCat=btn.dataset.cat;
+  // 「其他」顯示自訂輸入框
+  const wrap=document.getElementById('customCatWrap');
+  if(selectedCat==='其他'){wrap.classList.add('show');}
+  else{wrap.classList.remove('show');}
 }
 
+function getEffectiveCat(){
+  if(selectedCat==='其他'){
+    const custom=document.getElementById('customCatInput').value.trim();
+    return custom||'其他';
+  }
+  return selectedCat;
+}
+
+// ===== 自動完成建議（Feature #1） =====
+function getTaskFrequency(){
+  const hist=loadHist();
+  const freq={};
+  hist.forEach(r=>{
+    const key=r.task;
+    if(!freq[key]) freq[key]={count:0,cat:r.cat};
+    freq[key].count++;
+  });
+  return Object.entries(freq).sort((a,b)=>b[1].count-a[1].count).map(([name,v])=>({name,count:v.count,cat:v.cat}));
+}
+
+function showSuggestions(){
+  const input=document.getElementById('taskName');
+  const list=document.getElementById('suggestList');
+  const val=input.value.trim().toLowerCase();
+  const all=getTaskFrequency();
+  // 如果有輸入，模糊篩選；無輸入則顯示全部
+  const filtered=val?all.filter(t=>t.name.toLowerCase().includes(val)):all;
+  if(!filtered.length){list.classList.remove('show');return;}
+  list.innerHTML=filtered.slice(0,8).map(t=>
+    `<div class="suggest-item" onmousedown="pickSuggest('${esc(t.name)}','${esc(t.cat)}')">
+      <span class="s-name">${esc(t.name)}</span>
+      <span class="s-cat">${t.cat}</span>
+      <span class="s-count">×${t.count}</span>
+    </div>`
+  ).join('');
+  list.classList.add('show');
+}
+
+function pickSuggest(name,cat){
+  document.getElementById('taskName').value=name;
+  document.getElementById('suggestList').classList.remove('show');
+  // 自動選擇對應分類
+  const catBtn=document.querySelector(`#catRow .cat-chip[data-cat="${cat}"]`);
+  if(catBtn){selCat(catBtn);}
+  else{
+    // 自訂類別
+    const otherBtn=document.querySelector('#catRow .cat-chip[data-cat="其他"]');
+    selCat(otherBtn);
+    document.getElementById('customCatInput').value=cat;
+  }
+}
+
+function hideSuggestions(){
+  setTimeout(()=>document.getElementById('suggestList').classList.remove('show'),150);
+}
+
+// ===== 現在時間 (Feature #3) =====
+function toggleNowClock(){
+  nowClockVisible=!nowClockVisible;
+  document.getElementById('nowClock').style.display=nowClockVisible?'':'none';
+  document.getElementById('nowToggle').textContent=nowClockVisible?'👁':'👁‍🗨';
+}
+
+function updateNowClock(){
+  if(!nowClockVisible)return;
+  const now=new Date();
+  document.getElementById('nowClock').textContent=
+    `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+}
+
+// ===== 計時器核心 =====
 function startTimer(){
   const name=document.getElementById('taskName').value.trim();
   if(!name){
@@ -595,14 +853,19 @@ function startTimer(){
     setTimeout(()=>el.classList.remove('error'),1500);
     return;
   }
+  document.getElementById('suggestList').classList.remove('show');
   startTime=new Date();
   totalPausedMs=0;elapsedMs=0;
   isRunning=true;isPaused=false;
   hideSyncBadge();
   uiRunning();
   timerInterval=setInterval(tick,100);
+  // 現在時間
+  document.getElementById('nowClockRow').classList.add('show');
+  updateNowClock();
+  nowClockInterval=setInterval(updateNowClock,1000);
   requestWakeLock();
-  showTimerNotification(name,selectedCat);
+  showTimerNotification(name,getEffectiveCat());
   toast('▶ 開始計時！');
 }
 
@@ -636,13 +899,15 @@ async function stopTimer(fromAuto=false){
   const endTime=fromAuto?new Date(pausedAt):new Date();
   const dur=fromAuto?Math.max(0,pausedAt-startTime.getTime()-totalPausedMs):elapsedMs;
   clearInterval(timerInterval);cancelAuto();
+  clearInterval(nowClockInterval);
   isRunning=false;isPaused=false;
   releaseWakeLock();
   dismissTimerNotification();
+  const effectiveCat=getEffectiveCat();
   const rec={
     id:Date.now(),
     task:document.getElementById('taskName').value.trim(),
-    cat:selectedCat,
+    cat:effectiveCat,
     note:document.getElementById('taskNote').value.trim(),
     start:startTime.toISOString(),
     end:endTime.toISOString(),
@@ -669,6 +934,8 @@ async function stopTimer(fromAuto=false){
   uiIdle();
   document.getElementById('taskName').value='';
   document.getElementById('taskNote').value='';
+  document.getElementById('customCatInput').value='';
+  document.getElementById('customCatWrap').classList.remove('show');
   renderHome();
 }
 
@@ -691,10 +958,11 @@ function uiRunning(){
   document.getElementById('sLabel').textContent='計時中';
   document.getElementById('tMeta').style.display='flex';
   document.getElementById('mStart').textContent=fmtTime(startTime);
-  document.getElementById('mCat').textContent=selectedCat;
+  document.getElementById('mCat').textContent=getEffectiveCat();
   document.getElementById('noteCard').classList.add('show');
   document.getElementById('taskName').disabled=true;
-  document.querySelectorAll('.cat-chip').forEach(c=>c.disabled=true);
+  document.querySelectorAll('#catRow .cat-chip').forEach(c=>c.disabled=true);
+  document.getElementById('customCatInput').disabled=true;
   document.getElementById('btnStart').disabled=true;
   document.getElementById('btnPause').disabled=false;
   document.getElementById('btnStop').disabled=false;
@@ -720,8 +988,11 @@ function uiIdle(){
   document.getElementById('sLabel').textContent='待機中';
   document.getElementById('tMeta').style.display='none';
   document.getElementById('noteCard').classList.remove('show');
+  document.getElementById('nowClockRow').classList.remove('show');
+  clearInterval(nowClockInterval);
   document.getElementById('taskName').disabled=false;
-  document.querySelectorAll('.cat-chip').forEach(c=>c.disabled=false);
+  document.querySelectorAll('#catRow .cat-chip').forEach(c=>c.disabled=false);
+  document.getElementById('customCatInput').disabled=false;
   document.getElementById('btnStart').disabled=false;
   document.getElementById('btnPause').disabled=true;
   document.getElementById('btnStop').disabled=true;
@@ -737,57 +1008,263 @@ function showSyncBadge(type,icon,msg){
 }
 function hideSyncBadge(){document.getElementById('syncBadge').style.display='none';}
 
+// ===== localStorage =====
 function loadHist(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');}catch{return[];}}
 function saveHist(h){localStorage.setItem(STORAGE_KEY,JSON.stringify(h));}
 
-function renderHistList(){
-  const hist=loadHist();
-  const el=document.getElementById('histList');
-  const data=currentFilter==='all'?hist:hist.filter(r=>r.cat===currentFilter);
-  if(!data.length){el.innerHTML='<div class="empty-hist"><div class="e-emoji">📭</div><p>尚無記錄</p></div>';return;}
-  el.innerHTML=data.map(r=>`
-    <div class="hist-item">
-      <div class="hi-top">
-        <div class="hi-name">${esc(r.task)}${r.synced?'<span class="gcal-icon">📅</span>':''}</div>
-        <div class="hi-dur">${fmtDur(r.dur)}</div>
-      </div>
-      <div class="hi-bot">
-        <div class="hi-time">${fmtDate(new Date(r.start))} ${fmtTime(new Date(r.start))}–${fmtTime(new Date(r.end))}</div>
-        <div class="cat-tag cat-${r.cat}">${r.cat}</div>
-      </div>
-      ${r.note?`<div class="hi-note">${esc(r.note)}</div>`:''}
-      <div class="hi-actions">
-        <button class="hi-btn hi-btn-edit" onclick="openEdit(${r.id})">✏️ 編輯</button>
-        <button class="hi-btn hi-btn-resync" onclick="resyncRecord(${r.id})">📅 同步</button>
-        <button class="hi-btn hi-btn-del" onclick="deleteRecord(${r.id})">🗑 刪除</button>
-      </div>
-    </div>`).join('');
+// ===== 日期區間篩選 (Feature #7) =====
+function setRange(range,btn){
+  document.querySelectorAll('#rangeQuick .rq-chip').forEach(c=>c.classList.remove('active'));
+  btn.classList.add('active');
+  currentRange=range;
+  const customEl=document.getElementById('rangeCustom');
+  if(range==='custom'){customEl.style.display='flex';return;}
+  customEl.style.display='none';
+  const now=new Date();
+  const todayStart=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+  switch(range){
+    case 'all':rangeStartDate=null;rangeEndDate=null;break;
+    case 'today':rangeStartDate=todayStart;rangeEndDate=new Date(todayStart.getTime()+86400000);break;
+    case 'week':rangeStartDate=new Date(now.getTime()-7*86400000);rangeEndDate=null;break;
+    case 'month':rangeStartDate=new Date(now.getTime()-30*86400000);rangeEndDate=null;break;
+    case '3month':rangeStartDate=new Date(now.getTime()-90*86400000);rangeEndDate=null;break;
+  }
+  renderHistPage();
+}
+function applyCustomRange(){
+  const s=document.getElementById('rangeStart').value;
+  const e=document.getElementById('rangeEnd').value;
+  rangeStartDate=s?new Date(s):null;
+  rangeEndDate=e?new Date(new Date(e).getTime()+86400000):null;
+  renderHistPage();
+}
+
+function getFilteredByRange(hist){
+  return hist.filter(r=>{
+    const d=new Date(r.start);
+    if(rangeStartDate&&d<rangeStartDate)return false;
+    if(rangeEndDate&&d>=rangeEndDate)return false;
+    return true;
+  });
+}
+
+// ===== 記錄頁渲染 =====
+function renderFilterChips(){
+  const cats=getAllCats();
+  const el=document.getElementById('filterScroll');
+  el.innerHTML=`<button class="f-chip ${currentFilter==='all'?'active':''}" onclick="setFilter('all',this)">全部</button>`+
+    cats.map(c=>`<button class="f-chip ${currentFilter===c?'active':''}" onclick="setFilter('${esc(c)}',this)">${c}</button>`).join('');
+}
+
+function renderHistPage(){
+  renderHistStats();
+  renderCatSummary();
+  renderTaskFilterChips();
+  renderHistList();
+}
+
+function getVisibleHist(){
+  let hist=getFilteredByRange(loadHist());
+  if(currentFilter!=='all') hist=hist.filter(r=>r.cat===currentFilter);
+  if(currentTaskFilter!=='all') hist=hist.filter(r=>r.task===currentTaskFilter);
+  return hist;
 }
 
 function renderHistStats(){
-  const hist=loadHist();
-  const today=new Date().toDateString();
-  const todayMs=hist.filter(r=>new Date(r.start).toDateString()===today).reduce((s,r)=>s+r.dur,0);
-  const avgMs=hist.length?hist.reduce((s,r)=>s+r.dur,0)/hist.length:0;
-  document.getElementById('hTotal').textContent=hist.length;
-  document.getElementById('hToday').textContent=fmtHM(todayMs);
-  document.getElementById('hAvg').textContent=hist.length?fmtHM(avgMs):'—';
+  const data=getVisibleHist();
+  const totalMs=data.reduce((s,r)=>s+r.dur,0);
+  const avgMs=data.length?totalMs/data.length:0;
+  document.getElementById('hTotal').textContent=data.length;
+  document.getElementById('hToday').textContent=fmtHM(totalMs);
+  document.getElementById('hAvg').textContent=data.length?fmtHM(avgMs):'—';
+}
+
+// ===== 類別摘要 (Feature #6) =====
+function renderCatSummary(){
+  const hist=getFilteredByRange(loadHist());
+  // 只在「全部」類別時顯示摘要
+  if(currentFilter!=='all'){document.getElementById('catSummary').innerHTML='';return;}
+  const CC={講道:'#B8860B',牧養:'#15803d',行政:'#1d4ed8',個人:'#7e22ce',其他:'#6b7280'};
+  const map={};
+  hist.forEach(r=>{
+    if(!map[r.cat])map[r.cat]={dur:0,count:0};
+    map[r.cat].dur+=r.dur;map[r.cat].count++;
+  });
+  const sorted=Object.entries(map).sort((a,b)=>b[1].dur-a[1].dur);
+  if(!sorted.length){document.getElementById('catSummary').innerHTML='';return;}
+  document.getElementById('catSummary').innerHTML=sorted.map(([cat,v])=>
+    `<div class="cat-sum-item" onclick="setFilter('${esc(cat)}',null)" style="cursor:pointer">
+      <div class="cat-sum-left">
+        <div class="cat-sum-dot" style="background:${CC[cat]||'#999'}"></div>
+        <div class="cat-sum-name">${esc(cat)}</div>
+        <div class="cat-sum-count">(${v.count}筆)</div>
+      </div>
+      <div class="cat-sum-dur">${fmtHM(v.dur)}</div>
+    </div>`
+  ).join('');
 }
 
 function setFilter(cat,btn){
   currentFilter=cat;
-  document.querySelectorAll('.f-chip').forEach(c=>c.classList.remove('active'));
-  btn.classList.add('active');renderHistList();
+  currentTaskFilter='all';
+  if(btn){
+    document.querySelectorAll('#filterScroll .f-chip').forEach(c=>c.classList.remove('active'));
+    btn.classList.add('active');
+  } else {
+    // 從摘要點擊進入
+    renderFilterChips();
+  }
+  renderHistPage();
+}
+
+// ===== 任務子篩選 (Feature #6) =====
+function renderTaskFilterChips(){
+  const el=document.getElementById('taskFilterScroll');
+  if(currentFilter==='all'){el.classList.remove('show');el.innerHTML='';return;}
+  let hist=getFilteredByRange(loadHist()).filter(r=>r.cat===currentFilter);
+  const taskMap={};
+  hist.forEach(r=>{
+    if(!taskMap[r.task])taskMap[r.task]={dur:0,count:0};
+    taskMap[r.task].dur+=r.dur;taskMap[r.task].count++;
+  });
+  const sorted=Object.entries(taskMap).sort((a,b)=>b[1].dur-a[1].dur);
+  if(sorted.length<=1){el.classList.remove('show');el.innerHTML='';return;}
+  el.classList.add('show');
+  el.innerHTML=`<button class="tf-chip ${currentTaskFilter==='all'?'active':''}" onclick="setTaskFilter('all',this)">全部任務</button>`+
+    sorted.map(([name,v])=>
+      `<button class="tf-chip ${currentTaskFilter===name?'active':''}" onclick="setTaskFilter('${esc(name)}',this)">${esc(name)} (${fmtHM(v.dur)})</button>`
+    ).join('');
+}
+
+function setTaskFilter(task,btn){
+  currentTaskFilter=task;
+  document.querySelectorAll('#taskFilterScroll .tf-chip').forEach(c=>c.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  renderHistStats();
+  renderHistList();
+}
+
+// ===== 多選模式 (Feature #5) =====
+function toggleSelectMode(){
+  selectMode=!selectMode;
+  selectedIds.clear();
+  document.getElementById('btnSelectMode').textContent=selectMode?'取消多選':'多選';
+  document.getElementById('batchBar').classList.toggle('show',selectMode);
+  document.getElementById('cbSelectAll').checked=false;
+  updateBatchCount();
+  renderHistList();
+}
+function toggleSelectAll(){
+  const checked=document.getElementById('cbSelectAll').checked;
+  const data=getVisibleHist();
+  if(checked){data.forEach(r=>selectedIds.add(r.id));}
+  else{selectedIds.clear();}
+  updateBatchCount();
+  renderHistList();
+}
+function toggleSelectItem(id){
+  if(selectedIds.has(id))selectedIds.delete(id);else selectedIds.add(id);
+  updateBatchCount();
+  // 更新 checkbox 狀態
+  const cb=document.getElementById('cb-'+id);
+  if(cb)cb.checked=selectedIds.has(id);
+}
+function updateBatchCount(){
+  document.getElementById('batchCount').textContent=`已選 ${selectedIds.size} 筆`;
+}
+
+// 批量改類別
+function openBatchCat(){
+  if(!selectedIds.size){toast('⚠ 請先選擇記錄');return;}
+  const cats=getAllCats();
+  batchCatChoice='';
+  document.getElementById('batchCatOptions').innerHTML=cats.map(c=>
+    `<button class="batch-cat-chip" onclick="pickBatchCat(this,'${esc(c)}')">${c}</button>`
+  ).join('');
+  document.getElementById('batchCatModal').classList.add('show');
+}
+function pickBatchCat(btn,cat){
+  document.querySelectorAll('.batch-cat-chip').forEach(c=>c.classList.remove('active'));
+  btn.classList.add('active');batchCatChoice=cat;
+}
+function closeBatchCat(){document.getElementById('batchCatModal').classList.remove('show');}
+function applyBatchCat(){
+  if(!batchCatChoice){toast('⚠ 請選擇一個分類');return;}
+  const hist=loadHist();
+  let count=0;
+  hist.forEach(r=>{if(selectedIds.has(r.id)){r.cat=batchCatChoice;r.synced=false;count++;}});
+  saveHist(hist);closeBatchCat();
+  toast(`✓ 已將 ${count} 筆記錄改為「${batchCatChoice}」`);
+  renderHistPage();
+}
+
+async function batchSync(){
+  if(!selectedIds.size){toast('⚠ 請先選擇記錄');return;}
+  const gasUrl=loadGasUrl();
+  if(!gasUrl){toast('⚠ 尚未設定 Webhook URL');return;}
+  const hist=loadHist();
+  let count=0;
+  for(const r of hist){
+    if(!selectedIds.has(r.id))continue;
+    try{
+      await fetch(gasUrl,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:JSON.stringify(r)});
+      r.synced=true;count++;
+    }catch{}
+  }
+  saveHist(hist);
+  toast(`✓ 已同步 ${count} 筆記錄`);
+  renderHistPage();
+}
+
+function batchDelete(){
+  if(!selectedIds.size){toast('⚠ 請先選擇記錄');return;}
+  if(!confirm(`確定刪除 ${selectedIds.size} 筆記錄？`))return;
+  const hist=loadHist().filter(r=>!selectedIds.has(r.id));
+  saveHist(hist);selectedIds.clear();updateBatchCount();
+  toast('✓ 已刪除所選記錄');
+  renderHistPage();renderHome();
+}
+
+// ===== 歷史列表渲染 =====
+function renderHistList(){
+  const el=document.getElementById('histList');
+  const data=getVisibleHist();
+  if(!data.length){el.innerHTML='<div class="empty-hist"><div class="e-emoji">📭</div><p>尚無記錄</p></div>';return;}
+  el.innerHTML=data.map(r=>`
+    <div class="hist-item">
+      <div style="display:flex;align-items:flex-start;">
+        <div class="hi-select-wrap ${selectMode?'show':''}">
+          <input type="checkbox" class="hi-cb" id="cb-${r.id}" ${selectedIds.has(r.id)?'checked':''} onchange="toggleSelectItem(${r.id})" />
+        </div>
+        <div style="flex:1;min-width:0;">
+          <div class="hi-top">
+            <div class="hi-name">${esc(r.task)}${r.synced?'<span class="gcal-icon">📅</span>':''}</div>
+            <div class="hi-dur">${fmtDur(r.dur)}</div>
+          </div>
+          <div class="hi-bot">
+            <div class="hi-time">${fmtDate(new Date(r.start))} ${fmtTime(new Date(r.start))}–${fmtTime(new Date(r.end))}</div>
+            <div class="cat-tag cat-${r.cat}">${esc(r.cat)}</div>
+          </div>
+          ${r.note?`<div class="hi-note">${esc(r.note)}</div>`:''}
+          <div class="hi-actions">
+            <button class="hi-btn hi-btn-edit" onclick="openEdit(${r.id})">✏️ 編輯</button>
+            <button class="hi-btn hi-btn-resync" onclick="resyncRecord(${r.id})">📅 同步</button>
+            <button class="hi-btn hi-btn-del" onclick="deleteRecord(${r.id})">🗑 刪除</button>
+          </div>
+        </div>
+      </div>
+    </div>`).join('');
 }
 
 function clearAll(){
   if(confirm('確定清除所有記錄？')){
     localStorage.removeItem(STORAGE_KEY);
-    renderHistList();renderHistStats();renderHome();
+    renderHistPage();renderHome();
     toast('已清除所有記錄');
   }
 }
 
+// ===== 主頁 =====
 function renderHome(){
   const hist=loadHist();
   const today=new Date().toDateString();
@@ -820,21 +1297,8 @@ function updateGreeting(){
   document.getElementById('navDate').innerHTML=`${now.getMonth()+1}/${now.getDate()}<br>${pad(now.getHours())}:${pad(now.getMinutes())}`;
 }
 
-function fmtDur(ms){const t=Math.floor(Math.max(0,ms)/1000);return`${pad(Math.floor(t/3600))}:${pad(Math.floor(t%3600/60))}:${pad(t%60)}`;}
-function fmtHM(ms){const m=Math.floor(ms/60000),h=Math.floor(m/60);return h>0?`${h}h${m%60}m`:`${m}m`;}
-function fmtMin(ms){return Math.floor(ms/60000)+' 分';}
-function fmtTime(d){return d.toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit',hour12:false});}
-function fmtDate(d){return d.toLocaleDateString('zh-TW',{month:'numeric',day:'numeric',weekday:'short'});}
-function pad(n){return String(n).padStart(2,'0');}
-function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-function toast(msg){
-  const t=document.getElementById('toastEl');
-  t.textContent=msg;t.classList.add('show');
-  clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),3000);
-}
-
-// EDIT MODAL
-let editingId=null,editingCat='講道';
+// ===== 編輯 Modal =====
+let editingId=null,editingCat='個人';
 function updateDurPreview(){
   const s=document.getElementById('editStart').value;
   const e=document.getElementById('editEnd').value;
@@ -855,11 +1319,16 @@ function openEdit(id){
   document.getElementById('editStart').value=toLocalDTInput(new Date(rec.start));
   document.getElementById('editEnd').value=toLocalDTInput(new Date(rec.end));
   updateDurPreview();
-  document.querySelectorAll('.edit-cat-chip').forEach(c=>c.classList.toggle('active',c.dataset.cat===rec.cat));
+  // 動態生成編輯分類選項
+  const cats=getAllCats();
+  const row=document.getElementById('editCatRow');
+  row.innerHTML=cats.map(c=>
+    `<button class="edit-cat-chip ${c===rec.cat?'active':''}" data-cat="${esc(c)}" onclick="selEditCat(this)">${c}</button>`
+  ).join('');
   document.getElementById('editModal').classList.add('show');
 }
 function selEditCat(btn){
-  document.querySelectorAll('.edit-cat-chip').forEach(c=>c.classList.remove('active'));
+  document.querySelectorAll('#editCatRow .edit-cat-chip').forEach(c=>c.classList.remove('active'));
   btn.classList.add('active');editingCat=btn.dataset.cat;
 }
 function closeModal(){document.getElementById('editModal').classList.remove('show');editingId=null;}
@@ -887,7 +1356,7 @@ async function saveEdit(){
       toast('✓ 已更新並同步到 Google 日曆 📅');
     }catch{toast('⚠ 本地已儲存，但日曆同步失敗');}
   } else {toast('✓ 已儲存修改');}
-  renderHistList();renderHistStats();renderHome();
+  renderHistPage();renderHome();
 }
 async function resyncRecord(id){
   const hist=loadHist();
@@ -907,7 +1376,7 @@ async function resyncRecord(id){
 function deleteRecord(id){
   if(!confirm('確定刪除此筆記錄？'))return;
   const hist=loadHist().filter(r=>r.id!==id);
-  saveHist(hist);renderHistList();renderHistStats();renderHome();
+  saveHist(hist);renderHistPage();renderHome();
   toast('已刪除此記錄');
 }
 function toLocalDTInput(date){
@@ -915,7 +1384,21 @@ function toLocalDTInput(date){
   return new Date(date.getTime()-off).toISOString().slice(0,16);
 }
 
-// WAKE LOCK
+// ===== 工具函式 =====
+function fmtDur(ms){const t=Math.floor(Math.max(0,ms)/1000);return`${pad(Math.floor(t/3600))}:${pad(Math.floor(t%3600/60))}:${pad(t%60)}`;}
+function fmtHM(ms){const m=Math.floor(ms/60000),h=Math.floor(m/60);return h>0?`${h}h${m%60}m`:`${m}m`;}
+function fmtMin(ms){return Math.floor(ms/60000)+' 分';}
+function fmtTime(d){return d.toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit',hour12:false});}
+function fmtDate(d){return d.toLocaleDateString('zh-TW',{month:'numeric',day:'numeric',weekday:'short'});}
+function pad(n){return String(n).padStart(2,'0');}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/'/g,'&#39;').replace(/"/g,'&quot;');}
+function toast(msg){
+  const t=document.getElementById('toastEl');
+  t.textContent=msg;t.classList.add('show');
+  clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+// ===== Wake Lock =====
 let wakeLock=null;
 async function requestWakeLock(){
   if(!('wakeLock' in navigator))return;
@@ -938,7 +1421,7 @@ document.addEventListener('visibilitychange',async()=>{
   }
 });
 
-// NOTIFICATIONS
+// ===== Notifications =====
 async function requestNotificationPermission(){
   if(!('Notification' in window))return false;
   if(Notification.permission==='granted')return true;
@@ -958,7 +1441,7 @@ async function showTimerNotification(taskName,cat){
 }
 function dismissTimerNotification(){if(activeNotif){activeNotif.close();activeNotif=null;}}
 
-// PWA
+// ===== PWA =====
 function dismissPWA(){
   document.getElementById('pwaBanner').classList.remove('show');
   localStorage.setItem('pwa_dismissed','1');
@@ -971,13 +1454,24 @@ function checkShowPWA(){
   if(isIOS&&isSafari)setTimeout(()=>document.getElementById('pwaBanner').classList.add('show'),3000);
 }
 
-// INIT
+// ===== 初始化 =====
 updateGreeting();
 setInterval(updateGreeting,30000);
 updateGasStatus();
 renderHome();
 checkShowPWA();
-document.getElementById('taskName').addEventListener('keydown',e=>{if(e.key==='Enter'&&!isRunning)startTimer();});
+
+// 任務名稱輸入事件
+const taskNameEl=document.getElementById('taskName');
+taskNameEl.addEventListener('input',showSuggestions);
+taskNameEl.addEventListener('focus',showSuggestions);
+taskNameEl.addEventListener('blur',hideSuggestions);
+taskNameEl.addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&!isRunning){
+    document.getElementById('suggestList').classList.remove('show');
+    startTimer();
+  }
+});
 </script>
 </body>
 </html>
