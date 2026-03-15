@@ -198,7 +198,6 @@ body {
 .page-title { font-size:18px; font-weight:700; }
 .input-card { margin:14px 16px 0; background:var(--white); border-radius:var(--radius); padding:16px; box-shadow:var(--shadow); position:relative; }
 .field-label { font-size:12px; font-weight:600; color:var(--text-sub); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:8px; }
-/* 輸入框 + 自動完成 */
 .task-input-wrap { position:relative; }
 .task-input {
   width:100%; border:1.5px solid var(--border); border-radius:var(--radius-sm);
@@ -235,10 +234,7 @@ body {
 }
 .cat-chip.active { border-color:var(--accent); background:var(--accent-soft); color:var(--accent); }
 .cat-chip:disabled { opacity:.4; pointer-events:none; }
-/* 「其他」自訂類別輸入框 */
-.custom-cat-wrap {
-  display:none; margin-top:8px;
-}
+.custom-cat-wrap { display:none; margin-top:8px; }
 .custom-cat-wrap.show { display:flex; gap:8px; align-items:center; }
 .custom-cat-input {
   flex:1; border:1.5px solid var(--border); border-radius:var(--radius-sm);
@@ -255,19 +251,10 @@ body {
 .timer-digits.running { color:var(--accent); }
 .timer-digits.paused  { color:var(--pause); }
 .timer-digits.syncing { color:var(--line-green); }
-/* 現在時間顯示 */
-.now-clock-row {
-  display:none; align-items:center; justify-content:center; gap:6px;
-  margin-top:6px; font-size:13px; color:var(--text-light);
-}
+.now-clock-row { display:none; align-items:center; justify-content:center; gap:6px; margin-top:6px; font-size:13px; color:var(--text-light); }
 .now-clock-row.show { display:flex; }
-.now-clock {
-  font-family:'Space Mono',monospace; font-size:40px; font-weight:700; color:var(--text-sub); letter-spacing:-0.02em; line-height:1;
-}
-.now-toggle {
-  background:none; border:none; cursor:pointer; font-size:14px; color:var(--text-light);
-  padding:2px 6px; border-radius:4px; transition:background 0.15s;
-}
+.now-clock { font-family:'Space Mono',monospace; font-size:40px; font-weight:700; color:var(--text-sub); letter-spacing:-0.02em; line-height:1; }
+.now-toggle { background:none; border:none; cursor:pointer; font-size:14px; color:var(--text-light); padding:2px 6px; border-radius:4px; transition:background 0.15s; }
 .now-toggle:active { background:var(--bg); }
 .state-row { display:flex; align-items:center; justify-content:center; gap:6px; margin-top:8px; font-size:13px; color:var(--text-light); font-weight:500; }
 .s-indicator { width:7px; height:7px; border-radius:50%; background:var(--text-light); }
@@ -293,7 +280,6 @@ body {
 .note-card.show { display:block; }
 .note-ta { width:100%; border:1.5px solid var(--border); border-radius:8px; padding:10px 12px; font-size:13px; font-family:'Noto Sans TC',sans-serif; color:var(--text); outline:none; resize:none; height:60px; transition:border-color 0.2s; }
 .note-ta:focus { border-color:var(--accent); }
-/* 三按鈕同列 */
 .btn-area { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin:12px 16px 0; }
 .action-btn { padding:14px 4px; border:none; border-radius:var(--radius-sm); font-size:14px; font-weight:700; font-family:'Noto Sans TC',sans-serif; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; transition:transform 0.15s, opacity 0.2s; -webkit-appearance:none; }
 .action-btn:active { transform:scale(0.96); }
@@ -302,12 +288,10 @@ body {
 .btn-pause  { background:var(--pause-soft); color:var(--pause); border:1.5px solid #fde68a; }
 .btn-resume { background:var(--accent-soft); color:var(--accent); border:1.5px solid #bfdbfe; }
 .btn-stop   { background:#fef2f2; color:var(--danger); border:1.5px solid #fecaca; }
-/* 歷史記錄 */
 .hist-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; padding:14px 16px 0; }
 .hist-stat { background:var(--white); border-radius:var(--radius-sm); padding:14px 10px; text-align:center; box-shadow:var(--shadow); }
 .h-num { font-family:'Space Mono',monospace; font-size:18px; font-weight:700; color:var(--accent); }
 .h-txt { font-size:11px; color:var(--text-sub); margin-top:3px; }
-/* 日期區間篩選 */
 .date-range-bar { padding:10px 16px 0; }
 .range-quick { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px; }
 .rq-chip {
@@ -328,7 +312,6 @@ body {
 .filter-scroll::-webkit-scrollbar { display:none; }
 .f-chip { padding:6px 14px; border-radius:20px; border:1.5px solid var(--border); font-size:12px; font-weight:600; color:var(--text-sub); white-space:nowrap; cursor:pointer; background:var(--white); font-family:'Noto Sans TC',sans-serif; flex-shrink:0; }
 .f-chip.active { background:var(--accent); border-color:var(--accent); color:white; }
-/* 任務子篩選 */
 .task-filter-scroll { display:none; gap:6px; padding:0 16px 8px; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; flex-wrap:wrap; }
 .task-filter-scroll::-webkit-scrollbar { display:none; }
 .task-filter-scroll.show { display:flex; }
@@ -338,7 +321,6 @@ body {
   color:var(--text-sub); font-family:'Noto Sans TC',sans-serif; flex-shrink:0; transition:all 0.15s;
 }
 .tf-chip.active { background:#dbeafe; border-color:#93c5fd; color:var(--accent); }
-/* 類別摘要 */
 .cat-summary { padding:0 16px 8px; }
 .cat-sum-item {
   display:flex; align-items:center; justify-content:space-between;
@@ -374,11 +356,9 @@ body {
 .hi-btn-edit   { background:var(--accent-soft); color:var(--accent); }
 .hi-btn-resync { background:#f0fdf4; color:#15803d; }
 .hi-btn-del    { background:#fef2f2; color:var(--danger); }
-/* 多選 checkbox */
 .hi-select-wrap { display:none; align-items:center; margin-right:10px; }
 .hi-select-wrap.show { display:flex; }
 .hi-cb { width:20px; height:20px; accent-color:var(--accent); cursor:pointer; }
-/* 批量操作列 */
 .batch-bar {
   display:none; position:sticky; top:56px; z-index:40;
   background:var(--accent); color:white;
@@ -399,7 +379,6 @@ body {
 .batch-btn-cancel { background:transparent; color:rgba(255,255,255,0.8); border:1px solid rgba(255,255,255,0.3); }
 .batch-select-all { display:flex; align-items:center; gap:6px; cursor:pointer; }
 .batch-select-all input { width:18px; height:18px; accent-color:white; cursor:pointer; }
-/* 批量改類別 modal */
 .batch-cat-modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:400; align-items:center; justify-content:center; backdrop-filter:blur(4px); }
 .batch-cat-modal.show { display:flex; }
 .batch-cat-sheet { background:var(--white); border-radius:var(--radius); padding:20px; width:90%; max-width:360px; }
@@ -451,6 +430,104 @@ body {
 .tab-item.active .tab-lbl { color:var(--accent); }
 .toast { position:fixed; bottom:88px; left:50%; transform:translateX(-50%) translateY(16px); background:rgba(26,26,46,0.92); color:white; padding:11px 20px; border-radius:24px; font-size:13px; font-weight:500; opacity:0; transition:all 0.3s; z-index:200; backdrop-filter:blur(10px); max-width:90vw; text-align:center; white-space:normal; }
 .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+
+/* ========== 行事曆頁新增樣式 ========== */
+.cal-api-banner {
+  margin: 12px 16px 0;
+  background: linear-gradient(135deg, #1a3a5c, #0f2840);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  color: white;
+}
+.cal-api-banner.connected { background: linear-gradient(135deg, #064e3b, #065f46); }
+.cal-api-row { display: flex; gap: 8px; align-items: center; margin-top: 8px; }
+.cal-api-input {
+  flex: 1; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 8px; padding: 8px 12px; color: white; font-size: 11px;
+  font-family: 'Space Mono', monospace; outline: none;
+}
+.cal-api-input::placeholder { color: rgba(255,255,255,0.35); }
+.cal-api-input:focus { border-color: var(--line-green); }
+.cal-loading { text-align:center; padding:40px 20px; color:var(--text-light); }
+.cal-loading .spin { display:inline-block; animation:spin 1s linear infinite; font-size:28px; }
+@keyframes spin { from{transform:rotate(0)} to{transform:rotate(360deg)} }
+/* 視圖切換 */
+.cal-view-toggle { display:flex; margin:12px 16px 0; background:var(--white); border-radius:var(--radius-sm); overflow:hidden; box-shadow:var(--shadow); }
+.cal-view-btn { flex:1; padding:10px; border:none; background:transparent; font-size:13px; font-weight:600; font-family:'Noto Sans TC',sans-serif; cursor:pointer; color:var(--text-sub); transition:all 0.15s; }
+.cal-view-btn.active { background:var(--accent); color:white; }
+/* 篩選列 */
+.cal-filter-bar { display:flex; gap:6px; padding:12px 16px 0; flex-wrap:wrap; }
+.cal-f-chip { padding:5px 12px; border-radius:16px; border:1.5px solid var(--border); font-size:11px; font-weight:600; cursor:pointer; background:var(--white); color:var(--text-sub); font-family:'Noto Sans TC',sans-serif; transition:all 0.15s; }
+.cal-f-chip.active { background:var(--accent); border-color:var(--accent); color:white; }
+.cal-f-chip.mine-active { background:var(--line-green); border-color:var(--line-green); color:white; }
+/* 區間篩選 */
+.cal-range-bar { display:flex; gap:6px; padding:8px 16px 0; flex-wrap:wrap; }
+.cal-r-chip { padding:4px 10px; border-radius:14px; border:1.5px solid var(--border); font-size:11px; font-weight:500; cursor:pointer; background:var(--white); color:var(--text-sub); font-family:'Noto Sans TC',sans-serif; transition:all 0.15s; }
+.cal-r-chip.active { background:#dbeafe; border-color:#93c5fd; color:var(--accent); }
+/* 月曆視圖 */
+.cal-month-nav { display:flex; align-items:center; justify-content:space-between; padding:12px 16px 4px; }
+.cal-month-title { font-size:16px; font-weight:700; }
+.cal-month-btn { width:32px; height:32px; border-radius:50%; background:var(--white); border:1.5px solid var(--border); display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:16px; box-shadow:var(--shadow); }
+.cal-month-btn:active { background:var(--bg); }
+.cal-grid-wrap { padding:0 16px; }
+.cal-weekdays { display:grid; grid-template-columns:repeat(7,1fr); text-align:center; font-size:11px; font-weight:600; color:var(--text-light); padding:8px 0 4px; }
+.cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:2px; }
+.cal-day {
+  aspect-ratio:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  border-radius:10px; cursor:pointer; font-size:13px; font-weight:500; position:relative;
+  transition:background 0.15s; gap:2px;
+}
+.cal-day:active { background:var(--accent-soft); }
+.cal-day.today { background:var(--accent-soft); font-weight:700; color:var(--accent); }
+.cal-day.selected { background:var(--accent); color:white; }
+.cal-day.selected .cal-dots span { background:white; }
+.cal-day.other-month { opacity:0.3; }
+.cal-day.has-mine { font-weight:700; }
+.cal-dots { display:flex; gap:2px; height:6px; align-items:center; }
+.cal-dots span { width:5px; height:5px; border-radius:50%; }
+.dot-church { background:#2D7DD2; }
+.dot-student { background:#06C755; }
+.dot-mine { background:#EF4444; }
+/* 日期詳情 */
+.cal-day-detail { margin:10px 16px 0; }
+.cal-day-title { font-size:14px; font-weight:700; color:var(--text-sub); margin-bottom:8px; padding-left:2px; }
+/* 事件卡片 */
+.cal-event-card {
+  background:var(--white); border-radius:var(--radius-sm); padding:14px;
+  box-shadow:var(--shadow); margin-bottom:8px; border-left:4px solid var(--border);
+  transition:transform 0.1s;
+}
+.cal-event-card:active { transform:scale(0.98); }
+.cal-event-card.mine { border-left-color:var(--line-green); background:linear-gradient(135deg,#f0fdf4,var(--white)); }
+.cal-event-card.church { border-left-color:var(--accent); }
+.cal-event-card.student { border-left-color:#06C755; }
+.cal-event-card.off { opacity:0.55; border-left-color:var(--text-light); }
+.ce-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; }
+.ce-title { font-size:14px; font-weight:700; flex:1; }
+.ce-source { font-size:10px; padding:2px 8px; border-radius:10px; font-weight:600; }
+.ce-source.src-church { background:var(--accent-soft); color:var(--accent); }
+.ce-source.src-student { background:var(--green-soft); color:#15803d; }
+.ce-my-roles { display:flex; flex-wrap:wrap; gap:4px; margin-bottom:8px; }
+.ce-my-badge { font-size:11px; font-weight:700; padding:3px 10px; border-radius:12px; background:linear-gradient(135deg,#dcfce7,#bbf7d0); color:#15803d; }
+.ce-roles { font-size:12px; color:var(--text-sub); line-height:1.7; }
+.ce-roles strong { color:var(--text); font-weight:600; }
+.ce-note { font-size:11px; color:var(--gold); margin-top:6px; padding-top:6px; border-top:1px solid var(--border); line-height:1.5; }
+.ce-timer-btn {
+  margin-top:8px; padding:8px 12px; border-radius:8px; border:none;
+  background:var(--accent-soft); color:var(--accent); font-size:12px; font-weight:600;
+  font-family:'Noto Sans TC',sans-serif; cursor:pointer; width:100%;
+  display:flex; align-items:center; justify-content:center; gap:4px;
+}
+.ce-timer-btn:active { opacity:0.7; }
+/* 列表視圖 */
+.cal-list-section { padding:0 16px; margin-top:10px; }
+.cal-list-date-header { font-size:12px; font-weight:700; color:var(--text-light); padding:8px 0 4px; border-bottom:1px solid var(--border); margin-bottom:6px; letter-spacing:0.05em; }
+.cal-empty { text-align:center; padding:40px 20px; color:var(--text-light); }
+.cal-empty .e-emoji { font-size:36px; margin-bottom:10px; }
+.cal-stats-row { display:grid; grid-template-columns:1fr 1fr; gap:8px; padding:8px 16px 0; }
+.cal-stat-card { background:var(--white); border-radius:var(--radius-sm); padding:12px; box-shadow:var(--shadow); text-align:center; }
+.cal-stat-num { font-family:'Space Mono',monospace; font-size:22px; font-weight:700; color:var(--accent); }
+.cal-stat-txt { font-size:11px; color:var(--text-sub); margin-top:2px; }
 </style>
 </head>
 <body>
@@ -508,9 +585,9 @@ body {
     <button class="quick-btn" onclick="goTab('timer')"><div class="quick-icon icon-timer">⏱</div><div class="quick-label">任務計時</div><div class="quick-badge">立即開始</div></button>
     <button class="quick-btn" onclick="toast('🚧 靈修日記 — 開發中')"><div class="quick-icon icon-qt">📖</div><div class="quick-label">靈修日記</div><div class="quick-badge">即將開放</div></button>
     <button class="quick-btn" onclick="toast('🚧 一壘班 — 開發中')"><div class="quick-icon icon-class">👥</div><div class="quick-label">一壘班</div><div class="quick-badge">即將開放</div></button>
-    <button class="quick-btn" onclick="toast('🚧 行事曆 — 開發中')"><div class="quick-icon icon-cal">📅</div><div class="quick-label">行事曆</div><div class="quick-badge">即將開放</div></button>
+    <button class="quick-btn" onclick="goTab('calendar')"><div class="quick-icon icon-cal">📅</div><div class="quick-label">行事曆</div><div class="quick-badge">服事總覽</div></button>
     <button class="quick-btn" onclick="toast('🚧 代辦清單 — 開發中')"><div class="quick-icon icon-todo">📋</div><div class="quick-label">代辦清單</div><div class="quick-badge">即將開放</div></button>
-    <button class="quick-btn" onclick="goTab('setup')"><div class="quick-icon icon-cfg">⚙️</div><div class="quick-label">Webhook 設定</div><div class="quick-badge">日曆同步</div></button>
+    <button class="quick-btn" onclick="goTab('setup')"><div class="quick-icon icon-cfg">⚙️</div><div class="quick-label">設定</div><div class="quick-badge">Webhook</div></button>
   </div>
   <div class="section-label" id="recentLabel" style="display:none">最近任務</div>
   <div class="recent-list" id="recentList"></div>
@@ -575,6 +652,90 @@ body {
   </div>
 </div>
 
+<!-- ========== 行事曆頁 ========== -->
+<div class="page" id="page-calendar">
+  <div class="page-header" style="justify-content:space-between">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <button class="back-btn" onclick="goTab('home')">←</button>
+      <div class="page-title">📅 事工行事曆</div>
+    </div>
+    <button class="back-btn" style="width:auto;padding:0 12px;border-radius:20px;font-size:12px;" onclick="calRefresh()">🔄 重新整理</button>
+  </div>
+
+  <!-- API 設定 -->
+  <div class="cal-api-banner" id="calApiBanner">
+    <div class="setup-status" style="margin-bottom:6px;">
+      <div class="s-dot" id="calApiDot"></div>
+      <span id="calApiText" style="font-size:13px;font-weight:600;">尚未設定行事曆 API</span>
+    </div>
+    <div class="cal-api-row">
+      <input type="text" class="cal-api-input" id="calApiInput" placeholder="貼上 GAS Web App 網址" />
+      <button class="btn-save-url" onclick="saveCalApi()" style="font-size:12px;padding:8px 12px;">儲存</button>
+    </div>
+    <div class="setup-hint">部署 Google Apps Script 後，把 Web App 網址貼在這裡。</div>
+  </div>
+
+  <!-- 統計摘要 -->
+  <div class="cal-stats-row" id="calStats" style="display:none">
+    <div class="cal-stat-card">
+      <div class="cal-stat-num" id="calMyCount">0</div>
+      <div class="cal-stat-txt">我的服事（篩選範圍）</div>
+    </div>
+    <div class="cal-stat-card">
+      <div class="cal-stat-num" id="calAllCount">0</div>
+      <div class="cal-stat-txt">全部事件</div>
+    </div>
+  </div>
+
+  <!-- 篩選列 -->
+  <div class="cal-filter-bar" id="calFilterBar">
+    <button class="cal-f-chip active" onclick="calSetFilter('all',this)">全部</button>
+    <button class="cal-f-chip" onclick="calSetFilter('mine',this)" id="calMineBtn">⭐ 我的服事</button>
+    <button class="cal-f-chip" onclick="calSetFilter('church',this)">⛪ 教會</button>
+    <button class="cal-f-chip" onclick="calSetFilter('student',this)">🎓 學生</button>
+  </div>
+
+  <!-- 區間篩選 -->
+  <div class="cal-range-bar" id="calRangeBar">
+    <button class="cal-r-chip active" onclick="calSetRange('1w',this)">一週內</button>
+    <button class="cal-r-chip" onclick="calSetRange('2w',this)">二週內</button>
+    <button class="cal-r-chip" onclick="calSetRange('1m',this)">一個月</button>
+    <button class="cal-r-chip" onclick="calSetRange('3m',this)">三個月</button>
+    <button class="cal-r-chip" onclick="calSetRange('all',this)">全部</button>
+  </div>
+
+  <!-- 視圖切換 -->
+  <div class="cal-view-toggle">
+    <button class="cal-view-btn active" id="calViewMonth" onclick="calSetView('month')">📅 月曆</button>
+    <button class="cal-view-btn" id="calViewList" onclick="calSetView('list')">📋 列表</button>
+  </div>
+
+  <!-- 月曆視圖 -->
+  <div id="calMonthView">
+    <div class="cal-month-nav">
+      <button class="cal-month-btn" onclick="calPrevMonth()">‹</button>
+      <div class="cal-month-title" id="calMonthTitle">2026 年 3 月</div>
+      <button class="cal-month-btn" onclick="calNextMonth()">›</button>
+    </div>
+    <div class="cal-grid-wrap">
+      <div class="cal-weekdays"><span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div>
+      <div class="cal-grid" id="calGrid"></div>
+    </div>
+    <div class="cal-day-detail" id="calDayDetail"></div>
+  </div>
+
+  <!-- 列表視圖 -->
+  <div id="calListView" style="display:none">
+    <div class="cal-list-section" id="calListSection"></div>
+  </div>
+
+  <!-- 載入中 -->
+  <div class="cal-loading" id="calLoading" style="display:none">
+    <div class="spin">⏳</div>
+    <p style="margin-top:12px;font-size:13px;">正在從 Google Sheets 載入資料…</p>
+  </div>
+</div>
+
 <!-- ========== 記錄頁 ========== -->
 <div class="page" id="page-history">
   <div class="page-header" style="justify-content:space-between">
@@ -589,7 +750,6 @@ body {
     <div class="hist-stat"><div class="h-num" id="hToday">0m</div><div class="h-txt">篩選耗時</div></div>
     <div class="hist-stat"><div class="h-num" id="hAvg">—</div><div class="h-txt">平均時長</div></div>
   </div>
-  <!-- 日期區間 -->
   <div class="date-range-bar">
     <div class="range-quick" id="rangeQuick">
       <button class="rq-chip active" onclick="setRange('all',this)">全部</button>
@@ -606,11 +766,8 @@ body {
     </div>
   </div>
   <div class="filter-scroll" id="filterScroll"></div>
-  <!-- 任務子篩選 -->
   <div class="task-filter-scroll" id="taskFilterScroll"></div>
-  <!-- 類別摘要 -->
   <div class="cat-summary" id="catSummary"></div>
-  <!-- 批量操作列 -->
   <div class="batch-bar" id="batchBar">
     <label class="batch-select-all"><input type="checkbox" id="cbSelectAll" onchange="toggleSelectAll()" /><span id="batchCount">已選 0 筆</span></label>
     <div class="batch-actions">
@@ -627,7 +784,7 @@ body {
 <div class="page" id="page-setup">
   <div class="page-header">
     <button class="back-btn" onclick="goTab('home')">←</button>
-    <div class="page-title">⚙️ Webhook 設定</div>
+    <div class="page-title">⚙️ 設定</div>
   </div>
   <div class="setup-page-card">
     <div class="sp-title">📋 Make.com Webhook 設定說明</div>
@@ -644,6 +801,17 @@ body {
       <li><div class="step-num">6</div><div>開啟 Scenario（打開開關），把 Webhook 網址貼到主頁儲存</div></li>
     </ul>
   </div>
+  <div class="setup-page-card">
+    <div class="sp-title">📅 行事曆 API 設定步驟</div>
+    <ul class="step-list">
+      <li><div class="step-num">1</div><div>到 <b>script.google.com</b> 新增專案，貼上提供的 GAS 程式碼</div></li>
+      <li><div class="step-num">2</div><div>修改 <b>CONFIG</b> 區的分頁名稱，對應你的實際 Sheet Tab 名稱</div></li>
+      <li><div class="step-num">3</div><div>「部署」→「新增部署」→ 類型選「網頁應用程式」</div></li>
+      <li><div class="step-num">4</div><div>執行身份選「我自己」，誰可存取選「所有人」</div></li>
+      <li><div class="step-num">5</div><div>複製部署網址，貼到行事曆頁面的 API 輸入框中</div></li>
+      <li><div class="step-num">6</div><div>先在 GAS 編輯器執行 <b>testGetAll()</b> 測試是否正常</div></li>
+    </ul>
+  </div>
 </div>
 
 <!-- ========== 編輯 Modal ========== -->
@@ -655,14 +823,8 @@ body {
       <button class="modal-close" onclick="closeModal()">×</button>
     </div>
     <div class="modal-body">
-      <div class="edit-field">
-        <label>任務名稱</label>
-        <input type="text" class="edit-input" id="editTask" placeholder="任務名稱" />
-      </div>
-      <div class="edit-field">
-        <label>分類</label>
-        <div class="edit-cat-row" id="editCatRow"></div>
-      </div>
+      <div class="edit-field"><label>任務名稱</label><input type="text" class="edit-input" id="editTask" placeholder="任務名稱" /></div>
+      <div class="edit-field"><label>分類</label><div class="edit-cat-row" id="editCatRow"></div></div>
       <div class="edit-field">
         <label>開始 / 結束時間</label>
         <div class="edit-time-row">
@@ -671,10 +833,7 @@ body {
         </div>
         <div class="dur-preview" id="durPreview">耗時：—</div>
       </div>
-      <div class="edit-field">
-        <label>備註</label>
-        <textarea class="edit-note" id="editNote" placeholder="備註（選填）"></textarea>
-      </div>
+      <div class="edit-field"><label>備註</label><textarea class="edit-note" id="editNote" placeholder="備註（選填）"></textarea></div>
     </div>
     <div class="modal-footer">
       <button class="btn-modal-cancel" onclick="closeModal()">取消</button>
@@ -695,9 +854,23 @@ body {
   </div>
 </div>
 
+<!-- ========== 事件詳情 Modal ========== -->
+<div class="modal-overlay" id="calEventModal" onclick="if(event.target===this)closeCalEventModal()">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <div class="modal-title" id="calModalTitle">📅 事件詳情</div>
+      <button class="modal-close" onclick="closeCalEventModal()">×</button>
+    </div>
+    <div class="modal-body" id="calModalBody"></div>
+    <div class="modal-footer" id="calModalFooter"></div>
+  </div>
+</div>
+
 <div class="tab-bar">
   <button class="tab-item active" id="tab-home" onclick="goTab('home')"><div class="tab-icon">🏠</div><div class="tab-lbl">主頁</div></button>
   <button class="tab-item" id="tab-timer" onclick="goTab('timer')"><div class="tab-icon">⏱</div><div class="tab-lbl">計時</div></button>
+  <button class="tab-item" id="tab-calendar" onclick="goTab('calendar')"><div class="tab-icon">📅</div><div class="tab-lbl">行事曆</div></button>
   <button class="tab-item" id="tab-history" onclick="goTab('history')"><div class="tab-icon">📊</div><div class="tab-lbl">記錄</div></button>
   <button class="tab-item" id="tab-setup" onclick="goTab('setup')"><div class="tab-icon">⚙️</div><div class="tab-lbl">設定</div></button>
 </div>
@@ -705,8 +878,13 @@ body {
 <div class="toast" id="toastEl"></div>
 
 <script>
+// ============================================================
+//  原有功能（計時器、歷史記錄等）— 完整保留
+// ============================================================
 const STORAGE_KEY = 'kanas_hist_v2';
 const GAS_URL_KEY = 'kanas_gas_url';
+const CAL_API_KEY = 'kanas_cal_api_url';
+const CAL_DATA_KEY = 'kanas_cal_cache';
 const DEFAULT_CATS = ['講道','牧養','行政','個人','其他'];
 let timerInterval=null,autoInterval=null,nowClockInterval=null;
 let startTime=null,pausedAt=null;
@@ -718,7 +896,6 @@ let selectMode=false,selectedIds=new Set();
 let batchCatChoice='';
 let nowClockVisible=true;
 
-// ===== 取得所有使用過的分類 =====
 function getAllCats(){
   const hist=loadHist();
   const cats=new Set(DEFAULT_CATS);
@@ -726,7 +903,6 @@ function getAllCats(){
   return [...cats];
 }
 
-// ===== 頁面切換 =====
 function goTab(tab) {
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.tab-item').forEach(t=>t.classList.remove('active'));
@@ -735,9 +911,9 @@ function goTab(tab) {
   if(tb) tb.classList.add('active');
   if(tab==='history'){renderFilterChips();renderHistPage();}
   if(tab==='home'){renderHome();}
+  if(tab==='calendar'){calInit();}
 }
 
-// ===== Webhook =====
 function loadGasUrl(){return localStorage.getItem(GAS_URL_KEY)||'';}
 function saveGasUrl(){
   const url=document.getElementById('gasUrlInput').value.trim();
@@ -762,12 +938,10 @@ function updateGasStatus(){
   }
 }
 
-// ===== 分類選擇（計時器頁） =====
 function selCat(btn){
   document.querySelectorAll('#catRow .cat-chip').forEach(c=>c.classList.remove('active'));
   btn.classList.add('active');
   selectedCat=btn.dataset.cat;
-  // 「其他」顯示自訂輸入框
   const wrap=document.getElementById('customCatWrap');
   if(selectedCat==='其他'){wrap.classList.add('show');}
   else{wrap.classList.remove('show');}
@@ -781,7 +955,6 @@ function getEffectiveCat(){
   return selectedCat;
 }
 
-// ===== 自動完成建議（Feature #1） =====
 function getTaskFrequency(){
   const hist=loadHist();
   const freq={};
@@ -792,13 +965,11 @@ function getTaskFrequency(){
   });
   return Object.entries(freq).sort((a,b)=>b[1].count-a[1].count).map(([name,v])=>({name,count:v.count,cat:v.cat}));
 }
-
 function showSuggestions(){
   const input=document.getElementById('taskName');
   const list=document.getElementById('suggestList');
   const val=input.value.trim().toLowerCase();
   const all=getTaskFrequency();
-  // 如果有輸入，模糊篩選；無輸入則顯示全部
   const filtered=val?all.filter(t=>t.name.toLowerCase().includes(val)):all;
   if(!filtered.length){list.classList.remove('show');return;}
   list.innerHTML=filtered.slice(0,8).map(t=>
@@ -810,32 +981,25 @@ function showSuggestions(){
   ).join('');
   list.classList.add('show');
 }
-
 function pickSuggest(name,cat){
   document.getElementById('taskName').value=name;
   document.getElementById('suggestList').classList.remove('show');
-  // 自動選擇對應分類
   const catBtn=document.querySelector(`#catRow .cat-chip[data-cat="${cat}"]`);
   if(catBtn){selCat(catBtn);}
   else{
-    // 自訂類別
     const otherBtn=document.querySelector('#catRow .cat-chip[data-cat="其他"]');
     selCat(otherBtn);
     document.getElementById('customCatInput').value=cat;
   }
 }
-
 function hideSuggestions(){
   setTimeout(()=>document.getElementById('suggestList').classList.remove('show'),150);
 }
-
-// ===== 現在時間 (Feature #3) =====
 function toggleNowClock(){
   nowClockVisible=!nowClockVisible;
   document.getElementById('nowClock').style.display=nowClockVisible?'':'none';
   document.getElementById('nowToggle').textContent=nowClockVisible?'👁':'👁‍🗨';
 }
-
 function updateNowClock(){
   if(!nowClockVisible)return;
   const now=new Date();
@@ -843,7 +1007,6 @@ function updateNowClock(){
     `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
 }
 
-// ===== 計時器核心 =====
 function startTimer(){
   const name=document.getElementById('taskName').value.trim();
   if(!name){
@@ -860,7 +1023,6 @@ function startTimer(){
   hideSyncBadge();
   uiRunning();
   timerInterval=setInterval(tick,100);
-  // 現在時間
   document.getElementById('nowClockRow').classList.add('show');
   updateNowClock();
   nowClockInterval=setInterval(updateNowClock,1000);
@@ -868,7 +1030,6 @@ function startTimer(){
   showTimerNotification(name,getEffectiveCat());
   toast('▶ 開始計時！');
 }
-
 function tick(){
   if(!isPaused){
     elapsedMs=Date.now()-startTime.getTime()-totalPausedMs;
@@ -876,7 +1037,6 @@ function tick(){
     document.getElementById('mPaused').textContent=fmtMin(totalPausedMs);
   }
 }
-
 function togglePause(){
   if(!isPaused){
     pausedAt=Date.now();isPaused=true;
@@ -893,7 +1053,6 @@ function togglePause(){
     toast('▶ 繼續計時');
   }
 }
-
 async function stopTimer(fromAuto=false){
   if(!isRunning)return;
   const endTime=fromAuto?new Date(pausedAt):new Date();
@@ -938,7 +1097,6 @@ async function stopTimer(fromAuto=false){
   document.getElementById('customCatWrap').classList.remove('show');
   renderHome();
 }
-
 function startAutoCountdown(){
   document.getElementById('autoBar').classList.add('show');
   document.getElementById('autoFill').style.width='100%';
@@ -951,7 +1109,6 @@ function startAutoCountdown(){
   },1000);
 }
 function cancelAuto(){clearInterval(autoInterval);document.getElementById('autoBar').classList.remove('show');}
-
 function uiRunning(){
   document.getElementById('digits').className='timer-digits running';
   document.getElementById('sInd').className='s-indicator running';
@@ -999,7 +1156,6 @@ function uiIdle(){
   document.getElementById('btnPause').className='action-btn btn-pause';
   document.getElementById('btnPause').innerHTML='⏸ 暫停';
 }
-
 function showSyncBadge(type,icon,msg){
   const b=document.getElementById('syncBadge');
   b.style.display='inline-flex';b.className='sync-badge '+type;
@@ -1008,11 +1164,9 @@ function showSyncBadge(type,icon,msg){
 }
 function hideSyncBadge(){document.getElementById('syncBadge').style.display='none';}
 
-// ===== localStorage =====
 function loadHist(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');}catch{return[];}}
 function saveHist(h){localStorage.setItem(STORAGE_KEY,JSON.stringify(h));}
 
-// ===== 日期區間篩選 (Feature #7) =====
 function setRange(range,btn){
   document.querySelectorAll('#rangeQuick .rq-chip').forEach(c=>c.classList.remove('active'));
   btn.classList.add('active');
@@ -1038,7 +1192,6 @@ function applyCustomRange(){
   rangeEndDate=e?new Date(new Date(e).getTime()+86400000):null;
   renderHistPage();
 }
-
 function getFilteredByRange(hist){
   return hist.filter(r=>{
     const d=new Date(r.start);
@@ -1047,29 +1200,19 @@ function getFilteredByRange(hist){
     return true;
   });
 }
-
-// ===== 記錄頁渲染 =====
 function renderFilterChips(){
   const cats=getAllCats();
   const el=document.getElementById('filterScroll');
   el.innerHTML=`<button class="f-chip ${currentFilter==='all'?'active':''}" onclick="setFilter('all',this)">全部</button>`+
     cats.map(c=>`<button class="f-chip ${currentFilter===c?'active':''}" onclick="setFilter('${esc(c)}',this)">${c}</button>`).join('');
 }
-
-function renderHistPage(){
-  renderHistStats();
-  renderCatSummary();
-  renderTaskFilterChips();
-  renderHistList();
-}
-
+function renderHistPage(){renderHistStats();renderCatSummary();renderTaskFilterChips();renderHistList();}
 function getVisibleHist(){
   let hist=getFilteredByRange(loadHist());
   if(currentFilter!=='all') hist=hist.filter(r=>r.cat===currentFilter);
   if(currentTaskFilter!=='all') hist=hist.filter(r=>r.task===currentTaskFilter);
   return hist;
 }
-
 function renderHistStats(){
   const data=getVisibleHist();
   const totalMs=data.reduce((s,r)=>s+r.dur,0);
@@ -1078,11 +1221,8 @@ function renderHistStats(){
   document.getElementById('hToday').textContent=fmtHM(totalMs);
   document.getElementById('hAvg').textContent=data.length?fmtHM(avgMs):'—';
 }
-
-// ===== 類別摘要 (Feature #6) =====
 function renderCatSummary(){
   const hist=getFilteredByRange(loadHist());
-  // 只在「全部」類別時顯示摘要
   if(currentFilter!=='all'){document.getElementById('catSummary').innerHTML='';return;}
   const CC={講道:'#B8860B',牧養:'#15803d',行政:'#1d4ed8',個人:'#7e22ce',其他:'#6b7280'};
   const map={};
@@ -1103,171 +1243,102 @@ function renderCatSummary(){
     </div>`
   ).join('');
 }
-
 function setFilter(cat,btn){
-  currentFilter=cat;
-  currentTaskFilter='all';
-  if(btn){
-    document.querySelectorAll('#filterScroll .f-chip').forEach(c=>c.classList.remove('active'));
-    btn.classList.add('active');
-  } else {
-    // 從摘要點擊進入
-    renderFilterChips();
-  }
+  currentFilter=cat;currentTaskFilter='all';
+  if(btn){document.querySelectorAll('#filterScroll .f-chip').forEach(c=>c.classList.remove('active'));btn.classList.add('active');}
+  else{renderFilterChips();}
   renderHistPage();
 }
-
-// ===== 任務子篩選 (Feature #6) =====
 function renderTaskFilterChips(){
   const el=document.getElementById('taskFilterScroll');
   if(currentFilter==='all'){el.classList.remove('show');el.innerHTML='';return;}
   let hist=getFilteredByRange(loadHist()).filter(r=>r.cat===currentFilter);
   const taskMap={};
-  hist.forEach(r=>{
-    if(!taskMap[r.task])taskMap[r.task]={dur:0,count:0};
-    taskMap[r.task].dur+=r.dur;taskMap[r.task].count++;
-  });
+  hist.forEach(r=>{if(!taskMap[r.task])taskMap[r.task]={dur:0,count:0};taskMap[r.task].dur+=r.dur;taskMap[r.task].count++;});
   const sorted=Object.entries(taskMap).sort((a,b)=>b[1].dur-a[1].dur);
   if(sorted.length<=1){el.classList.remove('show');el.innerHTML='';return;}
   el.classList.add('show');
   el.innerHTML=`<button class="tf-chip ${currentTaskFilter==='all'?'active':''}" onclick="setTaskFilter('all',this)">全部任務</button>`+
-    sorted.map(([name,v])=>
-      `<button class="tf-chip ${currentTaskFilter===name?'active':''}" onclick="setTaskFilter('${esc(name)}',this)">${esc(name)} (${fmtHM(v.dur)})</button>`
-    ).join('');
+    sorted.map(([name,v])=>`<button class="tf-chip ${currentTaskFilter===name?'active':''}" onclick="setTaskFilter('${esc(name)}',this)">${esc(name)} (${fmtHM(v.dur)})</button>`).join('');
 }
-
 function setTaskFilter(task,btn){
   currentTaskFilter=task;
   document.querySelectorAll('#taskFilterScroll .tf-chip').forEach(c=>c.classList.remove('active'));
   if(btn)btn.classList.add('active');
-  renderHistStats();
-  renderHistList();
+  renderHistStats();renderHistList();
 }
-
-// ===== 多選模式 (Feature #5) =====
 function toggleSelectMode(){
-  selectMode=!selectMode;
-  selectedIds.clear();
+  selectMode=!selectMode;selectedIds.clear();
   document.getElementById('btnSelectMode').textContent=selectMode?'取消多選':'多選';
   document.getElementById('batchBar').classList.toggle('show',selectMode);
   document.getElementById('cbSelectAll').checked=false;
-  updateBatchCount();
-  renderHistList();
+  updateBatchCount();renderHistList();
 }
 function toggleSelectAll(){
   const checked=document.getElementById('cbSelectAll').checked;
   const data=getVisibleHist();
-  if(checked){data.forEach(r=>selectedIds.add(r.id));}
-  else{selectedIds.clear();}
-  updateBatchCount();
-  renderHistList();
+  if(checked){data.forEach(r=>selectedIds.add(r.id));}else{selectedIds.clear();}
+  updateBatchCount();renderHistList();
 }
 function toggleSelectItem(id){
   if(selectedIds.has(id))selectedIds.delete(id);else selectedIds.add(id);
   updateBatchCount();
-  // 更新 checkbox 狀態
-  const cb=document.getElementById('cb-'+id);
-  if(cb)cb.checked=selectedIds.has(id);
+  const cb=document.getElementById('cb-'+id);if(cb)cb.checked=selectedIds.has(id);
 }
-function updateBatchCount(){
-  document.getElementById('batchCount').textContent=`已選 ${selectedIds.size} 筆`;
-}
-
-// 批量改類別
+function updateBatchCount(){document.getElementById('batchCount').textContent=`已選 ${selectedIds.size} 筆`;}
 function openBatchCat(){
   if(!selectedIds.size){toast('⚠ 請先選擇記錄');return;}
-  const cats=getAllCats();
-  batchCatChoice='';
-  document.getElementById('batchCatOptions').innerHTML=cats.map(c=>
-    `<button class="batch-cat-chip" onclick="pickBatchCat(this,'${esc(c)}')">${c}</button>`
-  ).join('');
+  const cats=getAllCats();batchCatChoice='';
+  document.getElementById('batchCatOptions').innerHTML=cats.map(c=>`<button class="batch-cat-chip" onclick="pickBatchCat(this,'${esc(c)}')">${c}</button>`).join('');
   document.getElementById('batchCatModal').classList.add('show');
 }
-function pickBatchCat(btn,cat){
-  document.querySelectorAll('.batch-cat-chip').forEach(c=>c.classList.remove('active'));
-  btn.classList.add('active');batchCatChoice=cat;
-}
+function pickBatchCat(btn,cat){document.querySelectorAll('.batch-cat-chip').forEach(c=>c.classList.remove('active'));btn.classList.add('active');batchCatChoice=cat;}
 function closeBatchCat(){document.getElementById('batchCatModal').classList.remove('show');}
 function applyBatchCat(){
   if(!batchCatChoice){toast('⚠ 請選擇一個分類');return;}
-  const hist=loadHist();
-  let count=0;
+  const hist=loadHist();let count=0;
   hist.forEach(r=>{if(selectedIds.has(r.id)){r.cat=batchCatChoice;r.synced=false;count++;}});
-  saveHist(hist);closeBatchCat();
-  toast(`✓ 已將 ${count} 筆記錄改為「${batchCatChoice}」`);
-  renderHistPage();
+  saveHist(hist);closeBatchCat();toast(`✓ 已將 ${count} 筆記錄改為「${batchCatChoice}」`);renderHistPage();
 }
-
 async function batchSync(){
   if(!selectedIds.size){toast('⚠ 請先選擇記錄');return;}
-  const gasUrl=loadGasUrl();
-  if(!gasUrl){toast('⚠ 尚未設定 Webhook URL');return;}
-  const hist=loadHist();
-  let count=0;
+  const gasUrl=loadGasUrl();if(!gasUrl){toast('⚠ 尚未設定 Webhook URL');return;}
+  const hist=loadHist();let count=0;
   for(const r of hist){
     if(!selectedIds.has(r.id))continue;
-    try{
-      await fetch(gasUrl,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:JSON.stringify(r)});
-      r.synced=true;count++;
-    }catch{}
+    try{await fetch(gasUrl,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:JSON.stringify(r)});r.synced=true;count++;}catch{}
   }
-  saveHist(hist);
-  toast(`✓ 已同步 ${count} 筆記錄`);
-  renderHistPage();
+  saveHist(hist);toast(`✓ 已同步 ${count} 筆記錄`);renderHistPage();
 }
-
 function batchDelete(){
   if(!selectedIds.size){toast('⚠ 請先選擇記錄');return;}
   if(!confirm(`確定刪除 ${selectedIds.size} 筆記錄？`))return;
   const hist=loadHist().filter(r=>!selectedIds.has(r.id));
-  saveHist(hist);selectedIds.clear();updateBatchCount();
-  toast('✓ 已刪除所選記錄');
-  renderHistPage();renderHome();
+  saveHist(hist);selectedIds.clear();updateBatchCount();toast('✓ 已刪除所選記錄');renderHistPage();renderHome();
 }
-
-// ===== 歷史列表渲染 =====
 function renderHistList(){
-  const el=document.getElementById('histList');
-  const data=getVisibleHist();
+  const el=document.getElementById('histList');const data=getVisibleHist();
   if(!data.length){el.innerHTML='<div class="empty-hist"><div class="e-emoji">📭</div><p>尚無記錄</p></div>';return;}
   el.innerHTML=data.map(r=>`
-    <div class="hist-item">
-      <div style="display:flex;align-items:flex-start;">
-        <div class="hi-select-wrap ${selectMode?'show':''}">
-          <input type="checkbox" class="hi-cb" id="cb-${r.id}" ${selectedIds.has(r.id)?'checked':''} onchange="toggleSelectItem(${r.id})" />
-        </div>
-        <div style="flex:1;min-width:0;">
-          <div class="hi-top">
-            <div class="hi-name">${esc(r.task)}${r.synced?'<span class="gcal-icon">📅</span>':''}</div>
-            <div class="hi-dur">${fmtDur(r.dur)}</div>
-          </div>
-          <div class="hi-bot">
-            <div class="hi-time">${fmtDate(new Date(r.start))} ${fmtTime(new Date(r.start))}–${fmtTime(new Date(r.end))}</div>
-            <div class="cat-tag cat-${r.cat}">${esc(r.cat)}</div>
-          </div>
-          ${r.note?`<div class="hi-note">${esc(r.note)}</div>`:''}
-          <div class="hi-actions">
-            <button class="hi-btn hi-btn-edit" onclick="openEdit(${r.id})">✏️ 編輯</button>
-            <button class="hi-btn hi-btn-resync" onclick="resyncRecord(${r.id})">📅 同步</button>
-            <button class="hi-btn hi-btn-del" onclick="deleteRecord(${r.id})">🗑 刪除</button>
-          </div>
+    <div class="hist-item"><div style="display:flex;align-items:flex-start;">
+      <div class="hi-select-wrap ${selectMode?'show':''}"><input type="checkbox" class="hi-cb" id="cb-${r.id}" ${selectedIds.has(r.id)?'checked':''} onchange="toggleSelectItem(${r.id})" /></div>
+      <div style="flex:1;min-width:0;">
+        <div class="hi-top"><div class="hi-name">${esc(r.task)}${r.synced?'<span class="gcal-icon">📅</span>':''}</div><div class="hi-dur">${fmtDur(r.dur)}</div></div>
+        <div class="hi-bot"><div class="hi-time">${fmtDate(new Date(r.start))} ${fmtTime(new Date(r.start))}–${fmtTime(new Date(r.end))}</div><div class="cat-tag cat-${r.cat}">${esc(r.cat)}</div></div>
+        ${r.note?`<div class="hi-note">${esc(r.note)}</div>`:''}
+        <div class="hi-actions">
+          <button class="hi-btn hi-btn-edit" onclick="openEdit(${r.id})">✏️ 編輯</button>
+          <button class="hi-btn hi-btn-resync" onclick="resyncRecord(${r.id})">📅 同步</button>
+          <button class="hi-btn hi-btn-del" onclick="deleteRecord(${r.id})">🗑 刪除</button>
         </div>
       </div>
-    </div>`).join('');
+    </div></div>`).join('');
 }
-
 function clearAll(){
-  if(confirm('確定清除所有記錄？')){
-    localStorage.removeItem(STORAGE_KEY);
-    renderHistPage();renderHome();
-    toast('已清除所有記錄');
-  }
+  if(confirm('確定清除所有記錄？')){localStorage.removeItem(STORAGE_KEY);renderHistPage();renderHome();toast('已清除所有記錄');}
 }
-
-// ===== 主頁 =====
 function renderHome(){
-  const hist=loadHist();
-  const today=new Date().toDateString();
+  const hist=loadHist();const today=new Date().toDateString();
   const tr=hist.filter(r=>new Date(r.start).toDateString()===today);
   const todayMs=tr.reduce((s,r)=>s+r.dur,0);
   const avgMs=hist.length?hist.reduce((s,r)=>s+r.dur,0)/hist.length:0;
@@ -1280,14 +1351,10 @@ function renderHome(){
   document.getElementById('recentList').innerHTML=recent.map(r=>`
     <div class="recent-item">
       <div class="r-dot" style="background:${CC[r.cat]||'#999'}"></div>
-      <div class="r-info">
-        <div class="r-name">${esc(r.task)}</div>
-        <div class="r-meta">${fmtDate(new Date(r.start))} · ${r.cat}${r.synced?' · 📅':''}</div>
-      </div>
+      <div class="r-info"><div class="r-name">${esc(r.task)}</div><div class="r-meta">${fmtDate(new Date(r.start))} · ${r.cat}${r.synced?' · 📅':''}</div></div>
       <div class="r-dur">${fmtDur(r.dur)}</div>
     </div>`).join('');
 }
-
 function updateGreeting(){
   const now=new Date();
   const days=['SUNDAY','MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY'];
@@ -1296,95 +1363,58 @@ function updateGreeting(){
   document.getElementById('greetingTime').textContent=`${days[now.getDay()]} ${p}`;
   document.getElementById('navDate').innerHTML=`${now.getMonth()+1}/${now.getDate()}<br>${pad(now.getHours())}:${pad(now.getMinutes())}`;
 }
-
-// ===== 編輯 Modal =====
 let editingId=null,editingCat='個人';
 function updateDurPreview(){
-  const s=document.getElementById('editStart').value;
-  const e=document.getElementById('editEnd').value;
-  const el=document.getElementById('durPreview');
+  const s=document.getElementById('editStart').value;const e=document.getElementById('editEnd').value;const el=document.getElementById('durPreview');
   if(!s||!e){el.textContent='耗時：—';return;}
   const diff=new Date(e)-new Date(s);
   if(diff<=0){el.textContent='⚠ 結束時間必須晚於開始時間';el.style.color='var(--danger)';return;}
-  el.style.color='var(--accent)';
-  el.textContent='⏱ 耗時：'+fmtDur(diff);
+  el.style.color='var(--accent)';el.textContent='⏱ 耗時：'+fmtDur(diff);
 }
 function openEdit(id){
-  const hist=loadHist();
-  const rec=hist.find(r=>r.id===id);
-  if(!rec)return;
+  const hist=loadHist();const rec=hist.find(r=>r.id===id);if(!rec)return;
   editingId=id;editingCat=rec.cat;
   document.getElementById('editTask').value=rec.task;
   document.getElementById('editNote').value=rec.note||'';
   document.getElementById('editStart').value=toLocalDTInput(new Date(rec.start));
   document.getElementById('editEnd').value=toLocalDTInput(new Date(rec.end));
   updateDurPreview();
-  // 動態生成編輯分類選項
-  const cats=getAllCats();
-  const row=document.getElementById('editCatRow');
-  row.innerHTML=cats.map(c=>
-    `<button class="edit-cat-chip ${c===rec.cat?'active':''}" data-cat="${esc(c)}" onclick="selEditCat(this)">${c}</button>`
-  ).join('');
+  const cats=getAllCats();const row=document.getElementById('editCatRow');
+  row.innerHTML=cats.map(c=>`<button class="edit-cat-chip ${c===rec.cat?'active':''}" data-cat="${esc(c)}" onclick="selEditCat(this)">${c}</button>`).join('');
   document.getElementById('editModal').classList.add('show');
 }
-function selEditCat(btn){
-  document.querySelectorAll('#editCatRow .edit-cat-chip').forEach(c=>c.classList.remove('active'));
-  btn.classList.add('active');editingCat=btn.dataset.cat;
-}
+function selEditCat(btn){document.querySelectorAll('#editCatRow .edit-cat-chip').forEach(c=>c.classList.remove('active'));btn.classList.add('active');editingCat=btn.dataset.cat;}
 function closeModal(){document.getElementById('editModal').classList.remove('show');editingId=null;}
 function closeModalOnOverlay(e){if(e.target===document.getElementById('editModal'))closeModal();}
 async function saveEdit(){
-  const task=document.getElementById('editTask').value.trim();
-  if(!task){toast('⚠ 任務名稱不能為空');return;}
-  const startVal=document.getElementById('editStart').value;
-  const endVal=document.getElementById('editEnd').value;
+  const task=document.getElementById('editTask').value.trim();if(!task){toast('⚠ 任務名稱不能為空');return;}
+  const startVal=document.getElementById('editStart').value;const endVal=document.getElementById('editEnd').value;
   if(!startVal||!endVal){toast('⚠ 請填入開始與結束時間');return;}
   const newStart=new Date(startVal),newEnd=new Date(endVal);
   if(newEnd<=newStart){toast('⚠ 結束時間必須晚於開始時間');return;}
   const newDur=newEnd.getTime()-newStart.getTime();
-  const hist=loadHist();
-  const idx=hist.findIndex(r=>r.id===editingId);
+  const hist=loadHist();const idx=hist.findIndex(r=>r.id===editingId);
   if(idx===-1){toast('⚠ 找不到此記錄');return;}
   hist[idx]={...hist[idx],task,cat:editingCat,note:document.getElementById('editNote').value.trim(),start:newStart.toISOString(),end:newEnd.toISOString(),dur:newDur,synced:false};
   saveHist(hist);closeModal();
   const gasUrl=loadGasUrl();
   if(gasUrl){
     toast('⏳ 正在同步更新到日曆…');
-    try{
-      await fetch(gasUrl,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:JSON.stringify({...hist[idx],action:'update'})});
-      hist[idx].synced=true;saveHist(hist);
-      toast('✓ 已更新並同步到 Google 日曆 📅');
-    }catch{toast('⚠ 本地已儲存，但日曆同步失敗');}
+    try{await fetch(gasUrl,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:JSON.stringify({...hist[idx],action:'update'})});hist[idx].synced=true;saveHist(hist);toast('✓ 已更新並同步到 Google 日曆 📅');}catch{toast('⚠ 本地已儲存，但日曆同步失敗');}
   } else {toast('✓ 已儲存修改');}
   renderHistPage();renderHome();
 }
 async function resyncRecord(id){
-  const hist=loadHist();
-  const rec=hist.find(r=>r.id===id);
-  if(!rec)return;
-  const gasUrl=loadGasUrl();
-  if(!gasUrl){toast('⚠ 尚未設定 Webhook URL');return;}
+  const hist=loadHist();const rec=hist.find(r=>r.id===id);if(!rec)return;
+  const gasUrl=loadGasUrl();if(!gasUrl){toast('⚠ 尚未設定 Webhook URL');return;}
   toast('⏳ 正在同步到 Google 日曆…');
-  try{
-    await fetch(gasUrl,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:JSON.stringify(rec)});
-    const idx=hist.findIndex(r=>r.id===id);
-    hist[idx].synced=true;saveHist(hist);
-    toast('✓ 已同步到 Google 日曆 📅');
-    renderHistList();renderHome();
-  }catch{toast('⚠ 同步失敗，請稍後再試');}
+  try{await fetch(gasUrl,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:JSON.stringify(rec)});const idx=hist.findIndex(r=>r.id===id);hist[idx].synced=true;saveHist(hist);toast('✓ 已同步到 Google 日曆 📅');renderHistList();renderHome();}catch{toast('⚠ 同步失敗，請稍後再試');}
 }
 function deleteRecord(id){
   if(!confirm('確定刪除此筆記錄？'))return;
-  const hist=loadHist().filter(r=>r.id!==id);
-  saveHist(hist);renderHistPage();renderHome();
-  toast('已刪除此記錄');
+  const hist=loadHist().filter(r=>r.id!==id);saveHist(hist);renderHistPage();renderHome();toast('已刪除此記錄');
 }
-function toLocalDTInput(date){
-  const off=date.getTimezoneOffset()*60000;
-  return new Date(date.getTime()-off).toISOString().slice(0,16);
-}
-
-// ===== 工具函式 =====
+function toLocalDTInput(date){const off=date.getTimezoneOffset()*60000;return new Date(date.getTime()-off).toISOString().slice(0,16);}
 function fmtDur(ms){const t=Math.floor(Math.max(0,ms)/1000);return`${pad(Math.floor(t/3600))}:${pad(Math.floor(t%3600/60))}:${pad(t%60)}`;}
 function fmtHM(ms){const m=Math.floor(ms/60000),h=Math.floor(m/60);return h>0?`${h}h${m%60}m`:`${m}m`;}
 function fmtMin(ms){return Math.floor(ms/60000)+' 分';}
@@ -1392,76 +1422,408 @@ function fmtTime(d){return d.toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'
 function fmtDate(d){return d.toLocaleDateString('zh-TW',{month:'numeric',day:'numeric',weekday:'short'});}
 function pad(n){return String(n).padStart(2,'0');}
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/'/g,'&#39;').replace(/"/g,'&quot;');}
-function toast(msg){
-  const t=document.getElementById('toastEl');
-  t.textContent=msg;t.classList.add('show');
-  clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),3000);
-}
-
-// ===== Wake Lock =====
+function toast(msg){const t=document.getElementById('toastEl');t.textContent=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),3000);}
 let wakeLock=null;
-async function requestWakeLock(){
-  if(!('wakeLock' in navigator))return;
-  try{
-    wakeLock=await navigator.wakeLock.request('screen');
-    document.getElementById('wakeIndicator').classList.add('show');
-    wakeLock.addEventListener('release',()=>document.getElementById('wakeIndicator').classList.remove('show'));
-  }catch(e){console.log('Wake lock:',e);}
-}
-function releaseWakeLock(){
-  if(wakeLock){wakeLock.release();wakeLock=null;}
-  document.getElementById('wakeIndicator').classList.remove('show');
-}
-document.addEventListener('visibilitychange',async()=>{
-  if(document.visibilityState==='visible'){
-    document.getElementById('bgNotice').classList.remove('show');
-    if(isRunning&&!isPaused)await requestWakeLock();
-  } else {
-    if(isRunning)document.getElementById('bgNotice').classList.add('show');
-  }
-});
-
-// ===== Notifications =====
-async function requestNotificationPermission(){
-  if(!('Notification' in window))return false;
-  if(Notification.permission==='granted')return true;
-  if(Notification.permission==='denied')return false;
-  return(await Notification.requestPermission())==='granted';
-}
+async function requestWakeLock(){if(!('wakeLock' in navigator))return;try{wakeLock=await navigator.wakeLock.request('screen');document.getElementById('wakeIndicator').classList.add('show');wakeLock.addEventListener('release',()=>document.getElementById('wakeIndicator').classList.remove('show'));}catch(e){console.log('Wake lock:',e);}}
+function releaseWakeLock(){if(wakeLock){wakeLock.release();wakeLock=null;}document.getElementById('wakeIndicator').classList.remove('show');}
+document.addEventListener('visibilitychange',async()=>{if(document.visibilityState==='visible'){document.getElementById('bgNotice').classList.remove('show');if(isRunning&&!isPaused)await requestWakeLock();}else{if(isRunning)document.getElementById('bgNotice').classList.add('show');}});
+async function requestNotificationPermission(){if(!('Notification' in window))return false;if(Notification.permission==='granted')return true;if(Notification.permission==='denied')return false;return(await Notification.requestPermission())==='granted';}
 let activeNotif=null;
-async function showTimerNotification(taskName,cat){
-  const ok=await requestNotificationPermission();
-  if(!ok)return;
-  if(activeNotif)activeNotif.close();
-  activeNotif=new Notification(`⏱ 計時中：${taskName}`,{
-    body:`分類：${cat}\n點擊回到計時器`,
-    tag:'kanas-timer',requireInteraction:true,silent:true
-  });
-  activeNotif.onclick=()=>{window.focus();activeNotif.close();};
-}
+async function showTimerNotification(taskName,cat){const ok=await requestNotificationPermission();if(!ok)return;if(activeNotif)activeNotif.close();activeNotif=new Notification(`⏱ 計時中：${taskName}`,{body:`分類：${cat}\n點擊回到計時器`,tag:'kanas-timer',requireInteraction:true,silent:true});activeNotif.onclick=()=>{window.focus();activeNotif.close();};}
 function dismissTimerNotification(){if(activeNotif){activeNotif.close();activeNotif=null;}}
+function dismissPWA(){document.getElementById('pwaBanner').classList.remove('show');localStorage.setItem('pwa_dismissed','1');}
+function checkShowPWA(){if(window.navigator.standalone)return;if(localStorage.getItem('pwa_dismissed'))return;const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);const isSafari=/^((?!chrome|android).)*safari/i.test(navigator.userAgent);if(isIOS&&isSafari)setTimeout(()=>document.getElementById('pwaBanner').classList.add('show'),3000);}
 
-// ===== PWA =====
-function dismissPWA(){
-  document.getElementById('pwaBanner').classList.remove('show');
-  localStorage.setItem('pwa_dismissed','1');
+// ============================================================
+//  行事曆功能 — 全新
+// ============================================================
+let calEvents = [];         // 所有事件
+let calCurrentFilter = 'all';  // all | mine | church | student
+let calCurrentRange = '1w';    // 1w | 2w | 1m | 3m | all
+let calCurrentView = 'month';  // month | list
+let calViewMonth = new Date().getMonth();
+let calViewYear = new Date().getFullYear();
+let calSelectedDate = null;    // YYYY-MM-DD
+
+// --- API 設定 ---
+function loadCalApi(){ return localStorage.getItem(CAL_API_KEY)||''; }
+function saveCalApi(){
+  const url = document.getElementById('calApiInput').value.trim();
+  if(!url){ toast('⚠ 請輸入 GAS Web App 網址'); return; }
+  if(!url.startsWith('https://')){ toast('⚠ 需以 https:// 開頭'); return; }
+  localStorage.setItem(CAL_API_KEY, url);
+  updateCalApiStatus();
+  toast('✓ 行事曆 API 已儲存！');
+  calFetchData();
 }
-function checkShowPWA(){
-  if(window.navigator.standalone)return;
-  if(localStorage.getItem('pwa_dismissed'))return;
-  const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
-  const isSafari=/^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-  if(isIOS&&isSafari)setTimeout(()=>document.getElementById('pwaBanner').classList.add('show'),3000);
+function updateCalApiStatus(){
+  const url = loadCalApi();
+  const dot = document.getElementById('calApiDot');
+  const txt = document.getElementById('calApiText');
+  const banner = document.getElementById('calApiBanner');
+  if(url){
+    dot.className='s-dot ok'; txt.textContent='✓ 行事曆 API 已連接';
+    banner.className='cal-api-banner connected';
+    document.getElementById('calApiInput').value=url;
+  } else {
+    dot.className='s-dot'; txt.textContent='尚未設定行事曆 API';
+    banner.className='cal-api-banner';
+  }
 }
 
-// ===== 初始化 =====
+// --- 初始化 ---
+let calInited = false;
+function calInit(){
+  updateCalApiStatus();
+  if(!calInited && loadCalApi()){
+    calFetchData();
+    calInited = true;
+  } else {
+    calRender();
+  }
+}
+
+function calRefresh(){
+  if(!loadCalApi()){ toast('⚠ 請先設定行事曆 API 網址'); return; }
+  calFetchData();
+}
+
+// --- 資料拉取 ---
+function calFetchData(){
+  const url = loadCalApi();
+  if(!url) return;
+  document.getElementById('calLoading').style.display='block';
+  document.getElementById('calMonthView').style.display='none';
+  document.getElementById('calListView').style.display='none';
+
+  // 使用 JSONP 繞過 CORS 限制
+  const cbName = '_calJsonpCb_' + Date.now();
+  const timeout = setTimeout(()=>{
+    // 超時處理
+    delete window[cbName];
+    const s = document.getElementById('calJsonpScript');
+    if(s) s.remove();
+    document.getElementById('calLoading').style.display='none';
+    toast('⚠ 載入逾時，請確認 GAS 已部署為新版本');
+    calRender();
+  }, 20000); // 20 秒超時（GAS 初次啟動較慢）
+
+  window[cbName] = function(data){
+    clearTimeout(timeout);
+    delete window[cbName];
+    const s = document.getElementById('calJsonpScript');
+    if(s) s.remove();
+    document.getElementById('calLoading').style.display='none';
+
+    if(data && data.success){
+      calEvents = data.events || [];
+      toast('✓ 載入 ' + calEvents.length + ' 筆事件');
+    } else {
+      toast('⚠ API 回傳錯誤：' + (data && data.error || '未知'));
+    }
+    calRender();
+  };
+
+  // 移除舊的 script tag
+  const old = document.getElementById('calJsonpScript');
+  if(old) old.remove();
+
+  // 建立 <script> 進行 JSONP 請求
+  const script = document.createElement('script');
+  script.id = 'calJsonpScript';
+  script.src = url + '?action=all&callback=' + cbName;
+  script.onerror = function(){
+    clearTimeout(timeout);
+    delete window[cbName];
+    script.remove();
+    document.getElementById('calLoading').style.display='none';
+    toast('⚠ 載入失敗，請檢查網址是否正確');
+    calRender();
+  };
+  document.body.appendChild(script);
+}
+
+// --- 篩選 ---
+function calSetFilter(f, btn){
+  calCurrentFilter = f;
+  document.querySelectorAll('#calFilterBar .cal-f-chip').forEach(c=>{c.classList.remove('active');c.classList.remove('mine-active');});
+  if(f==='mine') btn.classList.add('mine-active');
+  else btn.classList.add('active');
+  calRender();
+}
+function calSetRange(r, btn){
+  calCurrentRange = r;
+  document.querySelectorAll('#calRangeBar .cal-r-chip').forEach(c=>c.classList.remove('active'));
+  btn.classList.add('active');
+  calRender();
+}
+function calSetView(v){
+  calCurrentView = v;
+  document.getElementById('calViewMonth').classList.toggle('active', v==='month');
+  document.getElementById('calViewList').classList.toggle('active', v==='list');
+  calRender();
+}
+
+function calGetFiltered(){
+  let events = [...calEvents];
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+  // 區間篩選
+  if(calCurrentRange !== 'all'){
+    let days = 7;
+    if(calCurrentRange==='2w') days=14;
+    else if(calCurrentRange==='1m') days=30;
+    else if(calCurrentRange==='3m') days=90;
+    const start = today;
+    const end = new Date(today.getTime() + days*86400000);
+    events = events.filter(ev => {
+      const d = new Date(ev.date);
+      return d >= start && d < end;
+    });
+  }
+
+  // 類型篩選
+  if(calCurrentFilter === 'mine') events = events.filter(ev => ev.isMyEvent);
+  else if(calCurrentFilter === 'church') events = events.filter(ev => ev.source === 'church-sheet');
+  else if(calCurrentFilter === 'student') events = events.filter(ev => ev.source === 'student-sheet');
+
+  return events;
+}
+
+// --- 渲染 ---
+function calRender(){
+  const filtered = calGetFiltered();
+  // 統計
+  const myCount = filtered.filter(ev=>ev.isMyEvent).length;
+  document.getElementById('calStats').style.display = calEvents.length ? 'grid' : 'none';
+  document.getElementById('calMyCount').textContent = myCount;
+  document.getElementById('calAllCount').textContent = filtered.length;
+
+  if(calCurrentView === 'month'){
+    document.getElementById('calMonthView').style.display = 'block';
+    document.getElementById('calListView').style.display = 'none';
+    calRenderMonth(filtered);
+  } else {
+    document.getElementById('calMonthView').style.display = 'none';
+    document.getElementById('calListView').style.display = 'block';
+    calRenderList(filtered);
+  }
+}
+
+// --- 月曆 ---
+function calPrevMonth(){ calViewMonth--; if(calViewMonth<0){calViewMonth=11;calViewYear--;} calRender(); }
+function calNextMonth(){ calViewMonth++; if(calViewMonth>11){calViewMonth=0;calViewYear++;} calRender(); }
+
+function calRenderMonth(filtered){
+  document.getElementById('calMonthTitle').textContent = `${calViewYear} 年 ${calViewMonth+1} 月`;
+  const grid = document.getElementById('calGrid');
+  const firstDay = new Date(calViewYear, calViewMonth, 1).getDay();
+  const daysInMonth = new Date(calViewYear, calViewMonth+1, 0).getDate();
+  const todayStr = new Date().toISOString().slice(0,10);
+
+  // 按日期索引事件
+  const dayMap = {};
+  filtered.forEach(ev => {
+    if(!dayMap[ev.date]) dayMap[ev.date] = [];
+    dayMap[ev.date].push(ev);
+  });
+
+  let html = '';
+  // 填充上月空白
+  const prevDays = new Date(calViewYear, calViewMonth, 0).getDate();
+  for(let i=firstDay-1; i>=0; i--){
+    html += `<div class="cal-day other-month"><span>${prevDays-i}</span></div>`;
+  }
+  // 本月
+  for(let d=1; d<=daysInMonth; d++){
+    const dateStr = `${calViewYear}-${pad(calViewMonth+1)}-${pad(d)}`;
+    const evs = dayMap[dateStr] || [];
+    const isToday = dateStr === todayStr;
+    const isSelected = dateStr === calSelectedDate;
+    const hasMine = evs.some(ev=>ev.isMyEvent);
+    const hasChurch = evs.some(ev=>ev.source==='church-sheet');
+    const hasStudent = evs.some(ev=>ev.source==='student-sheet');
+
+    let cls = 'cal-day';
+    if(isToday) cls += ' today';
+    if(isSelected) cls += ' selected';
+    if(hasMine) cls += ' has-mine';
+
+    let dots = '';
+    if(evs.length){
+      dots = '<div class="cal-dots">';
+      if(hasMine) dots += '<span class="dot-mine"></span>';
+      if(hasChurch) dots += '<span class="dot-church"></span>';
+      if(hasStudent) dots += '<span class="dot-student"></span>';
+      dots += '</div>';
+    }
+    html += `<div class="${cls}" onclick="calSelectDay('${dateStr}')"><span>${d}</span>${dots}</div>`;
+  }
+  // 填充下月
+  const totalCells = firstDay + daysInMonth;
+  const remaining = (7 - totalCells%7) % 7;
+  for(let i=1;i<=remaining;i++){
+    html += `<div class="cal-day other-month"><span>${i}</span></div>`;
+  }
+  grid.innerHTML = html;
+
+  // 如有選中日期則顯示詳情，否則顯示今天
+  const showDate = calSelectedDate || todayStr;
+  calRenderDayDetail(showDate, filtered);
+}
+
+function calSelectDay(dateStr){
+  calSelectedDate = dateStr;
+  calRender();
+}
+
+function calRenderDayDetail(dateStr, filtered){
+  const el = document.getElementById('calDayDetail');
+  const dayEvs = filtered.filter(ev => ev.date === dateStr);
+  const d = new Date(dateStr + 'T00:00:00');
+  const label = d.toLocaleDateString('zh-TW',{year:'numeric',month:'long',day:'numeric',weekday:'long'});
+
+  if(!dayEvs.length){
+    el.innerHTML = `<div class="cal-day-title">${label}</div><div class="cal-empty"><div class="e-emoji">📭</div><p>這天沒有事件</p></div>`;
+    return;
+  }
+  el.innerHTML = `<div class="cal-day-title">${label}（${dayEvs.length} 個事件）</div>` + dayEvs.map(ev => calRenderEventCard(ev)).join('');
+}
+
+// --- 列表視圖 ---
+function calRenderList(filtered){
+  const el = document.getElementById('calListSection');
+  if(!filtered.length){
+    el.innerHTML = '<div class="cal-empty"><div class="e-emoji">📭</div><p>篩選範圍內沒有事件</p></div>';
+    return;
+  }
+  // 按日期分組
+  const groups = {};
+  filtered.forEach(ev => {
+    if(!groups[ev.date]) groups[ev.date] = [];
+    groups[ev.date].push(ev);
+  });
+  const sortedDates = Object.keys(groups).sort();
+  let html = '';
+  sortedDates.forEach(dateStr => {
+    const d = new Date(dateStr + 'T00:00:00');
+    const label = d.toLocaleDateString('zh-TW',{month:'long',day:'numeric',weekday:'short'});
+    const isToday = dateStr === new Date().toISOString().slice(0,10);
+    html += `<div class="cal-list-date-header">${isToday?'📍 今天 — ':''}${label}</div>`;
+    groups[dateStr].forEach(ev => { html += calRenderEventCard(ev); });
+  });
+  el.innerHTML = html;
+}
+
+// --- 事件卡片 ---
+function calRenderEventCard(ev){
+  const isOff = ev.type?.includes('off') || ev.title?.includes('暫停');
+  let cardCls = 'cal-event-card';
+  if(ev.isMyEvent) cardCls += ' mine';
+  else if(ev.source==='church-sheet') cardCls += ' church';
+  else if(ev.source==='student-sheet') cardCls += ' student';
+  if(isOff) cardCls += ' off';
+
+  const srcLabel = ev.source==='church-sheet' ? '教會' : '學生';
+  const srcCls = ev.source==='church-sheet' ? 'src-church' : 'src-student';
+
+  // 我的角色 badges
+  let myBadges = '';
+  if(ev.myRoles && ev.myRoles.length){
+    myBadges = '<div class="ce-my-roles">' + ev.myRoles.map(r=>`<span class="ce-my-badge">⭐ ${esc(r)}</span>`).join('') + '</div>';
+  }
+
+  // 角色資訊
+  let rolesHtml = '';
+  if(ev.roles && Object.keys(ev.roles).length){
+    const entries = Object.entries(ev.roles).slice(0,6);
+    rolesHtml = '<div class="ce-roles">' + entries.map(([k,v])=>`<strong>${esc(k)}</strong>：${esc(v)}`).join('　') + '</div>';
+  }
+
+  // 備註
+  let noteHtml = '';
+  if(ev.staffNote) noteHtml += `<div class="ce-note">📋 ${esc(ev.staffNote)}</div>`;
+  if(ev.counselorNote) noteHtml += `<div class="ce-note">👤 ${esc(ev.counselorNote)}</div>`;
+  if(ev.missionCountry) noteHtml += `<div class="ce-note">🌍 宣教國家：${esc(ev.missionCountry)}</div>`;
+
+  // 一鍵計時器按鈕（僅限我的事件）
+  let timerBtn = '';
+  if(ev.isMyEvent && ev.myRoles?.length){
+    const taskName = ev.myRoles[0] + '：' + ev.title.replace('[學生] ','');
+    timerBtn = `<button class="ce-timer-btn" onclick="calStartTimer('${esc(taskName)}')">⏱ 一鍵計時「${esc(taskName)}」</button>`;
+  }
+
+  return `<div class="${cardCls}" onclick="calShowEvent(${calEvents.indexOf(ev)})">
+    <div class="ce-header">
+      <div class="ce-title">${esc(ev.title)}</div>
+      <span class="ce-source ${srcCls}">${srcLabel}</span>
+    </div>
+    ${myBadges}${rolesHtml}${noteHtml}${timerBtn}
+  </div>`;
+}
+
+// --- 一鍵計時 ---
+function calStartTimer(taskName){
+  event.stopPropagation();
+  document.getElementById('taskName').value = taskName;
+  // 自動選擇分類
+  const catBtn = document.querySelector('#catRow .cat-chip[data-cat="行政"]');
+  if(catBtn) selCat(catBtn);
+  goTab('timer');
+  toast('已帶入任務名稱，按「開始」即可計時');
+}
+
+// --- 事件詳情 Modal ---
+function calShowEvent(idx){
+  const ev = calEvents[idx];
+  if(!ev) return;
+  document.getElementById('calModalTitle').textContent = '📅 ' + ev.title;
+  let body = '';
+
+  if(ev.isMyEvent && ev.myRoles?.length){
+    body += '<div class="ce-my-roles" style="margin-bottom:12px">' + ev.myRoles.map(r=>`<span class="ce-my-badge">⭐ ${esc(r)}</span>`).join('') + '</div>';
+  }
+
+  body += `<div class="edit-field"><label>日期</label><div style="font-size:14px;font-weight:600;">${ev.date}</div></div>`;
+  body += `<div class="edit-field"><label>來源</label><div style="font-size:14px;">${ev.source==='church-sheet'?'⛪ 教會事工表':'🎓 學生事工表'}</div></div>`;
+
+  if(ev.roles && Object.keys(ev.roles).length){
+    body += '<div class="edit-field"><label>服事人員</label><div style="font-size:13px;line-height:2;">';
+    Object.entries(ev.roles).forEach(([k,v])=>{
+      body += `<div><strong>${esc(k)}</strong>：${esc(v)}</div>`;
+    });
+    body += '</div></div>';
+  }
+
+  if(ev.location) body += `<div class="edit-field"><label>地點</label><div style="font-size:14px;">${esc(ev.location)}</div></div>`;
+  if(ev.staffNote) body += `<div class="edit-field"><label>同工行程</label><div style="font-size:13px;color:var(--gold);">${esc(ev.staffNote)}</div></div>`;
+  if(ev.counselorNote) body += `<div class="edit-field"><label>輔導行程</label><div style="font-size:13px;">${esc(ev.counselorNote)}</div></div>`;
+  if(ev.missionCountry) body += `<div class="edit-field"><label>宣教國家</label><div style="font-size:14px;">🌍 ${esc(ev.missionCountry)}</div></div>`;
+  if(ev.mainSpeaker) body += `<div class="edit-field"><label>本堂講員</label><div style="font-size:14px;">${esc(ev.mainSpeaker)}</div></div>`;
+  if(ev.xinxiuSpeaker) body += `<div class="edit-field"><label>新秀福音中心</label><div style="font-size:14px;">${esc(ev.xinxiuSpeaker)}</div></div>`;
+
+  document.getElementById('calModalBody').innerHTML = body;
+
+  let footer = '<button class="btn-modal-cancel" onclick="closeCalEventModal()">關閉</button>';
+  if(ev.isMyEvent && ev.myRoles?.length){
+    const taskName = ev.myRoles[0] + '：' + ev.title.replace('[學生] ','');
+    footer += `<button class="btn-modal-save" onclick="calStartTimer('${esc(taskName)}');closeCalEventModal();">⏱ 開始計時</button>`;
+  }
+  document.getElementById('calModalFooter').innerHTML = footer;
+  document.getElementById('calEventModal').classList.add('show');
+}
+function closeCalEventModal(){ document.getElementById('calEventModal').classList.remove('show'); }
+
+// ============================================================
+//  初始化
+// ============================================================
 updateGreeting();
 setInterval(updateGreeting,30000);
 updateGasStatus();
 renderHome();
 checkShowPWA();
 
-// 任務名稱輸入事件
 const taskNameEl=document.getElementById('taskName');
 taskNameEl.addEventListener('input',showSuggestions);
 taskNameEl.addEventListener('focus',showSuggestions);
