@@ -32,6 +32,9 @@
   --radius-sm: 10px;
   --shadow: 0 2px 12px rgba(0,0,0,0.08);
   --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
+  /* 行事曆來源背景色 */
+  --cal-church-bg: #EBF4FF;
+  --cal-student-bg: #ECFDF5;
 }
 * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
 body {
@@ -609,16 +612,93 @@ body {
 .dot-mine { background:#EF4444; }
 .cal-day-detail { margin:10px 16px 0; }
 .cal-day-title { font-size:14px; font-weight:700; color:var(--text-sub); margin-bottom:8px; padding-left:2px; }
+/* ★ 改版：行事曆事件卡片改為一列精簡顯示 */
 .cal-event-card {
-  background:var(--white); border-radius:var(--radius-sm); padding:14px;
-  box-shadow:var(--shadow); margin-bottom:8px; border-left:4px solid var(--border);
-  transition:transform 0.1s;
+  border-radius: 8px; padding: 8px 12px;
+  box-shadow: var(--shadow); margin-bottom: 6px;
+  border-left: 3px solid var(--border);
+  transition: transform 0.1s;
+  font-size: 13px;
 }
 .cal-event-card:active { transform:scale(0.98); }
-.cal-event-card.mine { border-left-color:var(--line-green); background:linear-gradient(135deg,#f0fdf4,var(--white)); }
-.cal-event-card.church { border-left-color:var(--accent); }
-.cal-event-card.student { border-left-color:#06C755; }
+.cal-event-card.mine { border-left-color:var(--line-green); }
+.cal-event-card.church { border-left-color:var(--accent); background: var(--cal-church-bg); }
+.cal-event-card.student { border-left-color:#06C755; background: var(--cal-student-bg); }
 .cal-event-card.off { opacity:0.55; border-left-color:var(--text-light); }
+/* 精簡一列 */
+.ce-compact-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  min-height: 24px;
+}
+.ce-compact-row .ce-src-tag {
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 8px;
+  font-weight: 700;
+  flex-shrink: 0;
+  line-height: 1.6;
+}
+.ce-src-tag.tag-church { background: rgba(45,125,210,0.15); color: var(--accent); }
+.ce-src-tag.tag-student { background: rgba(6,199,85,0.15); color: #15803d; }
+.ce-compact-row .ce-loc {
+  font-size: 12px; color: var(--text-sub); flex-shrink: 0;
+}
+.ce-compact-row .ce-main-info {
+  font-size: 13px; font-weight: 600; color: var(--text);
+  flex: 1; min-width: 0;
+}
+.ce-compact-row .ce-venue-tag {
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 8px;
+  font-weight: 600;
+  flex-shrink: 0;
+  background: #fef3c7;
+  color: #92400e;
+}
+.ce-compact-row .ce-my-badge-inline {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 7px;
+  border-radius: 10px;
+  background: linear-gradient(135deg,#dcfce7,#bbf7d0);
+  color: #15803d;
+  flex-shrink: 0;
+}
+/* 可展開的詳細資訊 */
+.ce-details-toggle {
+  display: flex; align-items: center; gap: 4px;
+  font-size: 11px; color: var(--accent); font-weight: 600;
+  cursor: pointer; padding: 4px 0 0;
+  user-select: none;
+}
+.ce-details-toggle:active { opacity: 0.6; }
+.ce-details-arrow {
+  font-size: 11px; transition: transform 0.2s;
+  display: inline-block; width: 12px;
+}
+.ce-details-body {
+  padding: 6px 0 2px 16px;
+  border-left: 2px solid var(--border);
+  margin: 4px 0 0 5px;
+}
+.ce-detail-row {
+  display: flex; gap: 8px; padding: 3px 0;
+  font-size: 12px; line-height: 1.6;
+  flex-wrap: wrap;
+}
+.ce-detail-label {
+  color: var(--text-sub); font-weight: 600;
+  white-space: nowrap; min-width: 56px;
+}
+.ce-detail-value {
+  color: var(--text); flex: 1; min-width: 0;
+  word-break: break-word;
+  white-space: pre-line;
+}
 .ce-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; }
 .ce-title { font-size:14px; font-weight:700; flex:1; }
 .ce-source { font-size:10px; padding:2px 8px; border-radius:10px; font-weight:600; }
@@ -629,13 +709,6 @@ body {
 .ce-roles { font-size:12px; color:var(--text-sub); line-height:1.7; }
 .ce-roles strong { color:var(--text); font-weight:600; }
 .ce-note { font-size:11px; color:var(--gold); margin-top:6px; padding-top:6px; border-top:1px solid var(--border); line-height:1.5; }
-.ce-timer-btn {
-  margin-top:8px; padding:8px 12px; border-radius:8px; border:none;
-  background:var(--accent-soft); color:var(--accent); font-size:12px; font-weight:600;
-  font-family:'Noto Sans TC',sans-serif; cursor:pointer; width:100%;
-  display:flex; align-items:center; justify-content:center; gap:4px;
-}
-.ce-timer-btn:active { opacity:0.7; }
 .cal-list-section { padding:0 16px; margin-top:10px; }
 .cal-list-date-header { font-size:12px; font-weight:700; color:var(--text-light); padding:8px 0 4px; border-bottom:1px solid var(--border); margin-bottom:6px; letter-spacing:0.05em; }
 .cal-empty { text-align:center; padding:40px 20px; color:var(--text-light); }
@@ -672,37 +745,33 @@ body {
 .io-result.success { background: var(--green-soft); color: #15803d; border: 1px solid #bbf7d0; }
 .io-result.error { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
 .io-result.info { background: var(--accent-soft); color: var(--accent); border: 1px solid #bfdbfe; }
-/* ===== ★ 新增：行事曆 details 摺疊樣式 ===== */
-.ce-details-toggle {
-  display: flex; align-items: center; gap: 4px;
-  font-size: 12px; color: var(--accent); font-weight: 600;
-  cursor: pointer; padding: 6px 0 2px;
-  user-select: none;
+/* ===== 設定頁：密碼欄顯示/隱藏 ===== */
+.setting-secret-row {
+  display: flex; gap: 8px; align-items: center;
 }
-.ce-details-toggle:active { opacity: 0.6; }
-.ce-details-arrow {
-  font-size: 11px; transition: transform 0.2s;
-  display: inline-block; width: 12px;
+.setting-secret-input {
+  flex: 1;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 8px;
+  padding: 9px 12px;
+  color: white;
+  font-size: 12px;
+  font-family: 'Space Mono', monospace;
+  outline: none;
 }
-.ce-details-body {
-  padding: 6px 0 2px 16px;
-  border-left: 2px solid var(--border);
-  margin: 4px 0 0 5px;
+.setting-secret-input::placeholder { color: rgba(255,255,255,0.35); }
+.setting-secret-input:focus { border-color: var(--line-green); }
+.btn-toggle-vis {
+  padding: 9px 10px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 8px;
+  color: white; font-size: 14px;
+  cursor: pointer; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
 }
-.ce-detail-row {
-  display: flex; gap: 8px; padding: 3px 0;
-  font-size: 12px; line-height: 1.6;
-  flex-wrap: wrap;
-}
-.ce-detail-label {
-  color: var(--text-sub); font-weight: 600;
-  white-space: nowrap; min-width: 56px;
-}
-.ce-detail-value {
-  color: var(--text); flex: 1; min-width: 0;
-  word-break: break-word;
-  white-space: pre-line;
-}
+.btn-toggle-vis:active { background: rgba(255,255,255,0.15); }
 </style>
 </head>
 <body>
@@ -729,19 +798,7 @@ body {
 </div>
 <!-- ========== 主頁 ========== -->
 <div class="page active" id="page-home">
-  <div class="setup-banner" id="setupBanner">
-    <div class="setup-top">
-      <div class="setup-status">
-        <div class="s-dot" id="sDot"></div>
-        <span id="sText">尚未設定 Google 日曆同步</span>
-      </div>
-    </div>
-    <div class="setup-url-row">
-      <input type="text" class="setup-input" id="gasUrlInput" placeholder="貼上 Make.com Webhook 網址" />
-      <button class="btn-save-url" onclick="saveGasUrl()">儲存</button>
-    </div>
-    <div class="setup-hint">設定一次即可。任務結束後將自動寫入 Google Calendar。</div>
-  </div>
+  <!-- ★ 移除 Webhook 輸入欄（已移到設定頁） -->
   <div class="greeting-card">
     <div class="greeting-time" id="greetingTime">FRIDAY MORNING</div>
     <div class="greeting-text">平安，<span>Kanas 牧師</span>！<br>今天要完成什麼？</div>
@@ -760,8 +817,7 @@ body {
     <button class="quick-btn" onclick="toast('🚧 代辦清單 — 開發中')"><div class="quick-icon icon-todo">📋</div><div class="quick-label">代辦清單</div><div class="quick-badge">即將開放</div></button>
     <button class="quick-btn" onclick="goTab('setup')"><div class="quick-icon icon-cfg">⚙️</div><div class="quick-label">設定</div><div class="quick-badge">Webhook</div></button>
   </div>
-  <div class="section-label" id="recentLabel" style="display:none">最近任務</div>
-  <div class="recent-list" id="recentList"></div>
+  <!-- ★ 移除最近任務列表（可到「記錄」查詢） -->
 </div>
 <!-- ========== 計時器頁 ========== -->
 <div class="page" id="page-timer">
@@ -873,17 +929,7 @@ body {
     </div>
     <button class="back-btn" style="width:auto;padding:0 12px;border-radius:20px;font-size:12px;" onclick="calRefresh()">🔄 重新整理</button>
   </div>
-  <div class="cal-api-banner" id="calApiBanner">
-    <div class="setup-status" style="margin-bottom:6px;">
-      <div class="s-dot" id="calApiDot"></div>
-      <span id="calApiText" style="font-size:13px;font-weight:600;">尚未設定行事曆 API</span>
-    </div>
-    <div class="cal-api-row">
-      <input type="text" class="cal-api-input" id="calApiInput" placeholder="貼上 GAS Web App 網址" />
-      <button class="btn-save-url" onclick="saveCalApi()" style="font-size:12px;padding:8px 12px;">儲存</button>
-    </div>
-    <div class="setup-hint">部署 Google Apps Script 後，把 Web App 網址貼在這裡。</div>
-  </div>
+  <!-- ★ 移除 API 輸入欄（已移到設定頁） -->
   <div class="cal-stats-row" id="calStats" style="display:none">
     <div class="cal-stat-card">
       <div class="cal-stat-num" id="calMyCount">0</div>
@@ -894,24 +940,27 @@ body {
       <div class="cal-stat-txt">全部事件</div>
     </div>
   </div>
+  <!-- ★ 預設選取「我的服事」 -->
   <div class="cal-filter-bar" id="calFilterBar">
-    <button class="cal-f-chip active" onclick="calSetFilter('all',this)">全部</button>
-    <button class="cal-f-chip" onclick="calSetFilter('mine',this)" id="calMineBtn">⭐ 我的服事</button>
+    <button class="cal-f-chip" onclick="calSetFilter('all',this)">全部</button>
+    <button class="cal-f-chip mine-active" onclick="calSetFilter('mine',this)" id="calMineBtn">⭐ 我的服事</button>
     <button class="cal-f-chip" onclick="calSetFilter('church',this)">⛪ 教會</button>
     <button class="cal-f-chip" onclick="calSetFilter('student',this)">🎓 學生</button>
   </div>
+  <!-- ★ 預設選取「三個月」 -->
   <div class="cal-range-bar" id="calRangeBar">
-    <button class="cal-r-chip active" onclick="calSetRange('1w',this)">一週內</button>
+    <button class="cal-r-chip" onclick="calSetRange('1w',this)">一週內</button>
     <button class="cal-r-chip" onclick="calSetRange('2w',this)">二週內</button>
     <button class="cal-r-chip" onclick="calSetRange('1m',this)">一個月</button>
-    <button class="cal-r-chip" onclick="calSetRange('3m',this)">三個月</button>
+    <button class="cal-r-chip active" onclick="calSetRange('3m',this)">三個月</button>
     <button class="cal-r-chip" onclick="calSetRange('all',this)">全部</button>
   </div>
+  <!-- ★ 預設為「列表」模式 -->
   <div class="cal-view-toggle">
-    <button class="cal-view-btn active" id="calViewMonth" onclick="calSetView('month')">📅 月曆</button>
-    <button class="cal-view-btn" id="calViewList" onclick="calSetView('list')">📋 列表</button>
+    <button class="cal-view-btn" id="calViewMonth" onclick="calSetView('month')">📅 月曆</button>
+    <button class="cal-view-btn active" id="calViewList" onclick="calSetView('list')">📋 列表</button>
   </div>
-  <div id="calMonthView">
+  <div id="calMonthView" style="display:none">
     <div class="cal-month-nav">
       <button class="cal-month-btn" onclick="calPrevMonth()">‹</button>
       <div class="cal-month-title" id="calMonthTitle">2026 年 3 月</div>
@@ -923,7 +972,7 @@ body {
     </div>
     <div class="cal-day-detail" id="calDayDetail"></div>
   </div>
-  <div id="calListView" style="display:none">
+  <div id="calListView">
     <div class="cal-list-section" id="calListSection"></div>
   </div>
   <div class="cal-loading" id="calLoading" style="display:none">
@@ -980,6 +1029,34 @@ body {
     <button class="back-btn" onclick="goTab('home')">←</button>
     <div class="page-title">⚙️ 設定</div>
   </div>
+  <!-- ★ Webhook 設定（從主頁移過來） -->
+  <div class="setup-page-card" style="background:linear-gradient(135deg,#1a3a5c,#0f2840);color:white;" id="setupWebhookCard">
+    <div class="setup-status" style="margin-bottom:10px;">
+      <div class="s-dot" id="sDot"></div>
+      <span id="sText" style="font-size:13px;font-weight:600;">尚未設定 Google 日曆同步</span>
+    </div>
+    <div class="sp-title" style="color:white;">📋 Make.com Webhook</div>
+    <div class="setting-secret-row" style="margin-top:8px;">
+      <input type="password" class="setting-secret-input" id="gasUrlInput" placeholder="貼上 Make.com Webhook 網址" />
+      <button class="btn-toggle-vis" onclick="toggleVis('gasUrlInput',this)" title="顯示/隱藏">👁</button>
+      <button class="btn-save-url" onclick="saveGasUrl()">儲存</button>
+    </div>
+    <div class="setup-hint">設定一次即可。任務結束後將自動寫入 Google Calendar。</div>
+  </div>
+  <!-- ★ 行事曆 API 設定（從行事曆頁移過來） -->
+  <div class="setup-page-card" style="background:linear-gradient(135deg,#1a3a5c,#0f2840);color:white;" id="setupCalApiCard">
+    <div class="setup-status" style="margin-bottom:10px;">
+      <div class="s-dot" id="calApiDot"></div>
+      <span id="calApiText" style="font-size:13px;font-weight:600;">尚未設定行事曆 API</span>
+    </div>
+    <div class="sp-title" style="color:white;">📅 行事曆 GAS API</div>
+    <div class="setting-secret-row" style="margin-top:8px;">
+      <input type="password" class="setting-secret-input" id="calApiInput" placeholder="貼上 GAS Web App 網址" />
+      <button class="btn-toggle-vis" onclick="toggleVis('calApiInput',this)" title="顯示/隱藏">👁</button>
+      <button class="btn-save-url" onclick="saveCalApi()">儲存</button>
+    </div>
+    <div class="setup-hint">部署 Google Apps Script 後，把 Web App 網址貼在這裡。</div>
+  </div>
   <div class="setup-page-card">
     <div class="sp-title">📦 資料匯出 / 匯入</div>
     <div class="sp-desc">在不同瀏覽器或裝置間搬移任務記錄。從舊入口「匯出」，再到新入口「匯入合併」即可。</div>
@@ -993,10 +1070,6 @@ body {
       📥 <b>匯入合併</b>：將複製的 JSON 貼入上方文字框，點擊後會<b>合併</b>（不會覆蓋已有的記錄）。
     </div>
     <div class="io-result" id="ioResult"></div>
-  </div>
-  <div class="setup-page-card">
-    <div class="sp-title">📋 Make.com Webhook 設定說明</div>
-    <div class="sp-desc">在主頁貼上你的 <b>Make.com Webhook 網址</b>。任務結束或編輯後，App 會自動把資料送到這個網址，由 Make.com 負責寫入 Google Calendar。</div>
   </div>
   <div class="setup-page-card">
     <div class="sp-title">🛠 Make.com 設定步驟</div>
@@ -1016,7 +1089,7 @@ body {
       <li><div class="step-num">2</div><div>修改 <b>CONFIG</b> 區的分頁名稱，對應你的實際 Sheet Tab 名稱</div></li>
       <li><div class="step-num">3</div><div>「部署」→「新增部署」→ 類型選「網頁應用程式」</div></li>
       <li><div class="step-num">4</div><div>執行身份選「我自己」，誰可存取選「所有人」</div></li>
-      <li><div class="step-num">5</div><div>複製部署網址，貼到行事曆頁面的 API 輸入框中</div></li>
+      <li><div class="step-num">5</div><div>複製部署網址，貼到設定頁面的行事曆 API 輸入框中</div></li>
       <li><div class="step-num">6</div><div>先在 GAS 編輯器執行 <b>testGetAll()</b> 測試是否正常</div></li>
     </ul>
   </div>
@@ -1096,6 +1169,14 @@ let currentRange='all',rangeStartDate=null,rangeEndDate=null;
 let selectMode=false,selectedIds=new Set();
 let batchCatChoice='';
 let nowClockVisible=true;
+// ============================================================
+//  ★ 顯示/隱藏密碼欄切換
+// ============================================================
+function toggleVis(inputId, btn) {
+  const inp = document.getElementById(inputId);
+  if (inp.type === 'password') { inp.type = 'text'; btn.textContent = '🙈'; }
+  else { inp.type = 'password'; btn.textContent = '👁'; }
+}
 // ============================================================
 //  YouTube 播放器相關（完整保留）
 // ============================================================
@@ -1229,10 +1310,11 @@ function goTab(tab) {
   if(tab==='history'){renderFilterChips();renderHistPage();}
   if(tab==='home'){renderHome();}
   if(tab==='calendar'){calInit();}
+  if(tab==='setup'){updateGasStatus();updateCalApiStatus();}
 }
 function loadGasUrl(){return localStorage.getItem(GAS_URL_KEY)||'';}
 function saveGasUrl(){const url=document.getElementById('gasUrlInput').value.trim();if(!url){toast('⚠ 請輸入 Webhook 網址');return;}if(!url.startsWith('https://')){toast('⚠ 需以 https:// 開頭');return;}localStorage.setItem(GAS_URL_KEY,url);updateGasStatus();toast('✓ 設定已儲存！');}
-function updateGasStatus(){const url=loadGasUrl();const dot=document.getElementById('sDot');const txt=document.getElementById('sText');const banner=document.getElementById('setupBanner');if(url){dot.className='s-dot ok';txt.textContent='✓ Google 日曆同步已設定';banner.className='setup-banner connected';document.getElementById('gasUrlInput').value=url;}else{dot.className='s-dot';txt.textContent='尚未設定 Google 日曆同步';banner.className='setup-banner';}}
+function updateGasStatus(){const url=loadGasUrl();const dot=document.getElementById('sDot');const txt=document.getElementById('sText');const card=document.getElementById('setupWebhookCard');if(url){dot.className='s-dot ok';txt.textContent='✓ Google 日曆同步已設定';card.style.background='linear-gradient(135deg, #064e3b, #065f46)';document.getElementById('gasUrlInput').value=url;}else{dot.className='s-dot';txt.textContent='尚未設定 Google 日曆同步';card.style.background='linear-gradient(135deg,#1a3a5c,#0f2840)';}}
 function selCat(btn){document.querySelectorAll('#catRow .cat-chip').forEach(c=>c.classList.remove('active'));btn.classList.add('active');selectedCat=btn.dataset.cat;const wrap=document.getElementById('customCatWrap');if(selectedCat==='其他'){wrap.classList.add('show');}else{wrap.classList.remove('show');}}
 function getEffectiveCat(){if(selectedCat==='其他'){const custom=document.getElementById('customCatInput').value.trim();return custom||'其他';}return selectedCat;}
 function getTaskFrequency(){const hist=loadHist();const freq={};hist.forEach(r=>{const key=r.task;if(!freq[key])freq[key]={count:0,cat:r.cat};freq[key].count++;});return Object.entries(freq).sort((a,b)=>b[1].count-a[1].count).map(([name,v])=>({name,count:v.count,cat:v.cat}));}
@@ -1278,7 +1360,7 @@ async function batchSync(){if(!selectedIds.size){toast('⚠ 請先選擇記錄')
 function batchDelete(){if(!selectedIds.size){toast('⚠ 請先選擇記錄');return;}if(!confirm('確定刪除 '+selectedIds.size+' 筆記錄？'))return;const hist=loadHist().filter(r=>!selectedIds.has(r.id));saveHist(hist);selectedIds.clear();updateBatchCount();toast('✓ 已刪除所選記錄');renderHistPage();renderHome();}
 function renderHistList(){const el=document.getElementById('histList');const data=getVisibleHist();if(!data.length){el.innerHTML='<div class="empty-hist"><div class="e-emoji">📭</div><p>尚無記錄</p></div>';return;}el.innerHTML=data.map(r=>'<div class="hist-item"><div style="display:flex;align-items:flex-start;"><div class="hi-select-wrap '+(selectMode?'show':'')+'"><input type="checkbox" class="hi-cb" id="cb-'+r.id+'" '+(selectedIds.has(r.id)?'checked':'')+' onchange="toggleSelectItem('+r.id+')" /></div><div style="flex:1;min-width:0;"><div class="hi-top"><div class="hi-name">'+esc(r.task)+(r.synced?'<span class="gcal-icon">📅</span>':'')+'</div><div class="hi-dur">'+fmtDur(r.dur)+'</div></div><div class="hi-bot"><div class="hi-time">'+fmtDate(new Date(r.start))+' '+fmtTime(new Date(r.start))+'–'+fmtTime(new Date(r.end))+'</div><div class="cat-tag cat-'+r.cat+'">'+esc(r.cat)+'</div></div>'+(r.note?'<div class="hi-note">'+esc(r.note)+'</div>':'')+'<div class="hi-actions"><button class="hi-btn hi-btn-edit" onclick="openEdit('+r.id+')">✏️ 編輯</button><button class="hi-btn hi-btn-resync" onclick="resyncRecord('+r.id+')">📅 同步</button><button class="hi-btn hi-btn-del" onclick="deleteRecord('+r.id+')">🗑 刪除</button></div></div></div></div>').join('');}
 function clearAll(){if(confirm('確定清除所有記錄？')){localStorage.removeItem(STORAGE_KEY);renderHistPage();renderHome();toast('已清除所有記錄');}}
-function renderHome(){const hist=loadHist();const today=new Date().toDateString();const tr=hist.filter(r=>new Date(r.start).toDateString()===today);const todayMs=tr.reduce((s,r)=>s+r.dur,0);const avgMs=hist.length?hist.reduce((s,r)=>s+r.dur,0)/hist.length:0;document.getElementById('homeCount').textContent=tr.length;document.getElementById('homeTime').textContent=fmtHM(todayMs);document.getElementById('homeAvg').textContent=hist.length?fmtHM(avgMs):'—';const CC={講道:'#B8860B',牧養:'#15803d',行政:'#1d4ed8',個人:'#7e22ce',其他:'#6b7280'};const recent=hist.slice(0,3);document.getElementById('recentLabel').style.display=recent.length?'block':'none';document.getElementById('recentList').innerHTML=recent.map(r=>'<div class="recent-item"><div class="r-dot" style="background:'+(CC[r.cat]||'#999')+'"></div><div class="r-info"><div class="r-name">'+esc(r.task)+'</div><div class="r-meta">'+fmtDate(new Date(r.start))+' · '+r.cat+(r.synced?' · 📅':'')+'</div></div><div class="r-dur">'+fmtDur(r.dur)+'</div></div>').join('');}
+function renderHome(){const hist=loadHist();const today=new Date().toDateString();const tr=hist.filter(r=>new Date(r.start).toDateString()===today);const todayMs=tr.reduce((s,r)=>s+r.dur,0);const avgMs=hist.length?hist.reduce((s,r)=>s+r.dur,0)/hist.length:0;document.getElementById('homeCount').textContent=tr.length;document.getElementById('homeTime').textContent=fmtHM(todayMs);document.getElementById('homeAvg').textContent=hist.length?fmtHM(avgMs):'—';}
 function updateGreeting(){const now=new Date();const days=['SUNDAY','MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY'];const h=now.getHours();const p=h<5?'NIGHT':h<12?'MORNING':h<17?'AFTERNOON':h<21?'EVENING':'NIGHT';document.getElementById('greetingTime').textContent=days[now.getDay()]+' '+p;document.getElementById('navDate').innerHTML=(now.getMonth()+1)+'/'+now.getDate()+'<br>'+pad(now.getHours())+':'+pad(now.getMinutes());}
 let editingId=null,editingCat='個人';
 function updateDurPreview(){const s=document.getElementById('editStart').value;const e=document.getElementById('editEnd').value;const el=document.getElementById('durPreview');if(!s||!e){el.textContent='耗時：—';return;}const diff=new Date(e)-new Date(s);if(diff<=0){el.textContent='⚠ 結束時間必須晚於開始時間';el.style.color='var(--danger)';return;}el.style.color='var(--accent)';el.textContent='⏱ 耗時：'+fmtDur(diff);}
@@ -1309,21 +1391,21 @@ function dismissTimerNotification(){if(activeNotif){activeNotif.close();activeNo
 function dismissPWA(){document.getElementById('pwaBanner').classList.remove('show');localStorage.setItem('pwa_dismissed','1');}
 function checkShowPWA(){if(window.navigator.standalone)return;if(localStorage.getItem('pwa_dismissed'))return;const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);const isSafari=/^((?!chrome|android).)*safari/i.test(navigator.userAgent);if(isIOS&&isSafari)setTimeout(()=>document.getElementById('pwaBanner').classList.add('show'),3000);}
 // ============================================================
-//  ★ 行事曆功能（已更新 source 名稱 + 精簡顯示）
+//  ★ 行事曆功能（大幅改版）
 // ============================================================
 let calEvents = [];
-let calCurrentFilter = 'all';
-let calCurrentRange = '1w';
-let calCurrentView = 'month';
+let calCurrentFilter = 'mine';   // ★ 預設「我的服事」
+let calCurrentRange = '3m';      // ★ 預設「三個月」
+let calCurrentView = 'list';     // ★ 預設「列表」
 let calViewMonth = new Date().getMonth();
 let calViewYear = new Date().getFullYear();
 let calSelectedDate = null;
 function loadCalApi(){ return localStorage.getItem(CAL_API_KEY)||''; }
 function saveCalApi(){const url=document.getElementById('calApiInput').value.trim();if(!url){toast('⚠ 請輸入 GAS Web App 網址');return;}if(!url.startsWith('https://')){toast('⚠ 需以 https:// 開頭');return;}localStorage.setItem(CAL_API_KEY,url);updateCalApiStatus();toast('✓ 行事曆 API 已儲存！');calFetchData();}
-function updateCalApiStatus(){const url=loadCalApi();const dot=document.getElementById('calApiDot');const txt=document.getElementById('calApiText');const banner=document.getElementById('calApiBanner');if(url){dot.className='s-dot ok';txt.textContent='✓ 行事曆 API 已連接';banner.className='cal-api-banner connected';document.getElementById('calApiInput').value=url;}else{dot.className='s-dot';txt.textContent='尚未設定行事曆 API';banner.className='cal-api-banner';}}
+function updateCalApiStatus(){const url=loadCalApi();const dot=document.getElementById('calApiDot');const txt=document.getElementById('calApiText');const card=document.getElementById('setupCalApiCard');if(url){dot.className='s-dot ok';txt.textContent='✓ 行事曆 API 已連接';card.style.background='linear-gradient(135deg, #064e3b, #065f46)';document.getElementById('calApiInput').value=url;}else{dot.className='s-dot';txt.textContent='尚未設定行事曆 API';card.style.background='linear-gradient(135deg,#1a3a5c,#0f2840)';}}
 let calInited = false;
-function calInit(){updateCalApiStatus();if(!calInited&&loadCalApi()){calFetchData();calInited=true;}else{calRender();}}
-function calRefresh(){if(!loadCalApi()){toast('⚠ 請先設定行事曆 API 網址');return;}calFetchData();}
+function calInit(){if(!calInited&&loadCalApi()){calFetchData();calInited=true;}else{calRender();}}
+function calRefresh(){if(!loadCalApi()){toast('⚠ 請先到設定頁設定行事曆 API 網址');return;}calFetchData();}
 function calFetchData(){
   const url=loadCalApi();if(!url)return;
   document.getElementById('calLoading').style.display='block';
@@ -1338,7 +1420,6 @@ function calFetchData(){
 function calSetFilter(f,btn){calCurrentFilter=f;document.querySelectorAll('#calFilterBar .cal-f-chip').forEach(c=>{c.classList.remove('active');c.classList.remove('mine-active');});if(f==='mine')btn.classList.add('mine-active');else btn.classList.add('active');calRender();}
 function calSetRange(r,btn){calCurrentRange=r;document.querySelectorAll('#calRangeBar .cal-r-chip').forEach(c=>c.classList.remove('active'));btn.classList.add('active');calRender();}
 function calSetView(v){calCurrentView=v;document.getElementById('calViewMonth').classList.toggle('active',v==='month');document.getElementById('calViewList').classList.toggle('active',v==='list');calRender();}
-// ★ 已更新：source 從 'church-sheet'/'student-sheet' 改為 'church'/'student'
 function calGetFiltered(){
   let events=[...calEvents];
   const now=new Date();const today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
@@ -1364,7 +1445,6 @@ function calRender(){
 }
 function calPrevMonth(){calViewMonth--;if(calViewMonth<0){calViewMonth=11;calViewYear--;}calRender();}
 function calNextMonth(){calViewMonth++;if(calViewMonth>11){calViewMonth=0;calViewYear++;}calRender();}
-// ★ 已更新：source 判斷改為 'church'/'student'
 function calRenderMonth(filtered){
   document.getElementById('calMonthTitle').textContent=calViewYear+' 年 '+(calViewMonth+1)+' 月';
   const grid=document.getElementById('calGrid');
@@ -1405,45 +1485,106 @@ function calRenderDayDetail(dateStr,filtered){
   if(!dayEvs.length){el.innerHTML='<div class="cal-day-title">'+label+'</div><div class="cal-empty"><div class="e-emoji">📭</div><p>這天沒有事件</p></div>';return;}
   el.innerHTML='<div class="cal-day-title">'+label+'（'+dayEvs.length+' 個事件）</div>'+dayEvs.map(ev=>calRenderEventCard(ev)).join('');
 }
-// ★★★ 重寫：精簡顯示，使用 summary + 可摺疊 details ★★★
+
+// ★★★ 重寫：精簡一列顯示 + 來源背景色 + 可展開詳細資訊 ★★★
 function calRenderEventCard(ev){
   const isOff=ev.type?.includes('off')||ev.title?.includes('暫停');
   let cardCls='cal-event-card';
   if(ev.isMyEvent)cardCls+=' mine';
-  else if(ev.source==='church')cardCls+=' church';
+  if(ev.source==='church')cardCls+=' church';
   else if(ev.source==='student')cardCls+=' student';
   if(isOff)cardCls+=' off';
 
   const srcLabel=ev.source==='church'?'教會':'學生';
-  const srcCls=ev.source==='church'?'src-church':'src-student';
-
-  // ★ 精簡顯示：使用 API 回傳的 summary
-  const summaryText=ev.summary||ev.title||'';
-
-  // 我的角色 badge
-  let myBadges='';
-  if(ev.isMyEvent&&ev.myRoles&&ev.myRoles.length){
-    myBadges='<div class="ce-my-roles">'+ev.myRoles.map(r=>'<span class="ce-my-badge">⭐ '+esc(r)+'</span>').join('')+'</div>';
-  }
-
-  // ★ 可摺疊的詳細資訊
+  const srcTagCls=ev.source==='church'?'tag-church':'tag-student';
   const evIdx=calEvents.indexOf(ev);
-  let detailsHtml='';
-  if(ev.details&&ev.details.length){
-    detailsHtml='<div class="ce-details-toggle" onclick="event.stopPropagation();calToggleDetails('+evIdx+')"><span class="ce-details-arrow" id="ceArrow'+evIdx+'">▸</span> 詳細資訊（'+ev.details.length+'）</div><div class="ce-details-body" id="ceDetails'+evIdx+'" style="display:none">'+ev.details.map(d=>'<div class="ce-detail-row"><span class="ce-detail-label">'+esc(d.label)+'</span><span class="ce-detail-value">'+esc(d.value)+'</span></div>').join('')+'</div>';
+
+  // ★ 決定主要顯示內容
+  let mainInfo = '';
+  let locationStr = '';
+  let venueTag = ''; // 本堂/新秀標籤
+
+  if(ev.source === 'student'){
+    // 學生行事曆：顯示聚會內容
+    const typeStr = ev.title ? ev.title.replace('[學生] ','') : '';
+    mainInfo = typeStr;
+    locationStr = ev.location || '';
+  } else {
+    // 教會行事曆：顯示職務（我的角色）或講員
+    if(ev.myRoles && ev.myRoles.length){
+      mainInfo = ev.myRoles.join('、');
+    } else if(ev.roles && ev.roles['講員']){
+      mainInfo = '講員：' + ev.roles['講員'];
+    } else {
+      mainInfo = ev.title || '';
+    }
+    // ★ 教會行事曆三月起：解析本堂/新秀
+    // 從 roles 裡面找線索，或從 details 中找
+    venueTag = detectVenue(ev);
   }
 
-  // 一鍵計時
-  let timerBtn='';
-  if(ev.isMyEvent&&ev.myRoles?.length){
-    const taskName=ev.myRoles[0]+'：'+ev.title.replace('[學生] ','');
-    timerBtn='<button class="ce-timer-btn" onclick="event.stopPropagation();calStartTimer(\''+esc(taskName)+'\')">⏱ 一鍵計時</button>';
+  // 我的角色 badge（inline）
+  let myBadgeHtml = '';
+  if(ev.isMyEvent && ev.myRoles && ev.myRoles.length){
+    myBadgeHtml = ev.myRoles.map(r=>'<span class="ce-my-badge-inline">⭐'+esc(r)+'</span>').join('');
   }
 
-  return '<div class="'+cardCls+'" onclick="calShowEvent('+evIdx+')"><div class="ce-header"><div class="ce-title">'+esc(summaryText)+'</div><span class="ce-source '+srcCls+'">'+srcLabel+'</span></div>'+myBadges+detailsHtml+timerBtn+'</div>';
+  // ★ 可摺疊的詳細資訊（預設隱藏）
+  let detailsHtml = '';
+  // ★ 從 details 中過濾掉「同工行程安排」(對應 label 包含「同工行程」)
+  const filteredDetails = (ev.details || []).filter(d => !d.label.includes('同工行程'));
+  if(filteredDetails.length){
+    detailsHtml = '<div class="ce-details-toggle" onclick="event.stopPropagation();calToggleDetails('+evIdx+')"><span class="ce-details-arrow" id="ceArrow'+evIdx+'">▸</span> 詳細</div><div class="ce-details-body" id="ceDetails'+evIdx+'" style="display:none">'+filteredDetails.map(d=>'<div class="ce-detail-row"><span class="ce-detail-label">'+esc(d.label)+'</span><span class="ce-detail-value">'+esc(d.value)+'</span></div>').join('')+'</div>';
+  }
+
+  // 組合精簡一列
+  let compactHtml = '<div class="ce-compact-row">';
+  compactHtml += '<span class="ce-src-tag '+srcTagCls+'">'+srcLabel+'</span>';
+  if(locationStr) compactHtml += '<span class="ce-loc">📍'+esc(locationStr)+'</span>';
+  compactHtml += '<span class="ce-main-info">'+esc(mainInfo)+'</span>';
+  if(venueTag) compactHtml += '<span class="ce-venue-tag">'+esc(venueTag)+'</span>';
+  // 教會行事曆若有我的角色，用 inline badge 而非 mainInfo
+  if(ev.source === 'church' && ev.isMyEvent && ev.myRoles && ev.myRoles.length){
+    // mainInfo 已經是角色了，再加 badge 會重複；改為只顯示聚會類型+角色badge
+    compactHtml = '<div class="ce-compact-row">';
+    compactHtml += '<span class="ce-src-tag '+srcTagCls+'">'+srcLabel+'</span>';
+    compactHtml += '<span class="ce-main-info">'+esc(ev.title || '')+'</span>';
+    if(venueTag) compactHtml += '<span class="ce-venue-tag">'+esc(venueTag)+'</span>';
+    compactHtml += myBadgeHtml;
+  }
+  // 學生行事曆若有我的角色
+  if(ev.source === 'student' && ev.isMyEvent && ev.myRoles && ev.myRoles.length){
+    compactHtml += myBadgeHtml;
+  }
+  compactHtml += '</div>';
+
+  return '<div class="'+cardCls+'" onclick="calShowEvent('+evIdx+')">'+compactHtml+detailsHtml+'</div>';
 }
 
-// ★ 新增：摺疊/展開詳細資訊
+// ★ 偵測本堂/新秀（教會行事曆三月起）
+function detectVenue(ev){
+  if(!ev || ev.source !== 'church') return '';
+  // 從 date 判斷是否三月起
+  if(!ev.date) return '';
+  const evDate = new Date(ev.date + 'T00:00:00');
+  // 只對 2025 年 3 月以後的事件標示
+  if(evDate < new Date('2025-03-01')) return '';
+
+  // 從 roles 值中找線索
+  const allRoleValues = Object.values(ev.roles || {}).join(' ');
+  // 從 details 中找線索
+  const allDetailValues = (ev.details || []).map(d => d.value).join(' ');
+  const allText = (ev.title || '') + ' ' + allRoleValues + ' ' + allDetailValues + ' ' + (ev.staffNote || '');
+
+  // 如果 staffNote 或 roles 中有明確標示
+  if(allText.includes('新秀') && !allText.includes('本堂')) return '新秀';
+  if(allText.includes('本堂') && !allText.includes('新秀')) return '本堂';
+  // 如果兩者都有，不標
+  if(allText.includes('新秀') && allText.includes('本堂')) return '';
+  return '';
+}
+
+// ★ 摺疊/展開詳細資訊
 function calToggleDetails(idx){
   const body=document.getElementById('ceDetails'+idx);
   const arrow=document.getElementById('ceArrow'+idx);
@@ -1462,8 +1603,10 @@ function calRenderList(filtered){
   sortedDates.forEach(dateStr=>{const d=new Date(dateStr+'T00:00:00');const label=d.toLocaleDateString('zh-TW',{month:'long',day:'numeric',weekday:'short'});const isToday=dateStr===new Date().toISOString().slice(0,10);html+='<div class="cal-list-date-header">'+(isToday?'📍 今天 — ':'')+label+'</div>';groups[dateStr].forEach(ev=>{html+=calRenderEventCard(ev);});});
   el.innerHTML=html;
 }
-function calStartTimer(taskName){event.stopPropagation();document.getElementById('taskName').value=taskName;const catBtn=document.querySelector('#catRow .cat-chip[data-cat="行政"]');if(catBtn)selCat(catBtn);goTab('timer');ytCheckVisibility();toast('已帶入任務名稱，按「開始」即可計時');}
-// ★ 已更新：source 判斷改為 'church'/'student'
+
+// ★ 已移除「一鍵計時」功能（calStartTimer 保留給 modal 用）
+function calStartTimer(taskName){document.getElementById('taskName').value=taskName;const catBtn=document.querySelector('#catRow .cat-chip[data-cat="行政"]');if(catBtn)selCat(catBtn);goTab('timer');ytCheckVisibility();toast('已帶入任務名稱，按「開始」即可計時');}
+
 function calShowEvent(idx){
   const ev=calEvents[idx];if(!ev)return;
   document.getElementById('calModalTitle').textContent='📅 '+ev.title;
@@ -1473,13 +1616,14 @@ function calShowEvent(idx){
   body+='<div class="edit-field"><label>來源</label><div style="font-size:14px;">'+(ev.source==='church'?'⛪ 教會事工表':'🎓 學生事工表')+'</div></div>';
   if(ev.roles&&Object.keys(ev.roles).length){body+='<div class="edit-field"><label>服事人員</label><div style="font-size:13px;line-height:2;">';Object.entries(ev.roles).forEach(([k,v])=>{body+='<div><strong>'+esc(k)+'</strong>：'+esc(v)+'</div>';});body+='</div></div>';}
   if(ev.location)body+='<div class="edit-field"><label>地點</label><div style="font-size:14px;">'+esc(ev.location)+'</div></div>';
-  if(ev.staffNote)body+='<div class="edit-field"><label>同工行程</label><div style="font-size:13px;color:var(--gold);">'+esc(ev.staffNote)+'</div></div>';
+  // ★ 移除同工行程顯示
   if(ev.counselorNote)body+='<div class="edit-field"><label>輔導行程</label><div style="font-size:13px;">'+esc(ev.counselorNote)+'</div></div>';
   if(ev.missionCountry)body+='<div class="edit-field"><label>宣教國家</label><div style="font-size:14px;">🌍 '+esc(ev.missionCountry)+'</div></div>';
   if(ev.mainSpeaker)body+='<div class="edit-field"><label>本堂講員</label><div style="font-size:14px;">'+esc(ev.mainSpeaker)+'</div></div>';
   if(ev.xinxiuSpeaker)body+='<div class="edit-field"><label>新秀福音中心</label><div style="font-size:14px;">'+esc(ev.xinxiuSpeaker)+'</div></div>';
-  // ★ 新增：顯示 songs 欄位（如果有）
   if(ev.songs)body+='<div class="edit-field"><label>詩歌</label><div style="font-size:13px;white-space:pre-line;">'+esc(ev.songs)+'</div></div>';
+  const venue = detectVenue(ev);
+  if(venue) body+='<div class="edit-field"><label>場地</label><div style="font-size:14px;">'+esc(venue)+'</div></div>';
   document.getElementById('calModalBody').innerHTML=body;
   let footer='<button class="btn-modal-cancel" onclick="closeCalEventModal()">關閉</button>';
   if(ev.isMyEvent&&ev.myRoles?.length){const taskName=ev.myRoles[0]+'：'+ev.title.replace('[學生] ','');footer+='<button class="btn-modal-save" onclick="calStartTimer(\''+esc(taskName)+'\');closeCalEventModal();">⏱ 開始計時</button>';}
@@ -1499,6 +1643,7 @@ function ioImport(){const ta=document.getElementById('ioTextarea');const raw=ta.
 updateGreeting();
 setInterval(updateGreeting,30000);
 updateGasStatus();
+updateCalApiStatus();
 renderHome();
 checkShowPWA();
 const taskNameEl=document.getElementById('taskName');
