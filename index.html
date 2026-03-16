@@ -194,7 +194,6 @@ body {
 .r-meta { font-size:11px; color:var(--text-sub); margin-top:2px; }
 .r-dur  { font-family:'Space Mono',monospace; font-size:13px; font-weight:700; color:var(--accent); flex-shrink:0; }
 .page-header { padding:18px 20px 0; display:flex; align-items:center; gap:12px; }
-.back-btn { width:36px; height:36px; background:var(--white); border:none; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; cursor:pointer; box-shadow:var(--shadow); }
 .page-title { font-size:18px; font-weight:700; }
 .input-card { margin:14px 16px 0; background:var(--white); border-radius:var(--radius); padding:16px; box-shadow:var(--shadow); position:relative; }
 .field-label { font-size:12px; font-weight:600; color:var(--text-sub); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:8px; }
@@ -244,6 +243,133 @@ body {
 .custom-cat-input:focus { border-color:var(--accent); }
 .custom-cat-input:disabled { opacity:.4; }
 .custom-cat-hint { font-size:11px; color:var(--text-light); white-space:nowrap; }
+
+/* ===== YouTube 速讀播放器 ===== */
+.yt-player-section {
+  display: none;
+  margin: 10px 16px 0;
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  border: 1.5px solid transparent;
+  transition: border-color 0.3s;
+}
+.yt-player-section.show { display: block; }
+.yt-player-section.active-border { border-color: #FF0000; }
+.yt-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, #282828, #1a1a1a);
+  color: white;
+  cursor: pointer;
+  user-select: none;
+}
+.yt-header-left { display: flex; align-items: center; gap: 8px; }
+.yt-header-icon {
+  width: 28px; height: 28px; border-radius: 6px;
+  background: #FF0000; display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700;
+}
+.yt-header-title { font-size: 13px; font-weight: 700; }
+.yt-header-sub { font-size: 11px; color: rgba(255,255,255,0.5); }
+.yt-toggle-icon {
+  font-size: 16px; transition: transform 0.3s;
+  color: rgba(255,255,255,0.6);
+}
+.yt-toggle-icon.collapsed { transform: rotate(-90deg); }
+.yt-body { display: block; }
+.yt-body.collapsed { display: none; }
+.yt-embed-wrap {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 */
+  background: #000;
+}
+.yt-embed-wrap iframe {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%; border: none;
+}
+.yt-placeholder {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  color: #888; font-size: 13px; gap: 8px;
+  background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+}
+.yt-placeholder-icon { font-size: 40px; opacity: 0.4; }
+.yt-controls {
+  padding: 12px 16px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.yt-speed-row {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.yt-speed-btn {
+  width: 40px; height: 36px; border-radius: 8px;
+  border: 1.5px solid var(--border); background: var(--white);
+  font-size: 16px; font-weight: 700; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s; color: var(--text);
+  font-family: 'Space Mono', monospace;
+}
+.yt-speed-btn:active { transform: scale(0.92); background: var(--accent-soft); }
+.yt-speed-display {
+  min-width: 70px; text-align: center;
+  font-family: 'Space Mono', monospace;
+  font-size: 15px; font-weight: 700; color: var(--accent);
+  background: var(--accent-soft); border-radius: 8px;
+  padding: 7px 12px;
+}
+.yt-speed-label { font-size: 11px; color: var(--text-light); text-align: center; margin-top: -4px; }
+.yt-speed-presets { display: flex; gap: 6px; justify-content: center; }
+.yt-preset-btn {
+  padding: 4px 10px; border-radius: 14px;
+  border: 1.5px solid var(--border); background: transparent;
+  font-size: 11px; font-weight: 600; cursor: pointer;
+  color: var(--text-sub); font-family: 'Space Mono', monospace;
+  transition: all 0.15s;
+}
+.yt-preset-btn:active { background: var(--accent-soft); }
+.yt-preset-btn.active { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
+.yt-url-row {
+  display: flex; gap: 8px; align-items: center;
+}
+.yt-url-input {
+  flex: 1; border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+  padding: 9px 12px; font-size: 12px;
+  font-family: 'Space Mono', monospace; color: var(--text);
+  outline: none; transition: border-color 0.2s;
+}
+.yt-url-input:focus { border-color: #FF0000; }
+.yt-url-input::placeholder { color: var(--text-light); font-family: 'Noto Sans TC', sans-serif; }
+.yt-url-btn {
+  padding: 9px 14px; border-radius: 8px; border: none;
+  background: #FF0000; color: white;
+  font-size: 12px; font-weight: 700; cursor: pointer;
+  font-family: 'Noto Sans TC', sans-serif;
+  white-space: nowrap; transition: opacity 0.15s;
+}
+.yt-url-btn:active { opacity: 0.8; }
+.yt-url-hint {
+  font-size: 11px; color: var(--text-light); line-height: 1.5;
+  padding: 0 2px;
+}
+.yt-url-hint code {
+  background: var(--bg); padding: 1px 5px; border-radius: 4px;
+  font-family: 'Space Mono', monospace; font-size: 10px;
+}
+.yt-saved-url {
+  display: none; padding: 8px 12px;
+  background: var(--green-soft); border-radius: 8px;
+  font-size: 12px; color: #15803d;
+  align-items: center; gap: 8px;
+}
+.yt-saved-url.show { display: flex; }
+.yt-saved-url-text { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: 'Space Mono', monospace; font-size: 11px; }
+.yt-saved-url-clear {
+  background: none; border: none; cursor: pointer; font-size: 14px; color: var(--danger); padding: 0 4px;
+}
+
 .timer-hero { margin:12px 16px 0; background:var(--white); border-radius:var(--radius); padding:26px 20px 22px; text-align:center; box-shadow:var(--shadow); position:relative; overflow:hidden; }
 .t-ring1 { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:190px; height:190px; border-radius:50%; border:1px solid var(--border); opacity:.4; pointer-events:none; }
 .t-ring2 { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:230px; height:230px; border-radius:50%; border:1px dashed var(--border); opacity:.2; pointer-events:none; }
@@ -451,20 +577,16 @@ body {
 .cal-loading { text-align:center; padding:40px 20px; color:var(--text-light); }
 .cal-loading .spin { display:inline-block; animation:spin 1s linear infinite; font-size:28px; }
 @keyframes spin { from{transform:rotate(0)} to{transform:rotate(360deg)} }
-/* 視圖切換 */
 .cal-view-toggle { display:flex; margin:12px 16px 0; background:var(--white); border-radius:var(--radius-sm); overflow:hidden; box-shadow:var(--shadow); }
 .cal-view-btn { flex:1; padding:10px; border:none; background:transparent; font-size:13px; font-weight:600; font-family:'Noto Sans TC',sans-serif; cursor:pointer; color:var(--text-sub); transition:all 0.15s; }
 .cal-view-btn.active { background:var(--accent); color:white; }
-/* 篩選列 */
 .cal-filter-bar { display:flex; gap:6px; padding:12px 16px 0; flex-wrap:wrap; }
 .cal-f-chip { padding:5px 12px; border-radius:16px; border:1.5px solid var(--border); font-size:11px; font-weight:600; cursor:pointer; background:var(--white); color:var(--text-sub); font-family:'Noto Sans TC',sans-serif; transition:all 0.15s; }
 .cal-f-chip.active { background:var(--accent); border-color:var(--accent); color:white; }
 .cal-f-chip.mine-active { background:var(--line-green); border-color:var(--line-green); color:white; }
-/* 區間篩選 */
 .cal-range-bar { display:flex; gap:6px; padding:8px 16px 0; flex-wrap:wrap; }
 .cal-r-chip { padding:4px 10px; border-radius:14px; border:1.5px solid var(--border); font-size:11px; font-weight:500; cursor:pointer; background:var(--white); color:var(--text-sub); font-family:'Noto Sans TC',sans-serif; transition:all 0.15s; }
 .cal-r-chip.active { background:#dbeafe; border-color:#93c5fd; color:var(--accent); }
-/* 月曆視圖 */
 .cal-month-nav { display:flex; align-items:center; justify-content:space-between; padding:12px 16px 4px; }
 .cal-month-title { font-size:16px; font-weight:700; }
 .cal-month-btn { width:32px; height:32px; border-radius:50%; background:var(--white); border:1.5px solid var(--border); display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:16px; box-shadow:var(--shadow); }
@@ -488,10 +610,8 @@ body {
 .dot-church { background:#2D7DD2; }
 .dot-student { background:#06C755; }
 .dot-mine { background:#EF4444; }
-/* 日期詳情 */
 .cal-day-detail { margin:10px 16px 0; }
 .cal-day-title { font-size:14px; font-weight:700; color:var(--text-sub); margin-bottom:8px; padding-left:2px; }
-/* 事件卡片 */
 .cal-event-card {
   background:var(--white); border-radius:var(--radius-sm); padding:14px;
   box-shadow:var(--shadow); margin-bottom:8px; border-left:4px solid var(--border);
@@ -519,7 +639,6 @@ body {
   display:flex; align-items:center; justify-content:center; gap:4px;
 }
 .ce-timer-btn:active { opacity:0.7; }
-/* 列表視圖 */
 .cal-list-section { padding:0 16px; margin-top:10px; }
 .cal-list-date-header { font-size:12px; font-weight:700; color:var(--text-light); padding:8px 0 4px; border-bottom:1px solid var(--border); margin-bottom:6px; letter-spacing:0.05em; }
 .cal-empty { text-align:center; padding:40px 20px; color:var(--text-light); }
@@ -617,6 +736,57 @@ body {
       <div class="custom-cat-hint">選填</div>
     </div>
   </div>
+
+  <!-- ===== YouTube 速讀播放器 ===== -->
+  <div class="yt-player-section" id="ytSection">
+    <div class="yt-header" onclick="toggleYtBody()">
+      <div class="yt-header-left">
+        <div class="yt-header-icon">▶</div>
+        <div>
+          <div class="yt-header-title">📖 速讀聖經 YouTube</div>
+          <div class="yt-header-sub" id="ytHeaderSub">點擊展開／收合</div>
+        </div>
+      </div>
+      <div class="yt-toggle-icon" id="ytToggleIcon">▼</div>
+    </div>
+    <div class="yt-body" id="ytBody">
+      <div class="yt-embed-wrap" id="ytEmbedWrap">
+        <div class="yt-placeholder" id="ytPlaceholder">
+          <div class="yt-placeholder-icon">📖</div>
+          <span>貼上 YouTube 連結開始播放</span>
+        </div>
+        <div id="ytPlayerContainer"></div>
+      </div>
+      <div class="yt-controls">
+        <!-- 速度控制 -->
+        <div class="yt-speed-row">
+          <button class="yt-speed-btn" onclick="ytChangeSpeed(-0.1)">−</button>
+          <div class="yt-speed-display" id="ytSpeedDisplay">1.0x</div>
+          <button class="yt-speed-btn" onclick="ytChangeSpeed(0.1)">+</button>
+        </div>
+        <div class="yt-speed-label">播放速度</div>
+
+
+        <!-- 已儲存的連結 -->
+        <div class="yt-saved-url" id="ytSavedUrl">
+          <span>📌</span>
+          <span class="yt-saved-url-text" id="ytSavedUrlText"></span>
+          <button class="yt-saved-url-clear" onclick="ytClearSavedUrl()" title="清除已儲存連結">✕</button>
+        </div>
+
+        <!-- 連結輸入 -->
+        <div class="yt-url-row">
+          <input type="text" class="yt-url-input" id="ytUrlInput" placeholder="貼上 YouTube 影片連結" />
+          <button class="yt-url-btn" onclick="ytLoadUrl()">播放</button>
+        </div>
+        <div class="yt-url-hint">
+          支援帶時間戳的連結，例如 <code>?t=120</code> 或 <code>&t=5m30s</code><br>
+          播放後連結會自動儲存，下次選擇「速讀」時自動載入
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="timer-hero">
     <div class="t-ring1"></div><div class="t-ring2"></div>
     <div class="timer-digits" id="digits">00:00:00</div>
@@ -662,7 +832,6 @@ body {
     <button class="back-btn" style="width:auto;padding:0 12px;border-radius:20px;font-size:12px;" onclick="calRefresh()">🔄 重新整理</button>
   </div>
 
-  <!-- API 設定 -->
   <div class="cal-api-banner" id="calApiBanner">
     <div class="setup-status" style="margin-bottom:6px;">
       <div class="s-dot" id="calApiDot"></div>
@@ -675,7 +844,6 @@ body {
     <div class="setup-hint">部署 Google Apps Script 後，把 Web App 網址貼在這裡。</div>
   </div>
 
-  <!-- 統計摘要 -->
   <div class="cal-stats-row" id="calStats" style="display:none">
     <div class="cal-stat-card">
       <div class="cal-stat-num" id="calMyCount">0</div>
@@ -687,7 +855,6 @@ body {
     </div>
   </div>
 
-  <!-- 篩選列 -->
   <div class="cal-filter-bar" id="calFilterBar">
     <button class="cal-f-chip active" onclick="calSetFilter('all',this)">全部</button>
     <button class="cal-f-chip" onclick="calSetFilter('mine',this)" id="calMineBtn">⭐ 我的服事</button>
@@ -695,7 +862,6 @@ body {
     <button class="cal-f-chip" onclick="calSetFilter('student',this)">🎓 學生</button>
   </div>
 
-  <!-- 區間篩選 -->
   <div class="cal-range-bar" id="calRangeBar">
     <button class="cal-r-chip active" onclick="calSetRange('1w',this)">一週內</button>
     <button class="cal-r-chip" onclick="calSetRange('2w',this)">二週內</button>
@@ -704,13 +870,11 @@ body {
     <button class="cal-r-chip" onclick="calSetRange('all',this)">全部</button>
   </div>
 
-  <!-- 視圖切換 -->
   <div class="cal-view-toggle">
     <button class="cal-view-btn active" id="calViewMonth" onclick="calSetView('month')">📅 月曆</button>
     <button class="cal-view-btn" id="calViewList" onclick="calSetView('list')">📋 列表</button>
   </div>
 
-  <!-- 月曆視圖 -->
   <div id="calMonthView">
     <div class="cal-month-nav">
       <button class="cal-month-btn" onclick="calPrevMonth()">‹</button>
@@ -724,12 +888,10 @@ body {
     <div class="cal-day-detail" id="calDayDetail"></div>
   </div>
 
-  <!-- 列表視圖 -->
   <div id="calListView" style="display:none">
     <div class="cal-list-section" id="calListSection"></div>
   </div>
 
-  <!-- 載入中 -->
   <div class="cal-loading" id="calLoading" style="display:none">
     <div class="spin">⏳</div>
     <p style="margin-top:12px;font-size:13px;">正在從 Google Sheets 載入資料…</p>
@@ -879,12 +1041,13 @@ body {
 
 <script>
 // ============================================================
-//  原有功能（計時器、歷史記錄等）— 完整保留
+//  常數與全域狀態
 // ============================================================
 const STORAGE_KEY = 'kanas_hist_v2';
 const GAS_URL_KEY = 'kanas_gas_url';
 const CAL_API_KEY = 'kanas_cal_api_url';
 const CAL_DATA_KEY = 'kanas_cal_cache';
+const YT_URL_KEY = 'kanas_yt_url';  // 儲存速讀 YouTube 連結
 const DEFAULT_CATS = ['講道','牧養','行政','個人','其他'];
 let timerInterval=null,autoInterval=null,nowClockInterval=null;
 let startTime=null,pausedAt=null;
@@ -896,6 +1059,275 @@ let selectMode=false,selectedIds=new Set();
 let batchCatChoice='';
 let nowClockVisible=true;
 
+// ============================================================
+//  YouTube 播放器相關
+// ============================================================
+let ytPlayer = null;
+let ytReady = false;
+let ytCurrentSpeed = 1.0;
+let ytBodyCollapsed = false;
+let ytApiLoaded = false;
+
+// 載入 YouTube IFrame API
+function loadYTApi() {
+  if (ytApiLoaded) return;
+  ytApiLoaded = true;
+  const tag = document.createElement('script');
+  tag.src = 'https://www.youtube.com/iframe_api';
+  document.head.appendChild(tag);
+}
+
+// YouTube API 準備完成的全域回呼
+window.onYouTubeIframeAPIReady = function() {
+  ytReady = true;
+  // 如果已經有儲存的 URL 且速讀區可見，就自動載入
+  const section = document.getElementById('ytSection');
+  if (section.classList.contains('show')) {
+    const savedUrl = localStorage.getItem(YT_URL_KEY);
+    if (savedUrl) {
+      document.getElementById('ytUrlInput').value = savedUrl;
+      ytLoadFromSaved();
+    }
+  }
+};
+
+// 解析 YouTube URL → { videoId, startSeconds }
+function parseYTUrl(url) {
+  if (!url) return null;
+  let videoId = null;
+  let startSeconds = 0;
+
+  try {
+    // 各種 YouTube URL 格式
+    const urlObj = new URL(url);
+    if (urlObj.hostname.includes('youtu.be')) {
+      videoId = urlObj.pathname.slice(1).split('/')[0];
+    } else if (urlObj.hostname.includes('youtube.com')) {
+      videoId = urlObj.searchParams.get('v');
+    }
+    // 解析時間戳 t 參數
+    let tParam = urlObj.searchParams.get('t') || urlObj.searchParams.get('start');
+    if (tParam) {
+      // 處理 5m30s 格式
+      const hmMatch = tParam.match(/(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s?)?/);
+      if (hmMatch) {
+        const h = parseInt(hmMatch[1] || 0);
+        const m = parseInt(hmMatch[2] || 0);
+        const s = parseInt(hmMatch[3] || 0);
+        startSeconds = h * 3600 + m * 60 + s;
+      }
+      // 純數字格式
+      if (!startSeconds && /^\d+$/.test(tParam)) {
+        startSeconds = parseInt(tParam);
+      }
+    }
+  } catch (e) {
+    // 嘗試直接提取 video ID
+    const match = url.match(/(?:v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+    if (match) videoId = match[1];
+  }
+
+  return videoId ? { videoId, startSeconds } : null;
+}
+
+// 載入或重新載入播放器
+function ytCreatePlayer(videoId, startSeconds) {
+  document.getElementById('ytPlaceholder').style.display = 'none';
+
+  // 如果已有播放器，銷毀後重建
+  if (ytPlayer) {
+    ytPlayer.destroy();
+    ytPlayer = null;
+  }
+
+  // 確保容器存在
+  const container = document.getElementById('ytPlayerContainer');
+  container.innerHTML = '<div id="ytIframe"></div>';
+
+  ytPlayer = new YT.Player('ytIframe', {
+    width: '100%',
+    height: '100%',
+    videoId: videoId,
+    playerVars: {
+      start: startSeconds || 0,
+      autoplay: 0,
+      playsinline: 1,
+      rel: 0,
+      modestbranding: 1
+    },
+    events: {
+      onReady: function(event) {
+        // 套用目前速度
+        event.target.setPlaybackRate(ytCurrentSpeed);
+        // 讓 iframe 填滿容器
+        const iframe = container.querySelector('iframe');
+        if (iframe) {
+          iframe.style.position = 'absolute';
+          iframe.style.top = '0';
+          iframe.style.left = '0';
+          iframe.style.width = '100%';
+          iframe.style.height = '100%';
+        }
+      },
+      onStateChange: function(event) {
+        // 播放時加紅色外框
+        const section = document.getElementById('ytSection');
+        if (event.data === YT.PlayerState.PLAYING) {
+          section.classList.add('active-border');
+        } else {
+          section.classList.remove('active-border');
+        }
+      }
+    }
+  });
+}
+
+// 點擊「播放」按鈕
+function ytLoadUrl() {
+  const url = document.getElementById('ytUrlInput').value.trim();
+  if (!url) { toast('⚠ 請貼上 YouTube 連結'); return; }
+
+  const parsed = parseYTUrl(url);
+  if (!parsed) { toast('⚠ 無法辨識此 YouTube 連結'); return; }
+
+  // 儲存連結
+  localStorage.setItem(YT_URL_KEY, url);
+  ytUpdateSavedDisplay();
+
+  // 載入 API（如果還沒載入）
+  if (!ytApiLoaded) {
+    loadYTApi();
+    // 等 API ready 後再建立播放器
+    const waitReady = setInterval(() => {
+      if (ytReady) {
+        clearInterval(waitReady);
+        ytCreatePlayer(parsed.videoId, parsed.startSeconds);
+      }
+    }, 200);
+  } else if (ytReady) {
+    ytCreatePlayer(parsed.videoId, parsed.startSeconds);
+  }
+  toast('▶ 已載入影片');
+}
+
+// 從已儲存的 URL 自動載入（靜默）
+function ytLoadFromSaved() {
+  const url = localStorage.getItem(YT_URL_KEY);
+  if (!url) return;
+  const parsed = parseYTUrl(url);
+  if (!parsed) return;
+
+  ytUpdateSavedDisplay();
+
+  if (ytReady) {
+    ytCreatePlayer(parsed.videoId, parsed.startSeconds);
+  }
+}
+
+// 速度控制
+function ytChangeSpeed(delta) {
+  ytCurrentSpeed = Math.round((ytCurrentSpeed + delta) * 10) / 10;
+  ytCurrentSpeed = Math.max(0.25, Math.min(3.0, ytCurrentSpeed));
+  ytApplySpeed();
+}
+function ytSetSpeed(speed) {
+  ytCurrentSpeed = speed;
+  ytApplySpeed();
+}
+function ytApplySpeed() {
+  document.getElementById('ytSpeedDisplay').textContent = ytCurrentSpeed.toFixed(1) + 'x';
+  // 更新 preset 按鈕 active 狀態
+  document.querySelectorAll('.yt-preset-btn').forEach(btn => {
+    const val = parseFloat(btn.textContent);
+    btn.classList.toggle('active', Math.abs(val - ytCurrentSpeed) < 0.01);
+  });
+  // 套用到播放器
+  if (ytPlayer && typeof ytPlayer.setPlaybackRate === 'function') {
+    ytPlayer.setPlaybackRate(ytCurrentSpeed);
+  }
+}
+
+// 展開/收合 YouTube 區塊
+function toggleYtBody() {
+  ytBodyCollapsed = !ytBodyCollapsed;
+  document.getElementById('ytBody').classList.toggle('collapsed', ytBodyCollapsed);
+  document.getElementById('ytToggleIcon').classList.toggle('collapsed', ytBodyCollapsed);
+  document.getElementById('ytHeaderSub').textContent = ytBodyCollapsed ? '已收合，點擊展開' : '點擊展開／收合';
+}
+
+// 顯示/隱藏 YouTube 區塊（根據任務名稱）
+function ytCheckVisibility() {
+  const taskName = document.getElementById('taskName').value.trim();
+  const section = document.getElementById('ytSection');
+  const shouldShow = taskName === '速讀';
+
+  if (shouldShow && !section.classList.contains('show')) {
+    section.classList.add('show');
+    loadYTApi();
+    // 載入已儲存的 URL
+    const savedUrl = localStorage.getItem(YT_URL_KEY);
+    if (savedUrl) {
+      document.getElementById('ytUrlInput').value = savedUrl;
+      ytUpdateSavedDisplay();
+      // 如果 API 已經 ready，自動載入
+      if (ytReady) {
+        ytLoadFromSaved();
+      }
+    }
+  } else if (!shouldShow && section.classList.contains('show')) {
+    section.classList.remove('show');
+    section.classList.remove('active-border');
+    // 暫停播放（不銷毀，方便再次切回）
+    if (ytPlayer && typeof ytPlayer.pauseVideo === 'function') {
+      ytPlayer.pauseVideo();
+    }
+  }
+}
+
+// 儲存的連結顯示
+function ytUpdateSavedDisplay() {
+  const savedUrl = localStorage.getItem(YT_URL_KEY);
+  const el = document.getElementById('ytSavedUrl');
+  if (savedUrl) {
+    el.classList.add('show');
+    document.getElementById('ytSavedUrlText').textContent = savedUrl;
+  } else {
+    el.classList.remove('show');
+  }
+}
+function ytClearSavedUrl() {
+  localStorage.removeItem(YT_URL_KEY);
+  ytUpdateSavedDisplay();
+  document.getElementById('ytUrlInput').value = '';
+  toast('已清除儲存的連結');
+}
+
+// 計時器結束時，記錄 YouTube 當前播放位置到連結中
+function ytSaveCurrentPosition() {
+  if (!ytPlayer || typeof ytPlayer.getCurrentTime !== 'function') return;
+  try {
+    const currentTime = Math.floor(ytPlayer.getCurrentTime());
+    if (currentTime <= 0) return;
+    const videoUrl = ytPlayer.getVideoUrl();
+    if (!videoUrl) return;
+
+    // 解析原始 URL，替換 t 參數
+    const parsed = parseYTUrl(videoUrl);
+    if (!parsed) return;
+
+    // 組合新的 URL（帶上當前時間）
+    const newUrl = `https://www.youtube.com/watch?v=${parsed.videoId}&t=${currentTime}`;
+    localStorage.setItem(YT_URL_KEY, newUrl);
+    document.getElementById('ytUrlInput').value = newUrl;
+    ytUpdateSavedDisplay();
+  } catch(e) {
+    console.log('YT save position error:', e);
+  }
+}
+
+// ============================================================
+//  原有功能（計時器、歷史記錄等）— 完整保留
+// ============================================================
 function getAllCats(){
   const hist=loadHist();
   const cats=new Set(DEFAULT_CATS);
@@ -991,6 +1423,8 @@ function pickSuggest(name,cat){
     selCat(otherBtn);
     document.getElementById('customCatInput').value=cat;
   }
+  // 檢查是否為「速讀」任務
+  ytCheckVisibility();
 }
 function hideSuggestions(){
   setTimeout(()=>document.getElementById('suggestList').classList.remove('show'),150);
@@ -1062,6 +1496,17 @@ async function stopTimer(fromAuto=false){
   isRunning=false;isPaused=false;
   releaseWakeLock();
   dismissTimerNotification();
+
+  // ★ 速讀結束時，自動記錄 YouTube 當前播放位置
+  const taskName = document.getElementById('taskName').value.trim();
+  if (taskName === '速讀') {
+    ytSaveCurrentPosition();
+    // 暫停 YouTube 播放
+    if (ytPlayer && typeof ytPlayer.pauseVideo === 'function') {
+      ytPlayer.pauseVideo();
+    }
+  }
+
   const effectiveCat=getEffectiveCat();
   const rec={
     id:Date.now(),
@@ -1095,6 +1540,8 @@ async function stopTimer(fromAuto=false){
   document.getElementById('taskNote').value='';
   document.getElementById('customCatInput').value='';
   document.getElementById('customCatWrap').classList.remove('show');
+  // 隱藏 YouTube 區塊
+  ytCheckVisibility();
   renderHome();
 }
 function startAutoCountdown(){
@@ -1435,17 +1882,16 @@ function dismissPWA(){document.getElementById('pwaBanner').classList.remove('sho
 function checkShowPWA(){if(window.navigator.standalone)return;if(localStorage.getItem('pwa_dismissed'))return;const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);const isSafari=/^((?!chrome|android).)*safari/i.test(navigator.userAgent);if(isIOS&&isSafari)setTimeout(()=>document.getElementById('pwaBanner').classList.add('show'),3000);}
 
 // ============================================================
-//  行事曆功能 — 全新
+//  行事曆功能
 // ============================================================
-let calEvents = [];         // 所有事件
-let calCurrentFilter = 'all';  // all | mine | church | student
-let calCurrentRange = '1w';    // 1w | 2w | 1m | 3m | all
-let calCurrentView = 'month';  // month | list
+let calEvents = [];
+let calCurrentFilter = 'all';
+let calCurrentRange = '1w';
+let calCurrentView = 'month';
 let calViewMonth = new Date().getMonth();
 let calViewYear = new Date().getFullYear();
-let calSelectedDate = null;    // YYYY-MM-DD
+let calSelectedDate = null;
 
-// --- API 設定 ---
 function loadCalApi(){ return localStorage.getItem(CAL_API_KEY)||''; }
 function saveCalApi(){
   const url = document.getElementById('calApiInput').value.trim();
@@ -1470,8 +1916,6 @@ function updateCalApiStatus(){
     banner.className='cal-api-banner';
   }
 }
-
-// --- 初始化 ---
 let calInited = false;
 function calInit(){
   updateCalApiStatus();
@@ -1482,39 +1926,31 @@ function calInit(){
     calRender();
   }
 }
-
 function calRefresh(){
   if(!loadCalApi()){ toast('⚠ 請先設定行事曆 API 網址'); return; }
   calFetchData();
 }
-
-// --- 資料拉取 ---
 function calFetchData(){
   const url = loadCalApi();
   if(!url) return;
   document.getElementById('calLoading').style.display='block';
   document.getElementById('calMonthView').style.display='none';
   document.getElementById('calListView').style.display='none';
-
-  // 使用 JSONP 繞過 CORS 限制
   const cbName = '_calJsonpCb_' + Date.now();
   const timeout = setTimeout(()=>{
-    // 超時處理
     delete window[cbName];
     const s = document.getElementById('calJsonpScript');
     if(s) s.remove();
     document.getElementById('calLoading').style.display='none';
     toast('⚠ 載入逾時，請確認 GAS 已部署為新版本');
     calRender();
-  }, 20000); // 20 秒超時（GAS 初次啟動較慢）
-
+  }, 20000);
   window[cbName] = function(data){
     clearTimeout(timeout);
     delete window[cbName];
     const s = document.getElementById('calJsonpScript');
     if(s) s.remove();
     document.getElementById('calLoading').style.display='none';
-
     if(data && data.success){
       calEvents = data.events || [];
       toast('✓ 載入 ' + calEvents.length + ' 筆事件');
@@ -1523,12 +1959,8 @@ function calFetchData(){
     }
     calRender();
   };
-
-  // 移除舊的 script tag
   const old = document.getElementById('calJsonpScript');
   if(old) old.remove();
-
-  // 建立 <script> 進行 JSONP 請求
   const script = document.createElement('script');
   script.id = 'calJsonpScript';
   script.src = url + '?action=all&callback=' + cbName;
@@ -1542,8 +1974,6 @@ function calFetchData(){
   };
   document.body.appendChild(script);
 }
-
-// --- 篩選 ---
 function calSetFilter(f, btn){
   calCurrentFilter = f;
   document.querySelectorAll('#calFilterBar .cal-f-chip').forEach(c=>{c.classList.remove('active');c.classList.remove('mine-active');});
@@ -1563,13 +1993,10 @@ function calSetView(v){
   document.getElementById('calViewList').classList.toggle('active', v==='list');
   calRender();
 }
-
 function calGetFiltered(){
   let events = [...calEvents];
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-
-  // 區間篩選
   if(calCurrentRange !== 'all'){
     let days = 7;
     if(calCurrentRange==='2w') days=14;
@@ -1582,24 +2009,17 @@ function calGetFiltered(){
       return d >= start && d < end;
     });
   }
-
-  // 類型篩選
   if(calCurrentFilter === 'mine') events = events.filter(ev => ev.isMyEvent);
   else if(calCurrentFilter === 'church') events = events.filter(ev => ev.source === 'church-sheet');
   else if(calCurrentFilter === 'student') events = events.filter(ev => ev.source === 'student-sheet');
-
   return events;
 }
-
-// --- 渲染 ---
 function calRender(){
   const filtered = calGetFiltered();
-  // 統計
   const myCount = filtered.filter(ev=>ev.isMyEvent).length;
   document.getElementById('calStats').style.display = calEvents.length ? 'grid' : 'none';
   document.getElementById('calMyCount').textContent = myCount;
   document.getElementById('calAllCount').textContent = filtered.length;
-
   if(calCurrentView === 'month'){
     document.getElementById('calMonthView').style.display = 'block';
     document.getElementById('calListView').style.display = 'none';
@@ -1610,32 +2030,24 @@ function calRender(){
     calRenderList(filtered);
   }
 }
-
-// --- 月曆 ---
 function calPrevMonth(){ calViewMonth--; if(calViewMonth<0){calViewMonth=11;calViewYear--;} calRender(); }
 function calNextMonth(){ calViewMonth++; if(calViewMonth>11){calViewMonth=0;calViewYear++;} calRender(); }
-
 function calRenderMonth(filtered){
   document.getElementById('calMonthTitle').textContent = `${calViewYear} 年 ${calViewMonth+1} 月`;
   const grid = document.getElementById('calGrid');
   const firstDay = new Date(calViewYear, calViewMonth, 1).getDay();
   const daysInMonth = new Date(calViewYear, calViewMonth+1, 0).getDate();
   const todayStr = new Date().toISOString().slice(0,10);
-
-  // 按日期索引事件
   const dayMap = {};
   filtered.forEach(ev => {
     if(!dayMap[ev.date]) dayMap[ev.date] = [];
     dayMap[ev.date].push(ev);
   });
-
   let html = '';
-  // 填充上月空白
   const prevDays = new Date(calViewYear, calViewMonth, 0).getDate();
   for(let i=firstDay-1; i>=0; i--){
     html += `<div class="cal-day other-month"><span>${prevDays-i}</span></div>`;
   }
-  // 本月
   for(let d=1; d<=daysInMonth; d++){
     const dateStr = `${calViewYear}-${pad(calViewMonth+1)}-${pad(d)}`;
     const evs = dayMap[dateStr] || [];
@@ -1644,12 +2056,10 @@ function calRenderMonth(filtered){
     const hasMine = evs.some(ev=>ev.isMyEvent);
     const hasChurch = evs.some(ev=>ev.source==='church-sheet');
     const hasStudent = evs.some(ev=>ev.source==='student-sheet');
-
     let cls = 'cal-day';
     if(isToday) cls += ' today';
     if(isSelected) cls += ' selected';
     if(hasMine) cls += ' has-mine';
-
     let dots = '';
     if(evs.length){
       dots = '<div class="cal-dots">';
@@ -1660,45 +2070,33 @@ function calRenderMonth(filtered){
     }
     html += `<div class="${cls}" onclick="calSelectDay('${dateStr}')"><span>${d}</span>${dots}</div>`;
   }
-  // 填充下月
   const totalCells = firstDay + daysInMonth;
   const remaining = (7 - totalCells%7) % 7;
   for(let i=1;i<=remaining;i++){
     html += `<div class="cal-day other-month"><span>${i}</span></div>`;
   }
   grid.innerHTML = html;
-
-  // 如有選中日期則顯示詳情，否則顯示今天
   const showDate = calSelectedDate || todayStr;
   calRenderDayDetail(showDate, filtered);
 }
-
-function calSelectDay(dateStr){
-  calSelectedDate = dateStr;
-  calRender();
-}
-
+function calSelectDay(dateStr){ calSelectedDate = dateStr; calRender(); }
 function calRenderDayDetail(dateStr, filtered){
   const el = document.getElementById('calDayDetail');
   const dayEvs = filtered.filter(ev => ev.date === dateStr);
   const d = new Date(dateStr + 'T00:00:00');
   const label = d.toLocaleDateString('zh-TW',{year:'numeric',month:'long',day:'numeric',weekday:'long'});
-
   if(!dayEvs.length){
     el.innerHTML = `<div class="cal-day-title">${label}</div><div class="cal-empty"><div class="e-emoji">📭</div><p>這天沒有事件</p></div>`;
     return;
   }
   el.innerHTML = `<div class="cal-day-title">${label}（${dayEvs.length} 個事件）</div>` + dayEvs.map(ev => calRenderEventCard(ev)).join('');
 }
-
-// --- 列表視圖 ---
 function calRenderList(filtered){
   const el = document.getElementById('calListSection');
   if(!filtered.length){
     el.innerHTML = '<div class="cal-empty"><div class="e-emoji">📭</div><p>篩選範圍內沒有事件</p></div>';
     return;
   }
-  // 按日期分組
   const groups = {};
   filtered.forEach(ev => {
     if(!groups[ev.date]) groups[ev.date] = [];
@@ -1715,8 +2113,6 @@ function calRenderList(filtered){
   });
   el.innerHTML = html;
 }
-
-// --- 事件卡片 ---
 function calRenderEventCard(ev){
   const isOff = ev.type?.includes('off') || ev.title?.includes('暫停');
   let cardCls = 'cal-event-card';
@@ -1724,36 +2120,26 @@ function calRenderEventCard(ev){
   else if(ev.source==='church-sheet') cardCls += ' church';
   else if(ev.source==='student-sheet') cardCls += ' student';
   if(isOff) cardCls += ' off';
-
   const srcLabel = ev.source==='church-sheet' ? '教會' : '學生';
   const srcCls = ev.source==='church-sheet' ? 'src-church' : 'src-student';
-
-  // 我的角色 badges
   let myBadges = '';
   if(ev.myRoles && ev.myRoles.length){
     myBadges = '<div class="ce-my-roles">' + ev.myRoles.map(r=>`<span class="ce-my-badge">⭐ ${esc(r)}</span>`).join('') + '</div>';
   }
-
-  // 角色資訊
   let rolesHtml = '';
   if(ev.roles && Object.keys(ev.roles).length){
     const entries = Object.entries(ev.roles).slice(0,6);
     rolesHtml = '<div class="ce-roles">' + entries.map(([k,v])=>`<strong>${esc(k)}</strong>：${esc(v)}`).join('　') + '</div>';
   }
-
-  // 備註
   let noteHtml = '';
   if(ev.staffNote) noteHtml += `<div class="ce-note">📋 ${esc(ev.staffNote)}</div>`;
   if(ev.counselorNote) noteHtml += `<div class="ce-note">👤 ${esc(ev.counselorNote)}</div>`;
   if(ev.missionCountry) noteHtml += `<div class="ce-note">🌍 宣教國家：${esc(ev.missionCountry)}</div>`;
-
-  // 一鍵計時器按鈕（僅限我的事件）
   let timerBtn = '';
   if(ev.isMyEvent && ev.myRoles?.length){
     const taskName = ev.myRoles[0] + '：' + ev.title.replace('[學生] ','');
     timerBtn = `<button class="ce-timer-btn" onclick="calStartTimer('${esc(taskName)}')">⏱ 一鍵計時「${esc(taskName)}」</button>`;
   }
-
   return `<div class="${cardCls}" onclick="calShowEvent(${calEvents.indexOf(ev)})">
     <div class="ce-header">
       <div class="ce-title">${esc(ev.title)}</div>
@@ -1762,32 +2148,25 @@ function calRenderEventCard(ev){
     ${myBadges}${rolesHtml}${noteHtml}${timerBtn}
   </div>`;
 }
-
-// --- 一鍵計時 ---
 function calStartTimer(taskName){
   event.stopPropagation();
   document.getElementById('taskName').value = taskName;
-  // 自動選擇分類
   const catBtn = document.querySelector('#catRow .cat-chip[data-cat="行政"]');
   if(catBtn) selCat(catBtn);
   goTab('timer');
+  ytCheckVisibility();
   toast('已帶入任務名稱，按「開始」即可計時');
 }
-
-// --- 事件詳情 Modal ---
 function calShowEvent(idx){
   const ev = calEvents[idx];
   if(!ev) return;
   document.getElementById('calModalTitle').textContent = '📅 ' + ev.title;
   let body = '';
-
   if(ev.isMyEvent && ev.myRoles?.length){
     body += '<div class="ce-my-roles" style="margin-bottom:12px">' + ev.myRoles.map(r=>`<span class="ce-my-badge">⭐ ${esc(r)}</span>`).join('') + '</div>';
   }
-
   body += `<div class="edit-field"><label>日期</label><div style="font-size:14px;font-weight:600;">${ev.date}</div></div>`;
   body += `<div class="edit-field"><label>來源</label><div style="font-size:14px;">${ev.source==='church-sheet'?'⛪ 教會事工表':'🎓 學生事工表'}</div></div>`;
-
   if(ev.roles && Object.keys(ev.roles).length){
     body += '<div class="edit-field"><label>服事人員</label><div style="font-size:13px;line-height:2;">';
     Object.entries(ev.roles).forEach(([k,v])=>{
@@ -1795,16 +2174,13 @@ function calShowEvent(idx){
     });
     body += '</div></div>';
   }
-
   if(ev.location) body += `<div class="edit-field"><label>地點</label><div style="font-size:14px;">${esc(ev.location)}</div></div>`;
   if(ev.staffNote) body += `<div class="edit-field"><label>同工行程</label><div style="font-size:13px;color:var(--gold);">${esc(ev.staffNote)}</div></div>`;
   if(ev.counselorNote) body += `<div class="edit-field"><label>輔導行程</label><div style="font-size:13px;">${esc(ev.counselorNote)}</div></div>`;
   if(ev.missionCountry) body += `<div class="edit-field"><label>宣教國家</label><div style="font-size:14px;">🌍 ${esc(ev.missionCountry)}</div></div>`;
   if(ev.mainSpeaker) body += `<div class="edit-field"><label>本堂講員</label><div style="font-size:14px;">${esc(ev.mainSpeaker)}</div></div>`;
   if(ev.xinxiuSpeaker) body += `<div class="edit-field"><label>新秀福音中心</label><div style="font-size:14px;">${esc(ev.xinxiuSpeaker)}</div></div>`;
-
   document.getElementById('calModalBody').innerHTML = body;
-
   let footer = '<button class="btn-modal-cancel" onclick="closeCalEventModal()">關閉</button>';
   if(ev.isMyEvent && ev.myRoles?.length){
     const taskName = ev.myRoles[0] + '：' + ev.title.replace('[學生] ','');
@@ -1825,7 +2201,10 @@ renderHome();
 checkShowPWA();
 
 const taskNameEl=document.getElementById('taskName');
-taskNameEl.addEventListener('input',showSuggestions);
+taskNameEl.addEventListener('input', function(){
+  showSuggestions();
+  ytCheckVisibility(); // ★ 輸入時即時檢查是否顯示 YouTube 區塊
+});
 taskNameEl.addEventListener('focus',showSuggestions);
 taskNameEl.addEventListener('blur',hideSuggestions);
 taskNameEl.addEventListener('keydown',e=>{
@@ -1834,6 +2213,9 @@ taskNameEl.addEventListener('keydown',e=>{
     startTimer();
   }
 });
+
+// 初始化 YouTube 已儲存連結狀態
+ytUpdateSavedDisplay();
 </script>
 </body>
 </html>
