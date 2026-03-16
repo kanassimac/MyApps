@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -647,6 +648,35 @@ body {
 .cal-stat-card { background:var(--white); border-radius:var(--radius-sm); padding:12px; box-shadow:var(--shadow); text-align:center; }
 .cal-stat-num { font-family:'Space Mono',monospace; font-size:22px; font-weight:700; color:var(--accent); }
 .cal-stat-txt { font-size:11px; color:var(--text-sub); margin-top:2px; }
+
+/* ===== 匯出/匯入 ===== */
+.io-btn-row { display: flex; gap: 10px; margin-top: 12px; }
+.io-btn {
+  flex: 1; padding: 13px 8px; border-radius: var(--radius-sm); border: none;
+  font-size: 14px; font-weight: 700; font-family: 'Noto Sans TC', sans-serif;
+  cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;
+  transition: transform 0.15s, opacity 0.15s;
+}
+.io-btn:active { transform: scale(0.96); }
+.io-btn-export { background: var(--accent); color: white; }
+.io-btn-import { background: var(--green-soft); color: #15803d; border: 1.5px solid #bbf7d0; }
+.io-textarea {
+  width: 100%; border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+  padding: 10px 12px; font-size: 11px; font-family: 'Space Mono', monospace;
+  color: var(--text); outline: none; resize: vertical; height: 100px;
+  transition: border-color 0.2s; background: var(--bg);
+  margin-top: 10px;
+}
+.io-textarea:focus { border-color: var(--accent); background: var(--white); }
+.io-hint { font-size: 11px; color: var(--text-light); line-height: 1.6; margin-top: 6px; }
+.io-result {
+  display: none; margin-top: 10px; padding: 10px 14px; border-radius: var(--radius-sm);
+  font-size: 13px; font-weight: 600; line-height: 1.5;
+}
+.io-result.show { display: block; }
+.io-result.success { background: var(--green-soft); color: #15803d; border: 1px solid #bbf7d0; }
+.io-result.error { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+.io-result.info { background: var(--accent-soft); color: var(--accent); border: 1px solid #bfdbfe; }
 </style>
 </head>
 <body>
@@ -948,6 +978,23 @@ body {
     <button class="back-btn" onclick="goTab('home')">←</button>
     <div class="page-title">⚙️ 設定</div>
   </div>
+  <div class="setup-page-card">
+    <div class="sp-title">📦 資料匯出 / 匯入</div>
+    <div class="sp-desc">在不同瀏覽器或裝置間搬移任務記錄。從舊入口「匯出」，再到新入口「匯入合併」即可。</div>
+
+    <div class="io-btn-row">
+      <button class="io-btn io-btn-export" onclick="ioExport()">📤 匯出記錄</button>
+      <button class="io-btn io-btn-import" onclick="ioImport()">📥 匯入合併</button>
+    </div>
+
+    <textarea class="io-textarea" id="ioTextarea" placeholder="匯出的 JSON 會顯示在這裡；匯入時請將 JSON 貼到這裡"></textarea>
+    <div class="io-hint">
+      📤 <b>匯出</b>：點擊後會把所有記錄顯示在上方文字框，全選複製即可。<br>
+      📥 <b>匯入合併</b>：將複製的 JSON 貼入上方文字框，點擊後會<b>合併</b>（不會覆蓋已有的記錄）。
+    </div>
+    <div class="io-result" id="ioResult"></div>
+  </div>
+
   <div class="setup-page-card">
     <div class="sp-title">📋 Make.com Webhook 設定說明</div>
     <div class="sp-desc">在主頁貼上你的 <b>Make.com Webhook 網址</b>。任務結束或編輯後，App 會自動把資料送到這個網址，由 Make.com 負責寫入 Google Calendar。</div>
@@ -2190,6 +2237,98 @@ function calShowEvent(idx){
   document.getElementById('calEventModal').classList.add('show');
 }
 function closeCalEventModal(){ document.getElementById('calEventModal').classList.remove('show'); }
+
+// ============================================================
+//  匯出 / 匯入功能
+// ============================================================
+function ioShowResult(type, msg) {
+  const el = document.getElementById('ioResult');
+  el.className = 'io-result show ' + type;
+  el.innerHTML = msg;
+}
+
+function ioExport() {
+  const hist = loadHist();
+  if (!hist.length) {
+    ioShowResult('info', '⚠ 目前沒有任何記錄可匯出');
+    return;
+  }
+  const json = JSON.stringify(hist);
+  const ta = document.getElementById('ioTextarea');
+  ta.value = json;
+  ta.focus();
+  ta.select();
+
+  // 嘗試自動複製到剪貼簿
+  try {
+    navigator.clipboard.writeText(json).then(() => {
+      ioShowResult('success', `✓ 已匯出 <b>${hist.length}</b> 筆記錄，並已自動複製到剪貼簿！`);
+    }).catch(() => {
+      ioShowResult('success', `✓ 已匯出 <b>${hist.length}</b> 筆記錄，請手動全選複製上方文字框內容。`);
+    });
+  } catch(e) {
+    ioShowResult('success', `✓ 已匯出 <b>${hist.length}</b> 筆記錄，請手動全選複製上方文字框內容。`);
+  }
+}
+
+function ioImport() {
+  const ta = document.getElementById('ioTextarea');
+  const raw = ta.value.trim();
+  if (!raw) {
+    ioShowResult('error', '⚠ 請先在文字框中貼上匯出的 JSON 資料');
+    return;
+  }
+
+  let incoming;
+  try {
+    incoming = JSON.parse(raw);
+  } catch(e) {
+    ioShowResult('error', '⚠ JSON 格式錯誤，請確認貼上的是完整的匯出資料');
+    return;
+  }
+
+  if (!Array.isArray(incoming)) {
+    ioShowResult('error', '⚠ 資料格式不正確（需為陣列）');
+    return;
+  }
+
+  // 驗證每筆記錄的基本欄位
+  const valid = incoming.filter(r => r.id && r.task && r.start && r.end && typeof r.dur === 'number');
+  if (!valid.length) {
+    ioShowResult('error', '⚠ 沒有找到有效的任務記錄');
+    return;
+  }
+
+  // 合併邏輯：以 id 為主鍵去重
+  const existing = loadHist();
+  const existingIds = new Set(existing.map(r => r.id));
+  let newCount = 0;
+
+  valid.forEach(r => {
+    if (!existingIds.has(r.id)) {
+      existing.push(r);
+      existingIds.add(r.id);
+      newCount++;
+    }
+  });
+
+  // 按開始時間排序（新的在前）
+  existing.sort((a, b) => new Date(b.start) - new Date(a.start));
+  saveHist(existing);
+
+  const totalNow = existing.length;
+  const skipped = valid.length - newCount;
+
+  let msg = `✓ 匯入完成！新增 <b>${newCount}</b> 筆記錄，目前共 <b>${totalNow}</b> 筆。`;
+  if (skipped > 0) {
+    msg += `<br>（${skipped} 筆重複記錄已自動略過）`;
+  }
+  ioShowResult('success', msg);
+  toast(`✓ 已匯入 ${newCount} 筆新記錄`);
+
+  // 更新畫面
+  renderHome();
+}
 
 // ============================================================
 //  初始化
