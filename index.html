@@ -1242,8 +1242,25 @@ function ytCreatePlayer(videoId, startSeconds) {
       },
       onStateChange: function(event) {
         const section = document.getElementById('ytSection');
-        if (event.data === YT.PlayerState.PLAYING) { section.classList.add('active-border'); }
-        else { section.classList.remove('active-border'); }
+        if (event.data === YT.PlayerState.PLAYING) {
+          section.classList.add('active-border');
+          // 影片播放時，若計時器尚未啟動且任務名稱為「速讀」→ 自動開始計時
+          if (!isRunning && document.getElementById('taskName').value.trim() === '速讀') {
+            startTimer();
+          }
+          // 若計時器在暫停中 → 自動恢復計時
+          if (isRunning && isPaused) {
+            togglePause();
+          }
+        } else if (event.data === YT.PlayerState.PAUSED) {
+          section.classList.remove('active-border');
+          // 影片暫停時，若計時器正在計時 → 自動暫停計時
+          if (isRunning && !isPaused) {
+            togglePause();
+          }
+        } else {
+          section.classList.remove('active-border');
+        }
       }
     }
   });
