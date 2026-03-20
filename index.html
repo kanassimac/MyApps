@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -815,7 +814,7 @@ body {
     <button class="quick-btn" onclick="toast('🚧 一壘班 — 開發中')"><div class="quick-icon icon-class">👥</div><div class="quick-label">一壘班</div><div class="quick-badge">即將開放</div></button>
     <button class="quick-btn" onclick="goTab('calendar')"><div class="quick-icon icon-cal">📅</div><div class="quick-label">行事曆</div><div class="quick-badge">服事總覽</div></button>
     <button class="quick-btn" onclick="toast('🚧 代辦清單 — 開發中')"><div class="quick-icon icon-todo">📋</div><div class="quick-label">代辦清單</div><div class="quick-badge">即將開放</div></button>
-    <button class="quick-btn" onclick="goTab('setup')"><div class="quick-icon icon-cfg">⚙️</div><div class="quick-label">設定</div><div class="quick-badge">Webhook</div></button>
+    <button class="quick-btn" onclick="goTab('setup')"><div class="quick-icon icon-cfg">⚙️</div><div class="quick-label">設定</div><div class="quick-badge">API 設定</div></button>
   </div>
   <!-- ★ 移除最近任務列表（可到「記錄」查詢） -->
 </div>
@@ -1033,15 +1032,15 @@ body {
   <div class="setup-page-card" style="background:linear-gradient(135deg,#1a3a5c,#0f2840);color:white;" id="setupWebhookCard">
     <div class="setup-status" style="margin-bottom:10px;">
       <div class="s-dot" id="sDot"></div>
-      <span id="sText" style="font-size:13px;font-weight:600;">尚未設定 Google 日曆同步</span>
+      <span id="sText" style="font-size:13px;font-weight:600;">尚未設定任務同步 API</span>
     </div>
-    <div class="sp-title" style="color:white;">📋 Make.com Webhook</div>
+    <div class="sp-title" style="color:white;">📋 GAS 任務同步 API</div>
     <div class="setting-secret-row" style="margin-top:8px;">
-      <input type="password" class="setting-secret-input" id="gasUrlInput" placeholder="貼上 Make.com Webhook 網址" />
+      <input type="password" class="setting-secret-input" id="gasUrlInput" placeholder="貼上 GAS Web App 部署網址（/exec 結尾）" />
       <button class="btn-toggle-vis" onclick="toggleVis('gasUrlInput',this)" title="顯示/隱藏">👁</button>
       <button class="btn-save-url" onclick="saveGasUrl()">儲存</button>
     </div>
-    <div class="setup-hint">設定一次即可。任務結束後將自動寫入 Google Calendar。</div>
+    <div class="setup-hint">設定一次即可。任務結束後將自動寫入 Google Calendar + Sheets。</div>
   </div>
   <!-- ★ 行事曆 API 設定（從行事曆頁移過來） -->
   <div class="setup-page-card" style="background:linear-gradient(135deg,#1a3a5c,#0f2840);color:white;" id="setupCalApiCard">
@@ -1072,14 +1071,14 @@ body {
     <div class="io-result" id="ioResult"></div>
   </div>
   <div class="setup-page-card">
-    <div class="sp-title">🛠 Make.com 設定步驟</div>
+    <div class="sp-title">🛠 GAS 任務同步設定步驟</div>
     <ul class="step-list">
-      <li><div class="step-num">1</div><div>到 <b>make.com</b> 註冊／登入，新增 Scenario</div></li>
-      <li><div class="step-num">2</div><div>第一個模組選 <b>Webhooks → Custom webhook</b>，複製網址</div></li>
-      <li><div class="step-num">3</div><div>第二個模組選 <b>Google Calendar → Create an Event</b></div></li>
-      <li><div class="step-num">4</div><div>用個人 Gmail 授權 Google Calendar（不用 Workspace 帳號）</div></li>
-      <li><div class="step-num">5</div><div>欄位對應：Summary = <b>[cat] task</b>，Start = <b>start</b>，End = <b>end</b></div></li>
-      <li><div class="step-num">6</div><div>開啟 Scenario（打開開關），把 Webhook 網址貼到主頁儲存</div></li>
+      <li><div class="step-num">1</div><div>到 <b>script.google.com</b> 建立新專案，貼上「任務同步 GAS v2 程式碼」</div></li>
+      <li><div class="step-num">2</div><div>修改 <b>CALENDAR_ID</b> 為你的 Gmail 信箱（或日曆 ID）</div></li>
+      <li><div class="step-num">3</div><div>先在 GAS 編輯器中執行 <b>testSave()</b> 測試寫入是否正常</div></li>
+      <li><div class="step-num">4</div><div>「部署」→「新增部署」→ 類型選「網頁應用程式」</div></li>
+      <li><div class="step-num">5</div><div>執行身份選「我自己」，誰可存取選「所有人」</div></li>
+      <li><div class="step-num">6</div><div>複製部署網址（<b>/exec</b> 結尾），貼到上方「GAS 任務同步 API」欄位</div></li>
     </ul>
   </div>
   <div class="setup-page-card">
@@ -1313,8 +1312,37 @@ function goTab(tab) {
   if(tab==='setup'){updateGasStatus();updateCalApiStatus();}
 }
 function loadGasUrl(){return localStorage.getItem(GAS_URL_KEY)||'';}
-function saveGasUrl(){const url=document.getElementById('gasUrlInput').value.trim();if(!url){toast('⚠ 請輸入 Webhook 網址');return;}if(!url.startsWith('https://')){toast('⚠ 需以 https:// 開頭');return;}localStorage.setItem(GAS_URL_KEY,url);updateGasStatus();toast('✓ 設定已儲存！');}
-function updateGasStatus(){const url=loadGasUrl();const dot=document.getElementById('sDot');const txt=document.getElementById('sText');const card=document.getElementById('setupWebhookCard');if(url){dot.className='s-dot ok';txt.textContent='✓ Google 日曆同步已設定';card.style.background='linear-gradient(135deg, #064e3b, #065f46)';document.getElementById('gasUrlInput').value=url;}else{dot.className='s-dot';txt.textContent='尚未設定 Google 日曆同步';card.style.background='linear-gradient(135deg,#1a3a5c,#0f2840)';}}
+// ── JSONP 方式呼叫 GAS（可確認回傳結果）──
+function sendToGAS(data){
+  return new Promise((resolve,reject)=>{
+    const gasUrl=loadGasUrl();
+    if(!gasUrl){reject(new Error('尚未設定 GAS URL'));return;}
+    const cbName='_gasCb_'+Date.now()+'_'+Math.floor(Math.random()*10000);
+    const timeout=setTimeout(()=>{
+      delete window[cbName];
+      const s=document.getElementById('gasJsonpScript');if(s)s.remove();
+      reject(new Error('GAS 回應逾時（15秒）'));
+    },15000);
+    window[cbName]=function(result){
+      clearTimeout(timeout);delete window[cbName];
+      const s=document.getElementById('gasJsonpScript');if(s)s.remove();
+      if(result&&result.success){resolve(result);}
+      else{reject(new Error(result&&result.message||'GAS 回傳錯誤'));}
+    };
+    const old=document.getElementById('gasJsonpScript');if(old)old.remove();
+    const encoded=encodeURIComponent(JSON.stringify(data));
+    const script=document.createElement('script');
+    script.id='gasJsonpScript';
+    script.src=gasUrl+'?action=save&data='+encoded+'&callback='+cbName;
+    script.onerror=function(){
+      clearTimeout(timeout);delete window[cbName];script.remove();
+      reject(new Error('GAS 請求失敗，請檢查網址'));
+    };
+    document.body.appendChild(script);
+  });
+}
+function saveGasUrl(){const url=document.getElementById('gasUrlInput').value.trim();if(!url){toast('\u26a0 請輸入 GAS Web App 網址');return;}if(!url.startsWith('https://script.google.com/')){toast('\u26a0 網址需以 https://script.google.com/ 開頭');return;}localStorage.setItem(GAS_URL_KEY,url);updateGasStatus();toast('\u23f3 正在測試連線…');const cbName='_gasTestCb_'+Date.now();const timeout=setTimeout(()=>{delete window[cbName];toast('\u26a0 連線測試逾時，請確認 GAS 已部署為最新版本');},10000);window[cbName]=function(result){clearTimeout(timeout);delete window[cbName];const s=document.getElementById('gasTestScript');if(s)s.remove();if(result&&result.status==='ok'){toast('\u2713 連線成功！API 運作正常');}else{toast('\u26a0 API 回傳異常，請確認部署設定');}};const old=document.getElementById('gasTestScript');if(old)old.remove();const script=document.createElement('script');script.id='gasTestScript';script.src=url+'?callback='+cbName;script.onerror=function(){clearTimeout(timeout);delete window[cbName];script.remove();toast('\u26a0 連線失敗，請檢查網址是否正確');};document.body.appendChild(script);}
+function updateGasStatus(){const url=loadGasUrl();const dot=document.getElementById('sDot');const txt=document.getElementById('sText');const card=document.getElementById('setupWebhookCard');if(url){dot.className='s-dot ok';txt.textContent='✓ 任務同步 API 已連接';card.style.background='linear-gradient(135deg, #064e3b, #065f46)';document.getElementById('gasUrlInput').value=url;}else{dot.className='s-dot';txt.textContent='尚未設定任務同步 API';card.style.background='linear-gradient(135deg,#1a3a5c,#0f2840)';}}
 function selCat(btn){document.querySelectorAll('#catRow .cat-chip').forEach(c=>c.classList.remove('active'));btn.classList.add('active');selectedCat=btn.dataset.cat;const wrap=document.getElementById('customCatWrap');if(selectedCat==='其他'){wrap.classList.add('show');}else{wrap.classList.remove('show');}}
 function getEffectiveCat(){if(selectedCat==='其他'){const custom=document.getElementById('customCatInput').value.trim();return custom||'其他';}return selectedCat;}
 function getTaskFrequency(){const hist=loadHist();const freq={};hist.forEach(r=>{const key=r.task;if(!freq[key])freq[key]={count:0,cat:r.cat};freq[key].count++;});return Object.entries(freq).sort((a,b)=>b[1].count-a[1].count).map(([name,v])=>({name,count:v.count,cat:v.cat}));}
@@ -1326,7 +1354,7 @@ function updateNowClock(){if(!nowClockVisible)return;const now=new Date();docume
 function startTimer(){const name=document.getElementById('taskName').value.trim();if(!name){toast('⚠ 請先輸入任務名稱');const el=document.getElementById('taskName');el.classList.add('error');setTimeout(()=>el.classList.remove('error'),1500);return;}document.getElementById('suggestList').classList.remove('show');startTime=new Date();totalPausedMs=0;elapsedMs=0;isRunning=true;isPaused=false;hideSyncBadge();uiRunning();timerInterval=setInterval(tick,100);document.getElementById('nowClockRow').classList.add('show');updateNowClock();nowClockInterval=setInterval(updateNowClock,1000);requestWakeLock();showTimerNotification(name,getEffectiveCat());toast('▶ 開始計時！');}
 function tick(){if(!isPaused){elapsedMs=Date.now()-startTime.getTime()-totalPausedMs;document.getElementById('digits').textContent=fmtDur(elapsedMs);document.getElementById('mPaused').textContent=fmtMin(totalPausedMs);}}
 function togglePause(){if(!isPaused){pausedAt=Date.now();isPaused=true;clearInterval(timerInterval);releaseWakeLock();uiPaused();startAutoCountdown();toast('⏸ 已暫停');}else{totalPausedMs+=Date.now()-pausedAt;isPaused=false;cancelAuto();requestWakeLock();uiRunning();timerInterval=setInterval(tick,100);toast('▶ 繼續計時');}}
-async function stopTimer(fromAuto=false){if(!isRunning)return;const endTime=fromAuto?new Date(pausedAt):new Date();const dur=fromAuto?Math.max(0,pausedAt-startTime.getTime()-totalPausedMs):elapsedMs;clearInterval(timerInterval);cancelAuto();clearInterval(nowClockInterval);isRunning=false;isPaused=false;releaseWakeLock();dismissTimerNotification();const taskName=document.getElementById('taskName').value.trim();if(taskName==='速讀'){ytSaveCurrentPosition();if(ytPlayer&&typeof ytPlayer.pauseVideo==='function'){ytPlayer.pauseVideo();}}const effectiveCat=getEffectiveCat();const rec={id:Date.now(),task:taskName,cat:effectiveCat,note:document.getElementById('taskNote').value.trim(),start:startTime.toISOString(),end:endTime.toISOString(),dur:dur,synced:false};const hist=loadHist();hist.unshift(rec);saveHist(hist);showSyncBadge('syncing','⏳','正在同步到 Google 日曆…');uiSyncing();const gasUrl=loadGasUrl();if(gasUrl){try{await fetch(gasUrl,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:JSON.stringify(rec)});rec.synced=true;hist[0].synced=true;saveHist(hist);showSyncBadge('success','📅','已同步到 Google 日曆 ✓');toast('✓ 任務結束！已同步到 Google 日曆');}catch(err){showSyncBadge('error','⚠','同步失敗，已儲存本地');toast('⚠ 同步失敗，任務已儲存本地');}}else{showSyncBadge('local','💾','已儲存本地（尚未設定日曆同步）');toast('✓ 任務已儲存！');}uiIdle();document.getElementById('taskName').value='';document.getElementById('taskNote').value='';document.getElementById('customCatInput').value='';document.getElementById('customCatWrap').classList.remove('show');ytCheckVisibility();renderHome();}
+async function stopTimer(fromAuto=false){if(!isRunning)return;const endTime=fromAuto?new Date(pausedAt):new Date();const dur=fromAuto?Math.max(0,pausedAt-startTime.getTime()-totalPausedMs):elapsedMs;clearInterval(timerInterval);cancelAuto();clearInterval(nowClockInterval);isRunning=false;isPaused=false;releaseWakeLock();dismissTimerNotification();const taskName=document.getElementById('taskName').value.trim();if(taskName==='速讀'){ytSaveCurrentPosition();if(ytPlayer&&typeof ytPlayer.pauseVideo==='function'){ytPlayer.pauseVideo();}}const effectiveCat=getEffectiveCat();const rec={id:Date.now(),task:taskName,cat:effectiveCat,note:document.getElementById('taskNote').value.trim(),start:startTime.toISOString(),end:endTime.toISOString(),dur:dur,synced:false};const hist=loadHist();hist.unshift(rec);saveHist(hist);showSyncBadge('syncing','⏳','正在同步到 Google 日曆…');uiSyncing();const gasUrl=loadGasUrl();if(gasUrl){try{const gasResult=await sendToGAS(rec);rec.synced=true;hist[0].synced=true;saveHist(hist);showSyncBadge('success','📅','已同步到 Google Calendar + Sheets ✓');toast('✓ 任務結束！已同步到 Google 日曆');}catch(err){showSyncBadge('error','⚠','同步失敗：'+err.message);toast('⚠ 同步失敗：'+err.message);}}else{showSyncBadge('local','💾','已儲存本地（尚未設定任務同步 API）');toast('✓ 任務已儲存！');}uiIdle();document.getElementById('taskName').value='';document.getElementById('taskNote').value='';document.getElementById('customCatInput').value='';document.getElementById('customCatWrap').classList.remove('show');ytCheckVisibility();renderHome();}
 function startAutoCountdown(){document.getElementById('autoBar').classList.add('show');document.getElementById('autoFill').style.width='100%';const t0=Date.now();autoInterval=setInterval(()=>{const rem=30*60*1000-(Date.now()-t0);if(rem<=0){cancelAuto();stopTimer(true);toast('⏱ 暫停超過 30 分鐘，已自動結束');return;}document.getElementById('autoFill').style.width=(rem/(30*60*1000)*100)+'%';document.getElementById('autoCD').textContent=fmtDur(rem);},1000);}
 function cancelAuto(){clearInterval(autoInterval);document.getElementById('autoBar').classList.remove('show');}
 function uiRunning(){document.getElementById('digits').className='timer-digits running';document.getElementById('sInd').className='s-indicator running';document.getElementById('sLabel').textContent='計時中';document.getElementById('tMeta').style.display='flex';document.getElementById('mStart').textContent=fmtTime(startTime);document.getElementById('mCat').textContent=getEffectiveCat();document.getElementById('noteCard').classList.add('show');document.getElementById('taskName').disabled=true;document.querySelectorAll('#catRow .cat-chip').forEach(c=>c.disabled=true);document.getElementById('customCatInput').disabled=true;document.getElementById('btnStart').disabled=true;document.getElementById('btnPause').disabled=false;document.getElementById('btnStop').disabled=false;document.getElementById('btnPause').className='action-btn btn-pause';document.getElementById('btnPause').innerHTML='⏸ 暫停';}
@@ -1356,7 +1384,7 @@ function openBatchCat(){if(!selectedIds.size){toast('⚠ 請先選擇記錄');re
 function pickBatchCat(btn,cat){document.querySelectorAll('.batch-cat-chip').forEach(c=>c.classList.remove('active'));btn.classList.add('active');batchCatChoice=cat;}
 function closeBatchCat(){document.getElementById('batchCatModal').classList.remove('show');}
 function applyBatchCat(){if(!batchCatChoice){toast('⚠ 請選擇一個分類');return;}const hist=loadHist();let count=0;hist.forEach(r=>{if(selectedIds.has(r.id)){r.cat=batchCatChoice;r.synced=false;count++;}});saveHist(hist);closeBatchCat();toast('✓ 已將 '+count+' 筆記錄改為「'+batchCatChoice+'」');renderHistPage();}
-async function batchSync(){if(!selectedIds.size){toast('⚠ 請先選擇記錄');return;}const gasUrl=loadGasUrl();if(!gasUrl){toast('⚠ 尚未設定 Webhook URL');return;}const hist=loadHist();let count=0;for(const r of hist){if(!selectedIds.has(r.id))continue;try{await fetch(gasUrl,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:JSON.stringify(r)});r.synced=true;count++;}catch{}}saveHist(hist);toast('✓ 已同步 '+count+' 筆記錄');renderHistPage();}
+async function batchSync(){if(!selectedIds.size){toast('⚠ 請先選擇記錄');return;}const gasUrl=loadGasUrl();if(!gasUrl){toast('⚠ 尚未設定任務同步 API，請到設定頁設定');return;}const hist=loadHist();let count=0;let fail=0;for(const r of hist){if(!selectedIds.has(r.id))continue;try{await sendToGAS(r);r.synced=true;count++;}catch{fail++;}}saveHist(hist);if(fail>0){toast('✓ 同步 '+count+' 筆，'+fail+' 筆失敗');}else{toast('✓ 已同步 '+count+' 筆記錄到 Google Calendar + Sheets');}renderHistPage();}
 function batchDelete(){if(!selectedIds.size){toast('⚠ 請先選擇記錄');return;}if(!confirm('確定刪除 '+selectedIds.size+' 筆記錄？'))return;const hist=loadHist().filter(r=>!selectedIds.has(r.id));saveHist(hist);selectedIds.clear();updateBatchCount();toast('✓ 已刪除所選記錄');renderHistPage();renderHome();}
 function renderHistList(){const el=document.getElementById('histList');const data=getVisibleHist();if(!data.length){el.innerHTML='<div class="empty-hist"><div class="e-emoji">📭</div><p>尚無記錄</p></div>';return;}el.innerHTML=data.map(r=>'<div class="hist-item"><div style="display:flex;align-items:flex-start;"><div class="hi-select-wrap '+(selectMode?'show':'')+'"><input type="checkbox" class="hi-cb" id="cb-'+r.id+'" '+(selectedIds.has(r.id)?'checked':'')+' onchange="toggleSelectItem('+r.id+')" /></div><div style="flex:1;min-width:0;"><div class="hi-top"><div class="hi-name">'+esc(r.task)+(r.synced?'<span class="gcal-icon">📅</span>':'')+'</div><div class="hi-dur">'+fmtDur(r.dur)+'</div></div><div class="hi-bot"><div class="hi-time">'+fmtDate(new Date(r.start))+' '+fmtTime(new Date(r.start))+'–'+fmtTime(new Date(r.end))+'</div><div class="cat-tag cat-'+r.cat+'">'+esc(r.cat)+'</div></div>'+(r.note?'<div class="hi-note">'+esc(r.note)+'</div>':'')+'<div class="hi-actions"><button class="hi-btn hi-btn-edit" onclick="openEdit('+r.id+')">✏️ 編輯</button><button class="hi-btn hi-btn-resync" onclick="resyncRecord('+r.id+')">📅 同步</button><button class="hi-btn hi-btn-del" onclick="deleteRecord('+r.id+')">🗑 刪除</button></div></div></div></div>').join('');}
 function clearAll(){if(confirm('確定清除所有記錄？')){localStorage.removeItem(STORAGE_KEY);renderHistPage();renderHome();toast('已清除所有記錄');}}
@@ -1368,8 +1396,8 @@ function openEdit(id){const hist=loadHist();const rec=hist.find(r=>r.id===id);if
 function selEditCat(btn){document.querySelectorAll('#editCatRow .edit-cat-chip').forEach(c=>c.classList.remove('active'));btn.classList.add('active');editingCat=btn.dataset.cat;}
 function closeModal(){document.getElementById('editModal').classList.remove('show');editingId=null;}
 function closeModalOnOverlay(e){if(e.target===document.getElementById('editModal'))closeModal();}
-async function saveEdit(){const task=document.getElementById('editTask').value.trim();if(!task){toast('⚠ 任務名稱不能為空');return;}const startVal=document.getElementById('editStart').value;const endVal=document.getElementById('editEnd').value;if(!startVal||!endVal){toast('⚠ 請填入開始與結束時間');return;}const newStart=new Date(startVal),newEnd=new Date(endVal);if(newEnd<=newStart){toast('⚠ 結束時間必須晚於開始時間');return;}const newDur=newEnd.getTime()-newStart.getTime();const hist=loadHist();const idx=hist.findIndex(r=>r.id===editingId);if(idx===-1){toast('⚠ 找不到此記錄');return;}hist[idx]={...hist[idx],task,cat:editingCat,note:document.getElementById('editNote').value.trim(),start:newStart.toISOString(),end:newEnd.toISOString(),dur:newDur,synced:false};saveHist(hist);closeModal();const gasUrl=loadGasUrl();if(gasUrl){toast('⏳ 正在同步更新到日曆…');try{await fetch(gasUrl,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:JSON.stringify({...hist[idx],action:'update'})});hist[idx].synced=true;saveHist(hist);toast('✓ 已更新並同步到 Google 日曆 📅');}catch{toast('⚠ 本地已儲存，但日曆同步失敗');}}else{toast('✓ 已儲存修改');}renderHistPage();renderHome();}
-async function resyncRecord(id){const hist=loadHist();const rec=hist.find(r=>r.id===id);if(!rec)return;const gasUrl=loadGasUrl();if(!gasUrl){toast('⚠ 尚未設定 Webhook URL');return;}toast('⏳ 正在同步到 Google 日曆…');try{await fetch(gasUrl,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:JSON.stringify(rec)});const idx=hist.findIndex(r=>r.id===id);hist[idx].synced=true;saveHist(hist);toast('✓ 已同步到 Google 日曆 📅');renderHistList();renderHome();}catch{toast('⚠ 同步失敗，請稍後再試');}}
+async function saveEdit(){const task=document.getElementById('editTask').value.trim();if(!task){toast('⚠ 任務名稱不能為空');return;}const startVal=document.getElementById('editStart').value;const endVal=document.getElementById('editEnd').value;if(!startVal||!endVal){toast('⚠ 請填入開始與結束時間');return;}const newStart=new Date(startVal),newEnd=new Date(endVal);if(newEnd<=newStart){toast('⚠ 結束時間必須晚於開始時間');return;}const newDur=newEnd.getTime()-newStart.getTime();const hist=loadHist();const idx=hist.findIndex(r=>r.id===editingId);if(idx===-1){toast('⚠ 找不到此記錄');return;}hist[idx]={...hist[idx],task,cat:editingCat,note:document.getElementById('editNote').value.trim(),start:newStart.toISOString(),end:newEnd.toISOString(),dur:newDur,synced:false};saveHist(hist);closeModal();const gasUrl=loadGasUrl();if(gasUrl){toast('⏳ 正在同步更新到日曆…');try{await sendToGAS(hist[idx]);hist[idx].synced=true;saveHist(hist);toast('✓ 已更新並同步到 Google Calendar + Sheets 📅');}catch(err){toast('⚠ 本地已儲存，但同步失敗：'+err.message);}}else{toast('✓ 已儲存修改（尚未設定同步）');}renderHistPage();renderHome();}
+async function resyncRecord(id){const hist=loadHist();const rec=hist.find(r=>r.id===id);if(!rec)return;const gasUrl=loadGasUrl();if(!gasUrl){toast('⚠ 尚未設定任務同步 API，請到設定頁設定');return;}toast('⏳ 正在同步到 Google 日曆…');try{await sendToGAS(rec);const idx=hist.findIndex(r=>r.id===id);hist[idx].synced=true;saveHist(hist);toast('✓ 已同步到 Google Calendar + Sheets 📅');renderHistList();renderHome();}catch(err){toast('⚠ 同步失敗：'+err.message);}}
 function deleteRecord(id){if(!confirm('確定刪除此筆記錄？'))return;const hist=loadHist().filter(r=>r.id!==id);saveHist(hist);renderHistPage();renderHome();toast('已刪除此記錄');}
 function toLocalDTInput(date){const off=date.getTimezoneOffset()*60000;return new Date(date.getTime()-off).toISOString().slice(0,16);}
 function fmtDur(ms){const t=Math.floor(Math.max(0,ms)/1000);return pad(Math.floor(t/3600))+':'+pad(Math.floor(t%3600/60))+':'+pad(t%60);}
