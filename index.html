@@ -797,7 +797,6 @@ body {
 </div>
 <!-- ========== 主頁 ========== -->
 <div class="page active" id="page-home">
-  <!-- ★ 移除 Webhook 輸入欄（已移到設定頁） -->
   <div class="greeting-card">
     <div class="greeting-time" id="greetingTime">FRIDAY MORNING</div>
     <div class="greeting-text">平安，<span>Kanas 牧師</span>！<br>今天要完成什麼？</div>
@@ -816,7 +815,6 @@ body {
     <button class="quick-btn" onclick="toast('🚧 代辦清單 — 開發中')"><div class="quick-icon icon-todo">📋</div><div class="quick-label">代辦清單</div><div class="quick-badge">即將開放</div></button>
     <button class="quick-btn" onclick="goTab('setup')"><div class="quick-icon icon-cfg">⚙️</div><div class="quick-label">設定</div><div class="quick-badge">API 設定</div></button>
   </div>
-  <!-- ★ 移除最近任務列表（可到「記錄」查詢） -->
 </div>
 <!-- ========== 計時器頁 ========== -->
 <div class="page" id="page-timer">
@@ -922,7 +920,6 @@ body {
     </div>
     <button class="back-btn" style="width:auto;padding:0 12px;border-radius:20px;font-size:12px;" onclick="calRefresh()">🔄 重新整理</button>
   </div>
-  <!-- ★ 移除 API 輸入欄（已移到設定頁） -->
   <div class="cal-stats-row" id="calStats" style="display:none">
     <div class="cal-stat-card">
       <div class="cal-stat-num" id="calMyCount">0</div>
@@ -933,14 +930,12 @@ body {
       <div class="cal-stat-txt">全部事件</div>
     </div>
   </div>
-  <!-- ★ 預設選取「我的服事」 -->
   <div class="cal-filter-bar" id="calFilterBar">
     <button class="cal-f-chip" onclick="calSetFilter('all',this)">全部</button>
     <button class="cal-f-chip mine-active" onclick="calSetFilter('mine',this)" id="calMineBtn">⭐ 我的服事</button>
     <button class="cal-f-chip" onclick="calSetFilter('church',this)">⛪ 教會</button>
     <button class="cal-f-chip" onclick="calSetFilter('student',this)">🎓 學生</button>
   </div>
-  <!-- ★ 預設選取「三個月」 -->
   <div class="cal-range-bar" id="calRangeBar">
     <button class="cal-r-chip" onclick="calSetRange('1w',this)">一週內</button>
     <button class="cal-r-chip" onclick="calSetRange('2w',this)">二週內</button>
@@ -948,7 +943,6 @@ body {
     <button class="cal-r-chip active" onclick="calSetRange('3m',this)">三個月</button>
     <button class="cal-r-chip" onclick="calSetRange('all',this)">全部</button>
   </div>
-  <!-- ★ 預設為「列表」模式 -->
   <div class="cal-view-toggle">
     <button class="cal-view-btn" id="calViewMonth" onclick="calSetView('month')">📅 月曆</button>
     <button class="cal-view-btn active" id="calViewList" onclick="calSetView('list')">📋 列表</button>
@@ -1022,7 +1016,6 @@ body {
     <button class="back-btn" onclick="goTab('home')">←</button>
     <div class="page-title">⚙️ 設定</div>
   </div>
-  <!-- ★ Webhook 設定（從主頁移過來） -->
   <div class="setup-page-card" style="background:linear-gradient(135deg,#1a3a5c,#0f2840);color:white;" id="setupWebhookCard">
     <div class="setup-status" style="margin-bottom:10px;">
       <div class="s-dot" id="sDot"></div>
@@ -1036,7 +1029,6 @@ body {
     </div>
     <div class="setup-hint">設定一次即可。任務結束後將自動寫入 Google Calendar + Sheets。</div>
   </div>
-  <!-- ★ 行事曆 API 設定（從行事曆頁移過來） -->
   <div class="setup-page-card" style="background:linear-gradient(135deg,#1a3a5c,#0f2840);color:white;" id="setupCalApiCard">
     <div class="setup-status" style="margin-bottom:10px;">
       <div class="s-dot" id="calApiDot"></div>
@@ -1152,6 +1144,8 @@ const GAS_URL_KEY = 'kanas_gas_url';
 const CAL_API_KEY = 'kanas_cal_api_url';
 const CAL_DATA_KEY = 'kanas_cal_cache';
 const YT_URL_KEY = 'kanas_yt_url';
+const PAUSE_STATE_KEY = 'kanas_pause_state';  // ★ 新增：暫停狀態持久化 key
+const AUTO_TIMEOUT_MS = 30 * 60 * 1000;       // ★ 新增：30 分鐘常數
 const DEFAULT_CATS = ['講道','牧養','行政','個人','其他'];
 let timerInterval=null,autoInterval=null,nowClockInterval=null;
 let startTime=null,pausedAt=null;
@@ -1162,6 +1156,89 @@ let currentRange='all',rangeStartDate=null,rangeEndDate=null;
 let selectMode=false,selectedIds=new Set();
 let batchCatChoice='';
 let nowClockVisible=true;
+// ============================================================
+//  ★ 暫停狀態持久化（localStorage）
+//    解決 iOS Safari 背景凍結 setInterval 的問題
+// ============================================================
+function savePauseState() {
+  // 暫停時，把關鍵狀態寫入 localStorage
+  const state = {
+    pausedAt: pausedAt,                          // 暫停時的時間戳（ms）
+    startTime: startTime.getTime(),              // 計時開始時間（ms）
+    totalPausedMs: totalPausedMs,                // 累計暫停時間
+    taskName: document.getElementById('taskName').value.trim(),
+    cat: getEffectiveCat(),
+    note: document.getElementById('taskNote').value.trim()
+  };
+  localStorage.setItem(PAUSE_STATE_KEY, JSON.stringify(state));
+}
+function clearPauseState() {
+  localStorage.removeItem(PAUSE_STATE_KEY);
+}
+function checkPauseExpiry() {
+  // ★ 核心：檢查暫停是否已超過 30 分鐘
+  //    在 visibilitychange（頁面回前景）和頁面載入時呼叫
+  const raw = localStorage.getItem(PAUSE_STATE_KEY);
+  if (!raw) return false;
+  try {
+    const state = JSON.parse(raw);
+    const elapsed = Date.now() - state.pausedAt;
+    if (elapsed >= AUTO_TIMEOUT_MS) {
+      // ★ 已超過 30 分鐘 → 自動結束任務
+      //    若計時器變數還在（同一頁面 session），直接呼叫 stopTimer
+      //    若是重新載入的頁面，需要從 localStorage 還原後結束
+      if (isRunning && isPaused) {
+        // 同一 session，計時器狀態仍在記憶體中
+        stopTimer(true);
+        toast('⏱ 暫停超過 30 分鐘，已自動結束');
+      } else {
+        // 頁面重新載入（瀏覽器被關閉後重開）→ 從 localStorage 還原並直接儲存記錄
+        autoFinishFromStorage(state);
+      }
+      clearPauseState();
+      return true;
+    }
+  } catch (e) {
+    clearPauseState();
+  }
+  return false;
+}
+async function autoFinishFromStorage(state) {
+  // ★ 從 localStorage 還原暫停狀態，直接建立記錄並同步
+  const endTime = new Date(state.pausedAt);
+  const dur = Math.max(0, state.pausedAt - state.startTime - state.totalPausedMs);
+  if (dur < 1000) { clearPauseState(); return; } // 不到 1 秒不儲存
+
+  const rec = {
+    id: Date.now(),
+    task: state.taskName,
+    cat: state.cat,
+    note: state.note || '',
+    start: new Date(state.startTime).toISOString(),
+    end: endTime.toISOString(),
+    dur: dur,
+    synced: false
+  };
+  const hist = loadHist();
+  hist.unshift(rec);
+
+  // 嘗試同步到 GAS
+  const gasUrl = loadGasUrl();
+  if (gasUrl) {
+    try {
+      await sendToGAS(rec);
+      rec.synced = true;
+      hist[0].synced = true;
+      toast('⏱ 暫停逾時自動結束，已同步到 Google 日曆 ✓');
+    } catch (err) {
+      toast('⏱ 暫停逾時自動結束（同步失敗：' + err.message + '）');
+    }
+  } else {
+    toast('⏱ 暫停逾時自動結束，已儲存本地');
+  }
+  saveHist(hist);
+  renderHome();
+}
 // ============================================================
 //  ★ 顯示/隱藏密碼欄切換
 // ============================================================
@@ -1244,17 +1321,14 @@ function ytCreatePlayer(videoId, startSeconds) {
         const section = document.getElementById('ytSection');
         if (event.data === YT.PlayerState.PLAYING) {
           section.classList.add('active-border');
-          // 影片播放時，若計時器尚未啟動且任務名稱為「速讀」→ 自動開始計時
           if (!isRunning && document.getElementById('taskName').value.trim() === '速讀') {
             startTimer();
           }
-          // 若計時器在暫停中 → 自動恢復計時
           if (isRunning && isPaused) {
             togglePause();
           }
         } else if (event.data === YT.PlayerState.PAUSED) {
           section.classList.remove('active-border');
-          // 影片暫停時，若計時器正在計時 → 自動暫停計時
           if (isRunning && !isPaused) {
             togglePause();
           }
@@ -1308,7 +1382,7 @@ function ytSaveCurrentPosition() {
   try { const currentTime = Math.floor(ytPlayer.getCurrentTime()); if (currentTime <= 0) return; const videoUrl = ytPlayer.getVideoUrl(); if (!videoUrl) return; const parsed = parseYTUrl(videoUrl); if (!parsed) return; const newUrl = 'https://www.youtube.com/watch?v=' + parsed.videoId + '&t=' + currentTime; localStorage.setItem(YT_URL_KEY, newUrl); document.getElementById('ytUrlInput').value = newUrl; ytUpdateSavedDisplay(); } catch(e) { console.log('YT save position error:', e); }
 }
 // ============================================================
-//  計時器、歷史記錄等核心功能（完整保留）
+//  計時器、歷史記錄等核心功能
 // ============================================================
 function getAllCats(){const hist=loadHist();const cats=new Set(DEFAULT_CATS);hist.forEach(r=>cats.add(r.cat));return [...cats];}
 function goTab(tab) {
@@ -1323,7 +1397,6 @@ function goTab(tab) {
   if(tab==='setup'){updateGasStatus();updateCalApiStatus();}
 }
 function loadGasUrl(){return localStorage.getItem(GAS_URL_KEY)||'';}
-// ── JSONP 方式呼叫 GAS（可確認回傳結果）──
 function sendToGAS(data){
   return new Promise((resolve,reject)=>{
     const gasUrl=loadGasUrl();
@@ -1365,11 +1438,11 @@ function pickSuggest(name,cat){document.getElementById('taskName').value=name;do
 function hideSuggestions(){setTimeout(()=>document.getElementById('suggestList').classList.remove('show'),150);}
 function toggleNowClock(){nowClockVisible=!nowClockVisible;document.getElementById('nowClock').style.display=nowClockVisible?'':'none';document.getElementById('nowToggle').textContent=nowClockVisible?'👁':'👁‍🗨';}
 function updateNowClock(){if(!nowClockVisible)return;const now=new Date();document.getElementById('nowClock').textContent=pad(now.getHours())+':'+pad(now.getMinutes())+':'+pad(now.getSeconds());}
-function startTimer(){const name=document.getElementById('taskName').value.trim();if(!name){toast('⚠ 請先輸入任務名稱');const el=document.getElementById('taskName');el.classList.add('error');setTimeout(()=>el.classList.remove('error'),1500);return;}document.getElementById('suggestList').classList.remove('show');startTime=new Date();totalPausedMs=0;elapsedMs=0;isRunning=true;isPaused=false;hideSyncBadge();uiRunning();timerInterval=setInterval(tick,100);document.getElementById('nowClockRow').classList.add('show');updateNowClock();nowClockInterval=setInterval(updateNowClock,1000);requestWakeLock();showTimerNotification(name,getEffectiveCat());toast('▶ 開始計時！');}
+function startTimer(){const name=document.getElementById('taskName').value.trim();if(!name){toast('⚠ 請先輸入任務名稱');const el=document.getElementById('taskName');el.classList.add('error');setTimeout(()=>el.classList.remove('error'),1500);return;}document.getElementById('suggestList').classList.remove('show');startTime=new Date();totalPausedMs=0;elapsedMs=0;isRunning=true;isPaused=false;clearPauseState();hideSyncBadge();uiRunning();timerInterval=setInterval(tick,100);document.getElementById('nowClockRow').classList.add('show');updateNowClock();nowClockInterval=setInterval(updateNowClock,1000);requestWakeLock();showTimerNotification(name,getEffectiveCat());toast('▶ 開始計時！');}
 function tick(){if(!isPaused){elapsedMs=Date.now()-startTime.getTime()-totalPausedMs;document.getElementById('digits').textContent=fmtDur(elapsedMs);document.getElementById('mPaused').textContent=fmtMin(totalPausedMs);}}
-function togglePause(){if(!isPaused){pausedAt=Date.now();isPaused=true;clearInterval(timerInterval);releaseWakeLock();uiPaused();startAutoCountdown();toast('⏸ 已暫停');}else{totalPausedMs+=Date.now()-pausedAt;isPaused=false;cancelAuto();requestWakeLock();uiRunning();timerInterval=setInterval(tick,100);toast('▶ 繼續計時');}}
-async function stopTimer(fromAuto=false){if(!isRunning)return;const endTime=fromAuto?new Date(pausedAt):new Date();const dur=fromAuto?Math.max(0,pausedAt-startTime.getTime()-totalPausedMs):elapsedMs;clearInterval(timerInterval);cancelAuto();clearInterval(nowClockInterval);isRunning=false;isPaused=false;releaseWakeLock();dismissTimerNotification();const taskName=document.getElementById('taskName').value.trim();if(taskName==='速讀'){ytSaveCurrentPosition();if(ytPlayer&&typeof ytPlayer.pauseVideo==='function'){ytPlayer.pauseVideo();}}const effectiveCat=getEffectiveCat();const rec={id:Date.now(),task:taskName,cat:effectiveCat,note:document.getElementById('taskNote').value.trim(),start:startTime.toISOString(),end:endTime.toISOString(),dur:dur,synced:false};const hist=loadHist();hist.unshift(rec);saveHist(hist);showSyncBadge('syncing','⏳','正在同步到 Google 日曆…');uiSyncing();const gasUrl=loadGasUrl();if(gasUrl){try{const gasResult=await sendToGAS(rec);rec.synced=true;hist[0].synced=true;saveHist(hist);showSyncBadge('success','📅','已同步到 Google Calendar + Sheets ✓');toast('✓ 任務結束！已同步到 Google 日曆');}catch(err){showSyncBadge('error','⚠','同步失敗：'+err.message);toast('⚠ 同步失敗：'+err.message);}}else{showSyncBadge('local','💾','已儲存本地（尚未設定任務同步 API）');toast('✓ 任務已儲存！');}uiIdle();document.getElementById('taskName').value='';document.getElementById('taskNote').value='';document.getElementById('catInput').value='';ytCheckVisibility();renderHome();}
-function startAutoCountdown(){document.getElementById('autoBar').classList.add('show');document.getElementById('autoFill').style.width='100%';const t0=Date.now();autoInterval=setInterval(()=>{const rem=30*60*1000-(Date.now()-t0);if(rem<=0){cancelAuto();stopTimer(true);toast('⏱ 暫停超過 30 分鐘，已自動結束');return;}document.getElementById('autoFill').style.width=(rem/(30*60*1000)*100)+'%';document.getElementById('autoCD').textContent=fmtDur(rem);},1000);}
+function togglePause(){if(!isPaused){pausedAt=Date.now();isPaused=true;clearInterval(timerInterval);releaseWakeLock();uiPaused();savePauseState();startAutoCountdown();toast('⏸ 已暫停');}else{totalPausedMs+=Date.now()-pausedAt;isPaused=false;cancelAuto();clearPauseState();requestWakeLock();uiRunning();timerInterval=setInterval(tick,100);toast('▶ 繼續計時');}}
+async function stopTimer(fromAuto=false){if(!isRunning)return;const endTime=fromAuto?new Date(pausedAt):new Date();const dur=fromAuto?Math.max(0,pausedAt-startTime.getTime()-totalPausedMs):elapsedMs;clearInterval(timerInterval);cancelAuto();clearInterval(nowClockInterval);clearPauseState();isRunning=false;isPaused=false;releaseWakeLock();dismissTimerNotification();const taskName=document.getElementById('taskName').value.trim();if(taskName==='速讀'){ytSaveCurrentPosition();if(ytPlayer&&typeof ytPlayer.pauseVideo==='function'){ytPlayer.pauseVideo();}}const effectiveCat=getEffectiveCat();const rec={id:Date.now(),task:taskName,cat:effectiveCat,note:document.getElementById('taskNote').value.trim(),start:startTime.toISOString(),end:endTime.toISOString(),dur:dur,synced:false};const hist=loadHist();hist.unshift(rec);saveHist(hist);showSyncBadge('syncing','⏳','正在同步到 Google 日曆…');uiSyncing();const gasUrl=loadGasUrl();if(gasUrl){try{const gasResult=await sendToGAS(rec);rec.synced=true;hist[0].synced=true;saveHist(hist);showSyncBadge('success','📅','已同步到 Google Calendar + Sheets ✓');toast('✓ 任務結束！已同步到 Google 日曆');}catch(err){showSyncBadge('error','⚠','同步失敗：'+err.message);toast('⚠ 同步失敗：'+err.message);}}else{showSyncBadge('local','💾','已儲存本地（尚未設定任務同步 API）');toast('✓ 任務已儲存！');}uiIdle();document.getElementById('taskName').value='';document.getElementById('taskNote').value='';document.getElementById('catInput').value='';ytCheckVisibility();renderHome();}
+function startAutoCountdown(){document.getElementById('autoBar').classList.add('show');document.getElementById('autoFill').style.width='100%';const t0=Date.now();autoInterval=setInterval(()=>{const rem=AUTO_TIMEOUT_MS-(Date.now()-t0);if(rem<=0){cancelAuto();stopTimer(true);toast('⏱ 暫停超過 30 分鐘，已自動結束');return;}document.getElementById('autoFill').style.width=(rem/AUTO_TIMEOUT_MS*100)+'%';document.getElementById('autoCD').textContent=fmtDur(rem);},1000);}
 function cancelAuto(){clearInterval(autoInterval);document.getElementById('autoBar').classList.remove('show');}
 function uiRunning(){document.getElementById('digits').className='timer-digits running';document.getElementById('sInd').className='s-indicator running';document.getElementById('sLabel').textContent='計時中';document.getElementById('tMeta').style.display='flex';document.getElementById('mStart').textContent=fmtTime(startTime);document.getElementById('mCat').textContent=getEffectiveCat();document.getElementById('noteCard').classList.add('show');document.getElementById('taskName').disabled=true;document.getElementById('catInput').disabled=true;document.getElementById('btnStart').disabled=true;document.getElementById('btnPause').disabled=false;document.getElementById('btnStop').disabled=false;document.getElementById('btnPause').className='action-btn btn-pause';document.getElementById('btnPause').innerHTML='⏸ 暫停';}
 function uiPaused(){document.getElementById('digits').className='timer-digits paused';document.getElementById('sInd').className='s-indicator paused';document.getElementById('sLabel').textContent='已暫停';document.getElementById('btnPause').className='action-btn btn-resume';document.getElementById('btnPause').innerHTML='▶ 繼續';}
@@ -1425,7 +1498,36 @@ function toast(msg){const t=document.getElementById('toastEl');t.textContent=msg
 let wakeLock=null;
 async function requestWakeLock(){if(!('wakeLock' in navigator))return;try{wakeLock=await navigator.wakeLock.request('screen');document.getElementById('wakeIndicator').classList.add('show');wakeLock.addEventListener('release',()=>document.getElementById('wakeIndicator').classList.remove('show'));}catch(e){console.log('Wake lock:',e);}}
 function releaseWakeLock(){if(wakeLock){wakeLock.release();wakeLock=null;}document.getElementById('wakeIndicator').classList.remove('show');}
-document.addEventListener('visibilitychange',async()=>{if(document.visibilityState==='visible'){document.getElementById('bgNotice').classList.remove('show');if(isRunning&&!isPaused)await requestWakeLock();}else{if(isRunning)document.getElementById('bgNotice').classList.add('show');}});
+// ★ 改版：visibilitychange 增加暫停逾時檢查
+document.addEventListener('visibilitychange',async()=>{
+  if(document.visibilityState==='visible'){
+    document.getElementById('bgNotice').classList.remove('show');
+    // ★ 頁面回到前景時，檢查暫停是否已超過 30 分鐘
+    if(checkPauseExpiry()) return; // 已自動結束，不需要再做其他事
+    // ★ 若暫停中但未超時，更新倒數顯示
+    if(isRunning && isPaused && pausedAt){
+      const elapsed = Date.now() - pausedAt;
+      const rem = AUTO_TIMEOUT_MS - elapsed;
+      if(rem > 0){
+        // 重新啟動 autoCountdown（因為 setInterval 可能已被凍結）
+        cancelAuto();
+        document.getElementById('autoBar').classList.add('show');
+        autoInterval=setInterval(()=>{
+          const r=AUTO_TIMEOUT_MS-(Date.now()-pausedAt);
+          if(r<=0){cancelAuto();stopTimer(true);toast('⏱ 暫停超過 30 分鐘，已自動結束');return;}
+          document.getElementById('autoFill').style.width=(r/AUTO_TIMEOUT_MS*100)+'%';
+          document.getElementById('autoCD').textContent=fmtDur(r);
+        },1000);
+        // 立即更新一次顯示
+        document.getElementById('autoFill').style.width=(rem/AUTO_TIMEOUT_MS*100)+'%';
+        document.getElementById('autoCD').textContent=fmtDur(rem);
+      }
+    }
+    if(isRunning&&!isPaused)await requestWakeLock();
+  }else{
+    if(isRunning)document.getElementById('bgNotice').classList.add('show');
+  }
+});
 async function requestNotificationPermission(){if(!('Notification' in window))return false;if(Notification.permission==='granted')return true;if(Notification.permission==='denied')return false;return(await Notification.requestPermission())==='granted';}
 let activeNotif=null;
 async function showTimerNotification(taskName,cat){const ok=await requestNotificationPermission();if(!ok)return;if(activeNotif)activeNotif.close();activeNotif=new Notification('⏱ 計時中：'+taskName,{body:'分類：'+cat+'\n點擊回到計時器',tag:'kanas-timer',requireInteraction:true,silent:true});activeNotif.onclick=()=>{window.focus();activeNotif.close();};}
@@ -1433,12 +1535,12 @@ function dismissTimerNotification(){if(activeNotif){activeNotif.close();activeNo
 function dismissPWA(){document.getElementById('pwaBanner').classList.remove('show');localStorage.setItem('pwa_dismissed','1');}
 function checkShowPWA(){if(window.navigator.standalone)return;if(localStorage.getItem('pwa_dismissed'))return;const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);const isSafari=/^((?!chrome|android).)*safari/i.test(navigator.userAgent);if(isIOS&&isSafari)setTimeout(()=>document.getElementById('pwaBanner').classList.add('show'),3000);}
 // ============================================================
-//  ★ 行事曆功能（大幅改版）
+//  ★ 行事曆功能（完整保留）
 // ============================================================
 let calEvents = [];
-let calCurrentFilter = 'mine';   // ★ 預設「我的服事」
-let calCurrentRange = '3m';      // ★ 預設「三個月」
-let calCurrentView = 'list';     // ★ 預設「列表」
+let calCurrentFilter = 'mine';
+let calCurrentRange = '3m';
+let calCurrentView = 'list';
 let calViewMonth = new Date().getMonth();
 let calViewYear = new Date().getFullYear();
 let calSelectedDate = null;
@@ -1527,8 +1629,6 @@ function calRenderDayDetail(dateStr,filtered){
   if(!dayEvs.length){el.innerHTML='<div class="cal-day-title">'+label+'</div><div class="cal-empty"><div class="e-emoji">📭</div><p>這天沒有事件</p></div>';return;}
   el.innerHTML='<div class="cal-day-title">'+label+'（'+dayEvs.length+' 個事件）</div>'+dayEvs.map(ev=>calRenderEventCard(ev)).join('');
 }
-
-// ★★★ 重寫：精簡一列顯示 + 來源背景色 + 可展開詳細資訊 ★★★
 function calRenderEventCard(ev){
   const isOff=ev.type?.includes('off')||ev.title?.includes('暫停');
   let cardCls='cal-event-card';
@@ -1536,23 +1636,17 @@ function calRenderEventCard(ev){
   if(ev.source==='church')cardCls+=' church';
   else if(ev.source==='student')cardCls+=' student';
   if(isOff)cardCls+=' off';
-
   const srcLabel=ev.source==='church'?'教會':'學生';
   const srcTagCls=ev.source==='church'?'tag-church':'tag-student';
   const evIdx=calEvents.indexOf(ev);
-
-  // ★ 決定主要顯示內容
   let mainInfo = '';
   let locationStr = '';
-  let venueTag = ''; // 本堂/新秀標籤
-
+  let venueTag = '';
   if(ev.source === 'student'){
-    // 學生行事曆：顯示聚會內容
     const typeStr = ev.title ? ev.title.replace('[學生] ','') : '';
     mainInfo = typeStr;
     locationStr = ev.location || '';
   } else {
-    // 教會行事曆：顯示職務（我的角色）或講員
     if(ev.myRoles && ev.myRoles.length){
       mainInfo = ev.myRoles.join('、');
     } else if(ev.roles && ev.roles['講員']){
@@ -1560,73 +1654,48 @@ function calRenderEventCard(ev){
     } else {
       mainInfo = ev.title || '';
     }
-    // ★ 教會行事曆三月起：解析本堂/新秀
-    // 從 roles 裡面找線索，或從 details 中找
     venueTag = detectVenue(ev);
   }
-
-  // 我的角色 badge（inline）
   let myBadgeHtml = '';
   if(ev.isMyEvent && ev.myRoles && ev.myRoles.length){
     myBadgeHtml = ev.myRoles.map(r=>'<span class="ce-my-badge-inline">⭐'+esc(r)+'</span>').join('');
   }
-
-  // ★ 可摺疊的詳細資訊（預設隱藏）
   let detailsHtml = '';
-  // ★ 從 details 中過濾掉「同工行程安排」(對應 label 包含「同工行程」)
   const filteredDetails = (ev.details || []).filter(d => !d.label.includes('同工行程'));
   if(filteredDetails.length){
     detailsHtml = '<div class="ce-details-toggle" onclick="event.stopPropagation();calToggleDetails('+evIdx+')"><span class="ce-details-arrow" id="ceArrow'+evIdx+'">▸</span> 詳細</div><div class="ce-details-body" id="ceDetails'+evIdx+'" style="display:none">'+filteredDetails.map(d=>'<div class="ce-detail-row"><span class="ce-detail-label">'+esc(d.label)+'</span><span class="ce-detail-value">'+esc(d.value)+'</span></div>').join('')+'</div>';
   }
-
-  // 組合精簡一列
   let compactHtml = '<div class="ce-compact-row">';
   compactHtml += '<span class="ce-src-tag '+srcTagCls+'">'+srcLabel+'</span>';
   if(locationStr) compactHtml += '<span class="ce-loc">📍'+esc(locationStr)+'</span>';
   compactHtml += '<span class="ce-main-info">'+esc(mainInfo)+'</span>';
   if(venueTag) compactHtml += '<span class="ce-venue-tag">'+esc(venueTag)+'</span>';
-  // 教會行事曆若有我的角色，用 inline badge 而非 mainInfo
   if(ev.source === 'church' && ev.isMyEvent && ev.myRoles && ev.myRoles.length){
-    // mainInfo 已經是角色了，再加 badge 會重複；改為只顯示聚會類型+角色badge
     compactHtml = '<div class="ce-compact-row">';
     compactHtml += '<span class="ce-src-tag '+srcTagCls+'">'+srcLabel+'</span>';
     compactHtml += '<span class="ce-main-info">'+esc(ev.title || '')+'</span>';
     if(venueTag) compactHtml += '<span class="ce-venue-tag">'+esc(venueTag)+'</span>';
     compactHtml += myBadgeHtml;
   }
-  // 學生行事曆若有我的角色
   if(ev.source === 'student' && ev.isMyEvent && ev.myRoles && ev.myRoles.length){
     compactHtml += myBadgeHtml;
   }
   compactHtml += '</div>';
-
   return '<div class="'+cardCls+'" onclick="calShowEvent('+evIdx+')">'+compactHtml+detailsHtml+'</div>';
 }
-
-// ★ 偵測本堂/新秀（教會行事曆三月起）
 function detectVenue(ev){
   if(!ev || ev.source !== 'church') return '';
-  // 從 date 判斷是否三月起
   if(!ev.date) return '';
   const evDate = new Date(ev.date + 'T00:00:00');
-  // 只對 2025 年 3 月以後的事件標示
   if(evDate < new Date('2025-03-01')) return '';
-
-  // 從 roles 值中找線索
   const allRoleValues = Object.values(ev.roles || {}).join(' ');
-  // 從 details 中找線索
   const allDetailValues = (ev.details || []).map(d => d.value).join(' ');
   const allText = (ev.title || '') + ' ' + allRoleValues + ' ' + allDetailValues + ' ' + (ev.staffNote || '');
-
-  // 如果 staffNote 或 roles 中有明確標示
   if(allText.includes('新秀') && !allText.includes('本堂')) return '新秀';
   if(allText.includes('本堂') && !allText.includes('新秀')) return '本堂';
-  // 如果兩者都有，不標
   if(allText.includes('新秀') && allText.includes('本堂')) return '';
   return '';
 }
-
-// ★ 摺疊/展開詳細資訊
 function calToggleDetails(idx){
   const body=document.getElementById('ceDetails'+idx);
   const arrow=document.getElementById('ceArrow'+idx);
@@ -1635,7 +1704,6 @@ function calToggleDetails(idx){
   body.style.display=show?'block':'none';
   if(arrow)arrow.textContent=show?'▾':'▸';
 }
-
 function calRenderList(filtered){
   const el=document.getElementById('calListSection');
   if(!filtered.length){el.innerHTML='<div class="cal-empty"><div class="e-emoji">📭</div><p>篩選範圍內沒有事件</p></div>';return;}
@@ -1645,10 +1713,7 @@ function calRenderList(filtered){
   sortedDates.forEach(dateStr=>{const d=new Date(dateStr+'T00:00:00');const label=d.toLocaleDateString('zh-TW',{month:'long',day:'numeric',weekday:'short'});const isToday=dateStr===new Date().toISOString().slice(0,10);html+='<div class="cal-list-date-header">'+(isToday?'📍 今天 — ':'')+label+'</div>';groups[dateStr].forEach(ev=>{html+=calRenderEventCard(ev);});});
   el.innerHTML=html;
 }
-
-// ★ 已移除「一鍵計時」功能（calStartTimer 保留給 modal 用）
 function calStartTimer(taskName){document.getElementById('taskName').value=taskName;document.getElementById('catInput').value='行政';goTab('timer');ytCheckVisibility();toast('已帶入任務名稱，按「開始」即可計時');}
-
 function calShowEvent(idx){
   const ev=calEvents[idx];if(!ev)return;
   document.getElementById('calModalTitle').textContent='📅 '+ev.title;
@@ -1658,7 +1723,6 @@ function calShowEvent(idx){
   body+='<div class="edit-field"><label>來源</label><div style="font-size:14px;">'+(ev.source==='church'?'⛪ 教會事工表':'🎓 學生事工表')+'</div></div>';
   if(ev.roles&&Object.keys(ev.roles).length){body+='<div class="edit-field"><label>服事人員</label><div style="font-size:13px;line-height:2;">';Object.entries(ev.roles).forEach(([k,v])=>{body+='<div><strong>'+esc(k)+'</strong>：'+esc(v)+'</div>';});body+='</div></div>';}
   if(ev.location)body+='<div class="edit-field"><label>地點</label><div style="font-size:14px;">'+esc(ev.location)+'</div></div>';
-  // ★ 移除同工行程顯示
   if(ev.counselorNote)body+='<div class="edit-field"><label>輔導行程</label><div style="font-size:13px;">'+esc(ev.counselorNote)+'</div></div>';
   if(ev.missionCountry)body+='<div class="edit-field"><label>宣教國家</label><div style="font-size:14px;">🌍 '+esc(ev.missionCountry)+'</div></div>';
   if(ev.mainSpeaker)body+='<div class="edit-field"><label>本堂講員</label><div style="font-size:14px;">'+esc(ev.mainSpeaker)+'</div></div>';
@@ -1688,6 +1752,8 @@ updateGasStatus();
 updateCalApiStatus();
 renderHome();
 checkShowPWA();
+// ★ 頁面載入時檢查是否有未處理的暫停逾時
+checkPauseExpiry();
 const taskNameEl=document.getElementById('taskName');
 taskNameEl.addEventListener('input',function(){showSuggestions();ytCheckVisibility();});
 taskNameEl.addEventListener('focus',showSuggestions);
