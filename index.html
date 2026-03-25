@@ -492,7 +492,8 @@ body {
 .note-card.show { display:block; }
 .note-ta { width:100%; border:1.5px solid var(--border); border-radius:8px; padding:10px 12px; font-size:13px; font-family:'Noto Sans TC',sans-serif; color:var(--text); outline:none; resize:none; height:60px; transition:border-color 0.2s; }
 .note-ta:focus { border-color:var(--accent); }
-.btn-area { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin:12px 16px 0; }
+.btn-area { display:grid; grid-template-columns:1fr; gap:10px; margin:12px 16px 0; }
+.btn-area.running-mode { grid-template-columns:1fr 1fr 1fr; }
 .action-btn { padding:14px 4px; border:none; border-radius:var(--radius-sm); font-size:14px; font-weight:700; font-family:'Noto Sans TC',sans-serif; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; transition:transform 0.15s, opacity 0.2s; -webkit-appearance:none; }
 .action-btn:active { transform:scale(0.96); }
 .action-btn:disabled { opacity:.3; pointer-events:none; }
@@ -500,6 +501,7 @@ body {
 .btn-pause  { background:var(--pause-soft); color:var(--pause); border:1.5px solid #fde68a; }
 .btn-resume { background:var(--accent-soft); color:var(--accent); border:1.5px solid #bfdbfe; }
 .btn-stop   { background:#fef2f2; color:var(--danger); border:1.5px solid #fecaca; }
+.btn-cancel { background:var(--bg); color:var(--text-sub); border:1.5px solid var(--border); }
 .hist-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; padding:14px 16px 0; }
 .hist-stat { background:var(--white); border-radius:var(--radius-sm); padding:14px 10px; text-align:center; box-shadow:var(--shadow); }
 .h-num { font-family:'Space Mono',monospace; font-size:18px; font-weight:700; color:var(--accent); }
@@ -1015,10 +1017,11 @@ body {
     <div class="field-label">備註（選填）</div>
     <textarea class="note-ta" id="taskNote" placeholder="這次任務的備註…"></textarea>
   </div>
-  <div class="btn-area">
-    <button class="action-btn btn-start" id="btnStart" onclick="startTimer()">▶ 開始</button>
-    <button class="action-btn btn-pause" id="btnPause" disabled onclick="togglePause()">⏸ 暫停</button>
-    <button class="action-btn btn-stop"  id="btnStop"  disabled onclick="stopTimer()">■ 結束</button>
+  <div class="btn-area" id="btnArea">
+    <button class="action-btn btn-start" id="btnStart" onclick="startTimer()">▶ 開始計時</button>
+    <button class="action-btn btn-pause" id="btnPause" style="display:none" onclick="togglePause()">⏸ 暫停</button>
+    <button class="action-btn btn-stop"  id="btnStop"  style="display:none" onclick="stopTimer()">✓ 結束</button>
+    <button class="action-btn btn-cancel" id="btnCancel" style="display:none" onclick="cancelTimer()">✕ 取消</button>
   </div>
 </div>
 <!-- ========== 行事曆頁 ========== -->
@@ -1630,6 +1633,30 @@ function startTimer(){const name=document.getElementById('taskName').value.trim(
 function tick(){if(!isPaused){elapsedMs=Date.now()-startTime.getTime()-totalPausedMs;document.getElementById('digits').textContent=fmtDur(elapsedMs);document.getElementById('mPaused').textContent=fmtMin(totalPausedMs);}}
 function togglePause(){if(!isPaused){pausedAt=Date.now();isPaused=true;clearInterval(timerInterval);releaseWakeLock();uiPaused();savePauseState();startAutoCountdown();toast('⏸ 已暫停');}else{totalPausedMs+=Date.now()-pausedAt;isPaused=false;cancelAuto();clearPauseState();requestWakeLock();uiRunning();timerInterval=setInterval(tick,100);toast('▶ 繼續計時');}}
 async function stopTimer(fromAuto=false){if(!isRunning)return;const endTime=fromAuto?new Date(pausedAt):new Date();const dur=fromAuto?Math.max(0,pausedAt-startTime.getTime()-totalPausedMs):elapsedMs;clearInterval(timerInterval);cancelAuto();clearInterval(nowClockInterval);clearPauseState();isRunning=false;isPaused=false;releaseWakeLock();dismissTimerNotification();const taskName=document.getElementById('taskName').value.trim();if(taskName==='速讀'){ytSaveCurrentPosition();if(ytPlayer&&typeof ytPlayer.pauseVideo==='function'){ytPlayer.pauseVideo();}}const effectiveCat=getEffectiveCat();const rec={id:Date.now(),task:taskName,cat:effectiveCat,note:document.getElementById('taskNote').value.trim(),start:startTime.toISOString(),end:endTime.toISOString(),dur:dur,synced:false};const hist=loadHist();hist.unshift(rec);saveHist(hist);showSyncBadge('syncing','⏳','正在同步到 Google 日曆…');uiSyncing();const gasUrl=loadGasUrl();if(gasUrl){try{const gasResult=await sendToGAS(rec);rec.synced=true;hist[0].synced=true;saveHist(hist);showSyncBadge('success','📅','已同步到 Google Calendar + Sheets ✓');toast('✓ 任務結束！已同步到 Google 日曆');}catch(err){showSyncBadge('error','⚠','同步失敗：'+err.message);toast('⚠ 同步失敗：'+err.message);}}else{showSyncBadge('local','💾','已儲存本地（尚未設定任務同步 API）');toast('✓ 任務已儲存！');}uiIdle();document.getElementById('taskName').value='';document.getElementById('taskNote').value='';document.getElementById('catInput').value='';ytCheckVisibility();renderHome();}
+/** ★ 取消計時：直接丟棄本次任務，不儲存、不同步 */
+function cancelTimer(){
+  if(!isRunning){return;}
+  const taskName=document.getElementById('taskName').value.trim();
+  const durStr=fmtDur(elapsedMs);
+  if(!confirm('確定要取消「'+taskName+'」的計時嗎？\n已計時 '+durStr+'，取消後不會儲存也不會同步。')){return;}
+  clearInterval(timerInterval);
+  cancelAuto();
+  clearInterval(nowClockInterval);
+  clearPauseState();
+  isRunning=false;
+  isPaused=false;
+  releaseWakeLock();
+  dismissTimerNotification();
+  hideSyncBadge();
+  // 速讀模式：暫停影片但不儲存播放位置
+  if(taskName==='速讀'&&ytPlayer&&typeof ytPlayer.pauseVideo==='function'){ytPlayer.pauseVideo();}
+  uiIdle();
+  document.getElementById('taskName').value='';
+  document.getElementById('taskNote').value='';
+  document.getElementById('catInput').value='';
+  ytCheckVisibility();
+  toast('✕ 已取消計時，本次記錄不會儲存');
+}
 function startAutoCountdown(){document.getElementById('autoBar').classList.add('show');document.getElementById('autoFill').style.width='100%';const t0=Date.now();autoInterval=setInterval(()=>{const rem=AUTO_TIMEOUT_MS-(Date.now()-t0);if(rem<=0){cancelAuto();stopTimer(true);toast('⏱ 暫停超過 30 分鐘，已自動結束');return;}document.getElementById('autoFill').style.width=(rem/AUTO_TIMEOUT_MS*100)+'%';document.getElementById('autoCD').textContent=fmtDur(rem);},1000);}
 function cancelAuto(){clearInterval(autoInterval);document.getElementById('autoBar').classList.remove('show');}
 function uiRunning(){
@@ -1642,9 +1669,12 @@ function uiRunning(){
   document.getElementById('noteCard').classList.add('show');
   document.getElementById('taskName').disabled=true;
   document.getElementById('catInput').disabled=true;
-  document.getElementById('btnStart').disabled=true;
-  document.getElementById('btnPause').disabled=false;
-  document.getElementById('btnStop').disabled=false;
+  // ★ 按鈕切換：隱藏「開始」，顯示「暫停＋結束＋取消」
+  document.getElementById('btnStart').style.display='none';
+  document.getElementById('btnPause').style.display='';
+  document.getElementById('btnStop').style.display='';
+  document.getElementById('btnCancel').style.display='';
+  document.getElementById('btnArea').classList.add('running-mode');
   document.getElementById('btnPause').className='action-btn btn-pause';
   document.getElementById('btnPause').innerHTML='⏸ 暫停';
   // ★ 顯示調整起始時間面板
@@ -1664,9 +1694,12 @@ function uiIdle(){
   clearInterval(nowClockInterval);
   document.getElementById('taskName').disabled=false;
   document.getElementById('catInput').disabled=false;
-  document.getElementById('btnStart').disabled=false;
-  document.getElementById('btnPause').disabled=true;
-  document.getElementById('btnStop').disabled=true;
+  // ★ 按鈕切換：顯示「開始」，隱藏「暫停＋結束＋取消」
+  document.getElementById('btnStart').style.display='';
+  document.getElementById('btnPause').style.display='none';
+  document.getElementById('btnStop').style.display='none';
+  document.getElementById('btnCancel').style.display='none';
+  document.getElementById('btnArea').classList.remove('running-mode');
   document.getElementById('btnPause').className='action-btn btn-pause';
   document.getElementById('btnPause').innerHTML='⏸ 暫停';
   // ★ 隱藏調整起始時間面板
