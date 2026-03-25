@@ -31,7 +31,6 @@
   --radius-sm: 10px;
   --shadow: 0 2px 12px rgba(0,0,0,0.08);
   --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
-  /* 行事曆來源背景色 */
   --cal-church-bg: #EBF4FF;
   --cal-student-bg: #ECFDF5;
 }
@@ -397,6 +396,93 @@ body {
 .sync-badge.success { background:#f0fdf4; color:#15803d; border:1px solid #bbf7d0; }
 .sync-badge.error   { background:#fef2f2; color:#991b1b; border:1px solid #fecaca; }
 .sync-badge.local   { background:#f9fafb; color:#6b7280; border:1px solid #e5e7eb; }
+/* ★ 新增：調整起始時間面板 */
+.adjust-start-panel {
+  display: none;
+  margin: 10px 16px 0;
+  background: var(--white);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  border: 1.5px solid transparent;
+  transition: all 0.3s;
+}
+.adjust-start-panel.show { display: block; }
+.adjust-start-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 14px;
+  cursor: pointer; user-select: none;
+  background: var(--gold-soft);
+  border-bottom: 1px solid #fde68a;
+}
+.adjust-start-header-left {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; font-weight: 700; color: var(--gold);
+}
+.adjust-start-toggle {
+  font-size: 14px; color: var(--gold); transition: transform 0.2s;
+}
+.adjust-start-toggle.collapsed { transform: rotate(-90deg); }
+.adjust-start-body { padding: 12px 14px; }
+.adjust-start-body.collapsed { display: none; }
+.adjust-start-hint {
+  font-size: 11px; color: var(--text-sub); line-height: 1.6; margin-bottom: 10px;
+}
+.adjust-start-current {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  margin-bottom: 12px;
+  font-size: 13px; color: var(--text-sub);
+}
+.adjust-start-current .adj-time-val {
+  font-family: 'Space Mono', monospace;
+  font-size: 15px; font-weight: 700; color: var(--accent);
+  background: var(--accent-soft);
+  padding: 4px 12px; border-radius: 8px;
+}
+.adjust-quick-row {
+  display: flex; gap: 6px; flex-wrap: wrap; justify-content: center;
+  margin-bottom: 10px;
+}
+.adj-quick-btn {
+  padding: 7px 14px; border-radius: 20px;
+  border: 1.5px solid var(--border);
+  background: var(--white); color: var(--text-sub);
+  font-size: 12px; font-weight: 600; cursor: pointer;
+  font-family: 'Noto Sans TC', sans-serif;
+  transition: all 0.15s;
+}
+.adj-quick-btn:active { transform: scale(0.95); background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+.adjust-custom-row {
+  display: flex; gap: 8px; align-items: center;
+  padding-top: 10px; border-top: 1px solid var(--border);
+}
+.adjust-custom-row label {
+  font-size: 12px; font-weight: 600; color: var(--text-sub); white-space: nowrap;
+}
+.adjust-time-input {
+  flex: 1; border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+  padding: 8px 12px; font-size: 13px;
+  font-family: 'Noto Sans TC', sans-serif; color: var(--text);
+  outline: none; transition: border-color 0.2s;
+}
+.adjust-time-input:focus { border-color: var(--accent); }
+.adj-apply-btn {
+  padding: 8px 14px; border-radius: 8px; border: none;
+  background: var(--accent); color: white;
+  font-size: 12px; font-weight: 700; cursor: pointer;
+  font-family: 'Noto Sans TC', sans-serif;
+  white-space: nowrap; transition: opacity 0.15s;
+}
+.adj-apply-btn:active { opacity: 0.8; }
+.adj-result-msg {
+  display: none; margin-top: 8px;
+  padding: 6px 10px; border-radius: 8px;
+  font-size: 12px; font-weight: 600; text-align: center;
+}
+.adj-result-msg.show { display: block; }
+.adj-result-msg.success { background: var(--green-soft); color: #15803d; }
+.adj-result-msg.error { background: #fef2f2; color: var(--danger); }
+/* ★ 結束：調整起始時間面板 */
 .auto-bar { display:none; margin:10px 16px 0; background:var(--pause-soft); border:1px solid #fde68a; border-radius:var(--radius-sm); padding:10px 14px; }
 .auto-bar.show { display:block; }
 .auto-bar-top { display:flex; justify-content:space-between; font-size:12px; color:var(--gold); font-weight:600; margin-bottom:6px; }
@@ -611,7 +697,6 @@ body {
 .dot-mine { background:#EF4444; }
 .cal-day-detail { margin:10px 16px 0; }
 .cal-day-title { font-size:14px; font-weight:700; color:var(--text-sub); margin-bottom:8px; padding-left:2px; }
-/* ★ 改版：行事曆事件卡片改為一列精簡顯示 */
 .cal-event-card {
   border-radius: 8px; padding: 8px 12px;
   box-shadow: var(--shadow); margin-bottom: 6px;
@@ -624,7 +709,6 @@ body {
 .cal-event-card.church { border-left-color:var(--accent); background: var(--cal-church-bg); }
 .cal-event-card.student { border-left-color:#06C755; background: var(--cal-student-bg); }
 .cal-event-card.off { opacity:0.55; border-left-color:var(--text-light); }
-/* 精簡一列 */
 .ce-compact-row {
   display: flex;
   align-items: center;
@@ -667,7 +751,6 @@ body {
   color: #15803d;
   flex-shrink: 0;
 }
-/* 可展開的詳細資訊 */
 .ce-details-toggle {
   display: flex; align-items: center; gap: 4px;
   font-size: 11px; color: var(--accent); font-weight: 600;
@@ -897,6 +980,33 @@ body {
       <div class="meta-item"><div class="meta-val" id="mCat">—</div><div class="meta-key">分類</div></div>
     </div>
   </div>
+  <!-- ★ 新增：調整起始時間面板 -->
+  <div class="adjust-start-panel" id="adjustStartPanel">
+    <div class="adjust-start-header" onclick="toggleAdjustPanel()">
+      <div class="adjust-start-header-left">⏪ 調整起始時間</div>
+      <div class="adjust-start-toggle" id="adjToggleIcon">▼</div>
+    </div>
+    <div class="adjust-start-body" id="adjBody">
+      <div class="adjust-start-hint">忘了按開始？可以將起始時間往前推，讓計時更準確。</div>
+      <div class="adjust-start-current">
+        <span>目前起始：</span>
+        <span class="adj-time-val" id="adjCurrentTime">--:--</span>
+      </div>
+      <div class="adjust-quick-row">
+        <button class="adj-quick-btn" onclick="adjustStartByMin(5)">-5 分鐘</button>
+        <button class="adj-quick-btn" onclick="adjustStartByMin(10)">-10 分鐘</button>
+        <button class="adj-quick-btn" onclick="adjustStartByMin(15)">-15 分鐘</button>
+        <button class="adj-quick-btn" onclick="adjustStartByMin(30)">-30 分鐘</button>
+      </div>
+      <div class="adjust-custom-row">
+        <label>指定時間：</label>
+        <input type="time" class="adjust-time-input" id="adjTimeInput" step="60" />
+        <button class="adj-apply-btn" onclick="adjustStartToExact()">套用</button>
+      </div>
+      <div class="adj-result-msg" id="adjResultMsg"></div>
+    </div>
+  </div>
+  <!-- ★ 結束：調整起始時間面板 -->
   <div class="auto-bar" id="autoBar">
     <div class="auto-bar-top"><span>⏸ 暫停中，自動結束倒計時</span><span id="autoCD">30:00</span></div>
     <div class="auto-progress"><div class="auto-fill" id="autoFill"></div></div>
@@ -1144,8 +1254,8 @@ const GAS_URL_KEY = 'kanas_gas_url';
 const CAL_API_KEY = 'kanas_cal_api_url';
 const CAL_DATA_KEY = 'kanas_cal_cache';
 const YT_URL_KEY = 'kanas_yt_url';
-const PAUSE_STATE_KEY = 'kanas_pause_state';  // ★ 新增：暫停狀態持久化 key
-const AUTO_TIMEOUT_MS = 30 * 60 * 1000;       // ★ 新增：30 分鐘常數
+const PAUSE_STATE_KEY = 'kanas_pause_state';
+const AUTO_TIMEOUT_MS = 30 * 60 * 1000;
 const DEFAULT_CATS = ['講道','牧養','行政','個人','其他'];
 let timerInterval=null,autoInterval=null,nowClockInterval=null;
 let startTime=null,pausedAt=null;
@@ -1157,15 +1267,104 @@ let selectMode=false,selectedIds=new Set();
 let batchCatChoice='';
 let nowClockVisible=true;
 // ============================================================
+//  ★ 調整起始時間面板邏輯
+// ============================================================
+let adjPanelCollapsed = false;
+
+function toggleAdjustPanel() {
+  adjPanelCollapsed = !adjPanelCollapsed;
+  document.getElementById('adjBody').classList.toggle('collapsed', adjPanelCollapsed);
+  document.getElementById('adjToggleIcon').classList.toggle('collapsed', adjPanelCollapsed);
+}
+
+/** 更新面板中顯示的「目前起始時間」，並同步 input 預設值 */
+function updateAdjustDisplay() {
+  if (!startTime) return;
+  const timeStr = fmtTime(startTime);
+  document.getElementById('adjCurrentTime').textContent = timeStr;
+  // 同步 time input 預設值
+  document.getElementById('adjTimeInput').value =
+    pad(startTime.getHours()) + ':' + pad(startTime.getMinutes());
+}
+
+/** 快捷按鈕：將起始時間往前推 N 分鐘 */
+function adjustStartByMin(minutes) {
+  if (!isRunning || !startTime) { toast('⚠ 尚未開始計時'); return; }
+  const newStart = new Date(startTime.getTime() - minutes * 60000);
+  // 安全檢查：不能早於今天 00:00
+  const todayMidnight = new Date();
+  todayMidnight.setHours(0, 0, 0, 0);
+  if (newStart < todayMidnight) {
+    showAdjResult('error', '⚠ 起始時間不能早於今天 00:00');
+    return;
+  }
+  const oldStart = new Date(startTime.getTime());
+  startTime = newStart;
+  // 重新計算已過時間（不影響已累積的暫停時間）
+  if (!isPaused) {
+    elapsedMs = Date.now() - startTime.getTime() - totalPausedMs;
+    document.getElementById('digits').textContent = fmtDur(elapsedMs);
+  } else {
+    elapsedMs = pausedAt - startTime.getTime() - totalPausedMs;
+    document.getElementById('digits').textContent = fmtDur(elapsedMs);
+  }
+  document.getElementById('mStart').textContent = fmtTime(startTime);
+  updateAdjustDisplay();
+  showAdjResult('success', '✓ 已將起始時間從 ' + fmtTime(oldStart) + ' 調整為 ' + fmtTime(startTime));
+  toast('⏪ 起始時間已往前推 ' + minutes + ' 分鐘');
+}
+
+/** 精確指定起始時間（使用 time input） */
+function adjustStartToExact() {
+  if (!isRunning || !startTime) { toast('⚠ 尚未開始計時'); return; }
+  const timeVal = document.getElementById('adjTimeInput').value;
+  if (!timeVal) { showAdjResult('error', '⚠ 請先選擇時間'); return; }
+  const [h, m] = timeVal.split(':').map(Number);
+  const newStart = new Date(startTime.getTime());
+  newStart.setHours(h, m, 0, 0);
+  // 安全檢查：不能晚於目前時間
+  if (newStart >= new Date()) {
+    showAdjResult('error', '⚠ 起始時間不能晚於現在');
+    return;
+  }
+  // 安全檢查：不能早於今天 00:00
+  const todayMidnight = new Date();
+  todayMidnight.setHours(0, 0, 0, 0);
+  if (newStart < todayMidnight) {
+    showAdjResult('error', '⚠ 起始時間不能早於今天 00:00');
+    return;
+  }
+  const oldStart = new Date(startTime.getTime());
+  startTime = newStart;
+  if (!isPaused) {
+    elapsedMs = Date.now() - startTime.getTime() - totalPausedMs;
+    document.getElementById('digits').textContent = fmtDur(elapsedMs);
+  } else {
+    elapsedMs = pausedAt - startTime.getTime() - totalPausedMs;
+    document.getElementById('digits').textContent = fmtDur(elapsedMs);
+  }
+  document.getElementById('mStart').textContent = fmtTime(startTime);
+  updateAdjustDisplay();
+  showAdjResult('success', '✓ 起始時間已從 ' + fmtTime(oldStart) + ' 調整為 ' + fmtTime(startTime));
+  toast('⏪ 起始時間已調整為 ' + fmtTime(startTime));
+}
+
+function showAdjResult(type, msg) {
+  const el = document.getElementById('adjResultMsg');
+  el.className = 'adj-result-msg show ' + type;
+  el.textContent = msg;
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), 4000);
+}
+
+// ============================================================
 //  ★ 暫停狀態持久化（localStorage）
-//    解決 iOS Safari 背景凍結 setInterval 的問題
 // ============================================================
 function savePauseState() {
-  // 暫停時，把關鍵狀態寫入 localStorage
   const state = {
-    pausedAt: pausedAt,                          // 暫停時的時間戳（ms）
-    startTime: startTime.getTime(),              // 計時開始時間（ms）
-    totalPausedMs: totalPausedMs,                // 累計暫停時間
+    pausedAt: pausedAt,
+    startTime: startTime.getTime(),
+    totalPausedMs: totalPausedMs,
     taskName: document.getElementById('taskName').value.trim(),
     cat: getEffectiveCat(),
     note: document.getElementById('taskNote').value.trim()
@@ -1176,23 +1375,16 @@ function clearPauseState() {
   localStorage.removeItem(PAUSE_STATE_KEY);
 }
 function checkPauseExpiry() {
-  // ★ 核心：檢查暫停是否已超過 30 分鐘
-  //    在 visibilitychange（頁面回前景）和頁面載入時呼叫
   const raw = localStorage.getItem(PAUSE_STATE_KEY);
   if (!raw) return false;
   try {
     const state = JSON.parse(raw);
     const elapsed = Date.now() - state.pausedAt;
     if (elapsed >= AUTO_TIMEOUT_MS) {
-      // ★ 已超過 30 分鐘 → 自動結束任務
-      //    若計時器變數還在（同一頁面 session），直接呼叫 stopTimer
-      //    若是重新載入的頁面，需要從 localStorage 還原後結束
       if (isRunning && isPaused) {
-        // 同一 session，計時器狀態仍在記憶體中
         stopTimer(true);
         toast('⏱ 暫停超過 30 分鐘，已自動結束');
       } else {
-        // 頁面重新載入（瀏覽器被關閉後重開）→ 從 localStorage 還原並直接儲存記錄
         autoFinishFromStorage(state);
       }
       clearPauseState();
@@ -1204,11 +1396,9 @@ function checkPauseExpiry() {
   return false;
 }
 async function autoFinishFromStorage(state) {
-  // ★ 從 localStorage 還原暫停狀態，直接建立記錄並同步
   const endTime = new Date(state.pausedAt);
   const dur = Math.max(0, state.pausedAt - state.startTime - state.totalPausedMs);
-  if (dur < 1000) { clearPauseState(); return; } // 不到 1 秒不儲存
-
+  if (dur < 1000) { clearPauseState(); return; }
   const rec = {
     id: Date.now(),
     task: state.taskName,
@@ -1221,8 +1411,6 @@ async function autoFinishFromStorage(state) {
   };
   const hist = loadHist();
   hist.unshift(rec);
-
-  // 嘗試同步到 GAS
   const gasUrl = loadGasUrl();
   if (gasUrl) {
     try {
@@ -1248,7 +1436,7 @@ function toggleVis(inputId, btn) {
   else { inp.type = 'password'; btn.textContent = '👁'; }
 }
 // ============================================================
-//  YouTube 播放器相關（完整保留）
+//  YouTube 播放器相關
 // ============================================================
 let ytPlayer = null;
 let ytReady = false;
@@ -1444,10 +1632,46 @@ function togglePause(){if(!isPaused){pausedAt=Date.now();isPaused=true;clearInte
 async function stopTimer(fromAuto=false){if(!isRunning)return;const endTime=fromAuto?new Date(pausedAt):new Date();const dur=fromAuto?Math.max(0,pausedAt-startTime.getTime()-totalPausedMs):elapsedMs;clearInterval(timerInterval);cancelAuto();clearInterval(nowClockInterval);clearPauseState();isRunning=false;isPaused=false;releaseWakeLock();dismissTimerNotification();const taskName=document.getElementById('taskName').value.trim();if(taskName==='速讀'){ytSaveCurrentPosition();if(ytPlayer&&typeof ytPlayer.pauseVideo==='function'){ytPlayer.pauseVideo();}}const effectiveCat=getEffectiveCat();const rec={id:Date.now(),task:taskName,cat:effectiveCat,note:document.getElementById('taskNote').value.trim(),start:startTime.toISOString(),end:endTime.toISOString(),dur:dur,synced:false};const hist=loadHist();hist.unshift(rec);saveHist(hist);showSyncBadge('syncing','⏳','正在同步到 Google 日曆…');uiSyncing();const gasUrl=loadGasUrl();if(gasUrl){try{const gasResult=await sendToGAS(rec);rec.synced=true;hist[0].synced=true;saveHist(hist);showSyncBadge('success','📅','已同步到 Google Calendar + Sheets ✓');toast('✓ 任務結束！已同步到 Google 日曆');}catch(err){showSyncBadge('error','⚠','同步失敗：'+err.message);toast('⚠ 同步失敗：'+err.message);}}else{showSyncBadge('local','💾','已儲存本地（尚未設定任務同步 API）');toast('✓ 任務已儲存！');}uiIdle();document.getElementById('taskName').value='';document.getElementById('taskNote').value='';document.getElementById('catInput').value='';ytCheckVisibility();renderHome();}
 function startAutoCountdown(){document.getElementById('autoBar').classList.add('show');document.getElementById('autoFill').style.width='100%';const t0=Date.now();autoInterval=setInterval(()=>{const rem=AUTO_TIMEOUT_MS-(Date.now()-t0);if(rem<=0){cancelAuto();stopTimer(true);toast('⏱ 暫停超過 30 分鐘，已自動結束');return;}document.getElementById('autoFill').style.width=(rem/AUTO_TIMEOUT_MS*100)+'%';document.getElementById('autoCD').textContent=fmtDur(rem);},1000);}
 function cancelAuto(){clearInterval(autoInterval);document.getElementById('autoBar').classList.remove('show');}
-function uiRunning(){document.getElementById('digits').className='timer-digits running';document.getElementById('sInd').className='s-indicator running';document.getElementById('sLabel').textContent='計時中';document.getElementById('tMeta').style.display='flex';document.getElementById('mStart').textContent=fmtTime(startTime);document.getElementById('mCat').textContent=getEffectiveCat();document.getElementById('noteCard').classList.add('show');document.getElementById('taskName').disabled=true;document.getElementById('catInput').disabled=true;document.getElementById('btnStart').disabled=true;document.getElementById('btnPause').disabled=false;document.getElementById('btnStop').disabled=false;document.getElementById('btnPause').className='action-btn btn-pause';document.getElementById('btnPause').innerHTML='⏸ 暫停';}
+function uiRunning(){
+  document.getElementById('digits').className='timer-digits running';
+  document.getElementById('sInd').className='s-indicator running';
+  document.getElementById('sLabel').textContent='計時中';
+  document.getElementById('tMeta').style.display='flex';
+  document.getElementById('mStart').textContent=fmtTime(startTime);
+  document.getElementById('mCat').textContent=getEffectiveCat();
+  document.getElementById('noteCard').classList.add('show');
+  document.getElementById('taskName').disabled=true;
+  document.getElementById('catInput').disabled=true;
+  document.getElementById('btnStart').disabled=true;
+  document.getElementById('btnPause').disabled=false;
+  document.getElementById('btnStop').disabled=false;
+  document.getElementById('btnPause').className='action-btn btn-pause';
+  document.getElementById('btnPause').innerHTML='⏸ 暫停';
+  // ★ 顯示調整起始時間面板
+  document.getElementById('adjustStartPanel').classList.add('show');
+  updateAdjustDisplay();
+}
 function uiPaused(){document.getElementById('digits').className='timer-digits paused';document.getElementById('sInd').className='s-indicator paused';document.getElementById('sLabel').textContent='已暫停';document.getElementById('btnPause').className='action-btn btn-resume';document.getElementById('btnPause').innerHTML='▶ 繼續';}
 function uiSyncing(){document.getElementById('digits').className='timer-digits syncing';document.getElementById('sInd').className='s-indicator syncing';document.getElementById('sLabel').textContent='同步中…';}
-function uiIdle(){document.getElementById('digits').className='timer-digits';document.getElementById('digits').textContent='00:00:00';document.getElementById('sInd').className='s-indicator';document.getElementById('sLabel').textContent='待機中';document.getElementById('tMeta').style.display='none';document.getElementById('noteCard').classList.remove('show');document.getElementById('nowClockRow').classList.remove('show');clearInterval(nowClockInterval);document.getElementById('taskName').disabled=false;document.getElementById('catInput').disabled=false;document.getElementById('btnStart').disabled=false;document.getElementById('btnPause').disabled=true;document.getElementById('btnStop').disabled=true;document.getElementById('btnPause').className='action-btn btn-pause';document.getElementById('btnPause').innerHTML='⏸ 暫停';}
+function uiIdle(){
+  document.getElementById('digits').className='timer-digits';
+  document.getElementById('digits').textContent='00:00:00';
+  document.getElementById('sInd').className='s-indicator';
+  document.getElementById('sLabel').textContent='待機中';
+  document.getElementById('tMeta').style.display='none';
+  document.getElementById('noteCard').classList.remove('show');
+  document.getElementById('nowClockRow').classList.remove('show');
+  clearInterval(nowClockInterval);
+  document.getElementById('taskName').disabled=false;
+  document.getElementById('catInput').disabled=false;
+  document.getElementById('btnStart').disabled=false;
+  document.getElementById('btnPause').disabled=true;
+  document.getElementById('btnStop').disabled=true;
+  document.getElementById('btnPause').className='action-btn btn-pause';
+  document.getElementById('btnPause').innerHTML='⏸ 暫停';
+  // ★ 隱藏調整起始時間面板
+  document.getElementById('adjustStartPanel').classList.remove('show');
+}
 function showSyncBadge(type,icon,msg){const b=document.getElementById('syncBadge');b.style.display='inline-flex';b.className='sync-badge '+type;document.getElementById('syncIcon').textContent=icon;document.getElementById('syncMsg').textContent=msg;}
 function hideSyncBadge(){document.getElementById('syncBadge').style.display='none';}
 function loadHist(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');}catch{return[];}}
@@ -1498,18 +1722,14 @@ function toast(msg){const t=document.getElementById('toastEl');t.textContent=msg
 let wakeLock=null;
 async function requestWakeLock(){if(!('wakeLock' in navigator))return;try{wakeLock=await navigator.wakeLock.request('screen');document.getElementById('wakeIndicator').classList.add('show');wakeLock.addEventListener('release',()=>document.getElementById('wakeIndicator').classList.remove('show'));}catch(e){console.log('Wake lock:',e);}}
 function releaseWakeLock(){if(wakeLock){wakeLock.release();wakeLock=null;}document.getElementById('wakeIndicator').classList.remove('show');}
-// ★ 改版：visibilitychange 增加暫停逾時檢查
 document.addEventListener('visibilitychange',async()=>{
   if(document.visibilityState==='visible'){
     document.getElementById('bgNotice').classList.remove('show');
-    // ★ 頁面回到前景時，檢查暫停是否已超過 30 分鐘
-    if(checkPauseExpiry()) return; // 已自動結束，不需要再做其他事
-    // ★ 若暫停中但未超時，更新倒數顯示
+    if(checkPauseExpiry()) return;
     if(isRunning && isPaused && pausedAt){
       const elapsed = Date.now() - pausedAt;
       const rem = AUTO_TIMEOUT_MS - elapsed;
       if(rem > 0){
-        // 重新啟動 autoCountdown（因為 setInterval 可能已被凍結）
         cancelAuto();
         document.getElementById('autoBar').classList.add('show');
         autoInterval=setInterval(()=>{
@@ -1518,7 +1738,6 @@ document.addEventListener('visibilitychange',async()=>{
           document.getElementById('autoFill').style.width=(r/AUTO_TIMEOUT_MS*100)+'%';
           document.getElementById('autoCD').textContent=fmtDur(r);
         },1000);
-        // 立即更新一次顯示
         document.getElementById('autoFill').style.width=(rem/AUTO_TIMEOUT_MS*100)+'%';
         document.getElementById('autoCD').textContent=fmtDur(rem);
       }
@@ -1535,7 +1754,7 @@ function dismissTimerNotification(){if(activeNotif){activeNotif.close();activeNo
 function dismissPWA(){document.getElementById('pwaBanner').classList.remove('show');localStorage.setItem('pwa_dismissed','1');}
 function checkShowPWA(){if(window.navigator.standalone)return;if(localStorage.getItem('pwa_dismissed'))return;const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);const isSafari=/^((?!chrome|android).)*safari/i.test(navigator.userAgent);if(isIOS&&isSafari)setTimeout(()=>document.getElementById('pwaBanner').classList.add('show'),3000);}
 // ============================================================
-//  ★ 行事曆功能（完整保留）
+//  行事曆功能
 // ============================================================
 let calEvents = [];
 let calCurrentFilter = 'mine';
@@ -1738,7 +1957,7 @@ function calShowEvent(idx){
 }
 function closeCalEventModal(){document.getElementById('calEventModal').classList.remove('show');}
 // ============================================================
-//  匯出 / 匯入功能（完整保留）
+//  匯出 / 匯入功能
 // ============================================================
 function ioShowResult(type,msg){const el=document.getElementById('ioResult');el.className='io-result show '+type;el.innerHTML=msg;}
 function ioExport(){const hist=loadHist();if(!hist.length){ioShowResult('info','⚠ 目前沒有任何記錄可匯出');return;}const json=JSON.stringify(hist);const ta=document.getElementById('ioTextarea');ta.value=json;ta.focus();ta.select();try{navigator.clipboard.writeText(json).then(()=>{ioShowResult('success','✓ 已匯出 <b>'+hist.length+'</b> 筆記錄，並已自動複製到剪貼簿！');}).catch(()=>{ioShowResult('success','✓ 已匯出 <b>'+hist.length+'</b> 筆記錄，請手動全選複製上方文字框內容。');});}catch(e){ioShowResult('success','✓ 已匯出 <b>'+hist.length+'</b> 筆記錄，請手動全選複製上方文字框內容。');}}
@@ -1752,7 +1971,6 @@ updateGasStatus();
 updateCalApiStatus();
 renderHome();
 checkShowPWA();
-// ★ 頁面載入時檢查是否有未處理的暫停逾時
 checkPauseExpiry();
 const taskNameEl=document.getElementById('taskName');
 taskNameEl.addEventListener('input',function(){showSuggestions();ytCheckVisibility();});
