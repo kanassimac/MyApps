@@ -6,1065 +6,212 @@
 <title>牧養約談預約</title>
 <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 <style>
-:root {
-  --primary: #2D5F3E;
-  --primary-light: #E8F0EB;
-  --primary-dark: #1B3D28;
-  --accent: #C68B3F;
-  --accent-light: #FFF5E6;
-  --bg: #FAFAF7;
-  --surface: #FFFFFF;
-  --text: #1A1A1A;
-  --text-secondary: #6B7280;
-  --text-tertiary: #9CA3AF;
-  --border: #E5E7EB;
-  --danger: #DC2626;
-  --danger-light: #FEF2F2;
-  --success: #059669;
-  --success-light: #ECFDF5;
-  --radius: 12px;
-  --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
-  --shadow-lg: 0 4px 12px rgba(0,0,0,0.08);
-  --font: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
-}
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body {
-  font-family: var(--font);
-  background: var(--bg);
-  color: var(--text);
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-  padding-bottom: env(safe-area-inset-bottom, 20px);
-}
-
-/* ── Header ── */
-.header {
-  background: var(--primary);
-  color: white;
-  padding: 16px 20px;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-.header h1 { font-size: 18px; font-weight: 600; letter-spacing: 0.5px; }
-.header .user-info {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 8px;
-}
-.header .user-avatar {
-  width: 32px; height: 32px;
-  border-radius: 50%;
-  border: 2px solid rgba(255,255,255,0.3);
-  object-fit: cover;
-}
-.header .user-name {
-  font-size: 13px;
-  opacity: 0.9;
-}
-
-/* ── Bottom Nav ── */
-.bottom-nav {
-  position: fixed;
-  bottom: 0; left: 0; right: 0;
-  background: var(--surface);
-  border-top: 1px solid var(--border);
-  display: flex;
-  z-index: 100;
-  padding-bottom: env(safe-area-inset-bottom, 0px);
-}
-.nav-item {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 10px 0 8px;
-  font-size: 11px;
-  color: var(--text-tertiary);
-  cursor: pointer;
-  transition: color 0.2s;
-  border: none;
-  background: none;
-  font-family: var(--font);
-}
-.nav-item.active { color: var(--primary); }
-.nav-item svg { width: 22px; height: 22px; margin-bottom: 3px; }
-
-/* ── Container ── */
-.container {
-  padding: 16px;
-  padding-bottom: 80px;
-  max-width: 480px;
-  margin: 0 auto;
-}
-
-/* ── Card ── */
-.card {
-  background: var(--surface);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding: 16px;
-  margin-bottom: 12px;
-}
-
-/* ── Date Picker ── */
-.date-picker {
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  padding: 4px 0;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-}
-.date-picker::-webkit-scrollbar { display: none; }
-.date-chip {
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 10px 14px;
-  border-radius: 10px;
-  border: 1.5px solid var(--border);
-  background: var(--surface);
-  cursor: pointer;
-  transition: all 0.2s;
-  min-width: 56px;
-  font-family: var(--font);
-}
-.date-chip:active { transform: scale(0.96); }
-.date-chip.selected {
-  background: var(--primary);
-  border-color: var(--primary);
-  color: white;
-}
-.date-chip .day-name { font-size: 11px; color: var(--text-tertiary); margin-bottom: 2px; }
-.date-chip.selected .day-name { color: rgba(255,255,255,0.8); }
-.date-chip .day-num { font-size: 18px; font-weight: 600; }
-.date-chip .month { font-size: 10px; color: var(--text-tertiary); margin-top: 1px; }
-.date-chip.selected .month { color: rgba(255,255,255,0.7); }
-
-/* ── Slot Buttons ── */
-.slots-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-  gap: 8px;
-  margin-top: 12px;
-}
-.slot-btn {
-  padding: 12px;
-  border-radius: 10px;
-  border: 1.5px solid var(--border);
-  background: var(--surface);
-  cursor: pointer;
-  text-align: center;
-  transition: all 0.2s;
-  font-family: var(--font);
-}
-.slot-btn:active { transform: scale(0.97); }
-.slot-btn.selected {
-  border-color: var(--primary);
-  background: var(--primary-light);
-}
-.slot-btn .time { font-size: 15px; font-weight: 600; color: var(--text); }
-.slot-btn.selected .time { color: var(--primary-dark); }
-.slot-btn .time-range { font-size: 11px; color: var(--text-tertiary); margin-top: 2px; }
-
-/* ── Form ── */
-.form-group { margin-bottom: 16px; }
-.form-label {
-  display: block;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--text-secondary);
-  margin-bottom: 6px;
-}
-.form-required { color: var(--danger); margin-left: 2px; }
-.form-input, .form-textarea, .form-select {
-  width: 100%;
-  padding: 12px 14px;
-  border: 1.5px solid var(--border);
-  border-radius: 10px;
-  font-size: 15px;
-  font-family: var(--font);
-  color: var(--text);
-  background: var(--surface);
-  transition: border-color 0.2s;
-  -webkit-appearance: none;
-}
-.form-select {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' fill='none' stroke='%239CA3AF' stroke-width='1.5'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 14px center;
-  padding-right: 36px;
-}
-.form-input:focus, .form-textarea:focus, .form-select:focus {
-  outline: none;
-  border-color: var(--primary);
-}
-.form-textarea {
-  resize: vertical;
-  min-height: 80px;
-}
-.form-hint { font-size: 11px; color: var(--text-tertiary); margin-top: 4px; }
-
-/* ── Detail input with slide animation ── */
-.detail-input-wrap {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.3s ease, margin-top 0.3s ease;
-  margin-top: 0;
-}
-.detail-input-wrap.show {
-  max-height: 200px;
-  margin-top: 12px;
-}
-
-/* ── Buttons ── */
-.btn-primary {
-  width: 100%;
-  padding: 14px;
-  background: var(--primary);
-  color: white;
-  border: none;
-  border-radius: var(--radius);
-  font-size: 16px;
-  font-weight: 600;
-  font-family: var(--font);
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.btn-primary:active { transform: scale(0.98); opacity: 0.9; }
-.btn-primary:disabled {
-  background: var(--border);
-  color: var(--text-tertiary);
-  cursor: not-allowed;
-  transform: none;
-}
-.btn-secondary {
-  width: 100%;
-  padding: 12px;
-  background: var(--surface);
-  color: var(--primary);
-  border: 1.5px solid var(--primary);
-  border-radius: var(--radius);
-  font-size: 14px;
-  font-weight: 600;
-  font-family: var(--font);
-  cursor: pointer;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-}
-.btn-secondary:active { transform: scale(0.98); background: var(--primary-light); }
-.btn-danger {
-  padding: 10px 16px;
-  background: var(--danger-light);
-  color: var(--danger);
-  border: 1px solid #FECACA;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 500;
-  font-family: var(--font);
-  cursor: pointer;
-}
-
-/* ── Booking Card ── */
-.booking-card {
-  background: var(--surface);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding: 16px;
-  margin-bottom: 12px;
-  border-left: 4px solid var(--primary);
-}
-.booking-card .booking-topic {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--accent);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-.booking-card .booking-date { font-size: 17px; font-weight: 600; margin-top: 4px; }
-.booking-card .booking-time { font-size: 14px; color: var(--text-secondary); margin-top: 2px; }
-.booking-card .booking-id { font-size: 11px; color: var(--text-tertiary); margin-top: 8px; }
-.booking-card .booking-actions {
-  margin-top: 12px;
-  display: flex;
-  gap: 8px;
-  justify-content: flex-end;
-}
-
-/* ── Steps ── */
-.steps {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  margin-bottom: 20px;
-}
-.step-dot {
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  background: var(--border);
-  transition: all 0.3s;
-}
-.step-dot.active {
-  background: var(--primary);
-  width: 24px;
-  border-radius: 4px;
-}
-
-/* ── Empty State ── */
-.empty-state {
-  text-align: center;
-  padding: 40px 20px;
-  color: var(--text-tertiary);
-}
-.empty-state svg { width: 48px; height: 48px; margin-bottom: 12px; opacity: 0.4; }
-.empty-state p { font-size: 14px; }
-
-/* ── Success Screen ── */
-.success-screen { text-align: center; padding: 40px 20px; }
-.success-icon {
-  width: 64px; height: 64px;
-  background: #D1FAE5;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 16px;
-}
-.success-icon svg { width: 32px; height: 32px; color: var(--success); }
-
-/* ── Calendar Add Buttons ── */
-.cal-add-btns {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: 16px;
-}
-.cal-add-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 12px;
-  border-radius: 10px;
-  border: 1.5px solid var(--border);
-  background: var(--surface);
-  font-size: 14px;
-  font-weight: 500;
-  font-family: var(--font);
-  color: var(--text);
-  cursor: pointer;
-  text-decoration: none;
-  transition: all 0.2s;
-}
-.cal-add-btn:active { transform: scale(0.98); background: var(--bg); }
-.cal-add-btn svg { width: 20px; height: 20px; }
-
-/* ── Loading ── */
-.loading { text-align: center; padding: 40px; }
-.spinner {
-  width: 32px; height: 32px;
-  border: 3px solid var(--border);
-  border-top-color: var(--primary);
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-  margin: 0 auto 12px;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* ── Section Title ── */
-.section-title {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text-secondary);
-  margin-bottom: 12px;
-}
-
-/* ── Summary ── */
-.summary-row {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px 0;
-  border-bottom: 1px solid var(--border);
-  font-size: 14px;
-}
-.summary-row:last-child { border-bottom: none; }
-.summary-label { color: var(--text-secondary); }
-.summary-value { font-weight: 500; text-align: right; max-width: 60%; }
-
-/* ── Toast ── */
-.toast {
-  position: fixed;
-  bottom: 80px;
-  left: 50%;
-  transform: translateX(-50%) translateY(100px);
-  background: var(--text);
-  color: white;
-  padding: 12px 20px;
-  border-radius: 10px;
-  font-size: 14px;
-  z-index: 200;
-  transition: transform 0.3s ease;
-  white-space: nowrap;
-}
-.toast.show { transform: translateX(-50%) translateY(0); }
-
-/* ── LINE ID Badge ── */
-.line-id-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 2px 8px;
-  background: #E8F5E9;
-  border-radius: 6px;
-  font-size: 11px;
-  color: #2E7D32;
-  font-weight: 500;
-}
+:root{--primary:#2D5F3E;--primary-light:#E8F0EB;--primary-dark:#1B3D28;--accent:#C68B3F;--bg:#FAFAF7;--surface:#FFF;--text:#1A1A1A;--text-secondary:#6B7280;--text-tertiary:#9CA3AF;--border:#E5E7EB;--danger:#DC2626;--danger-light:#FEF2F2;--success:#059669;--radius:12px;--shadow:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);--font:'Noto Sans TC',-apple-system,BlinkMacSystemFont,sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased;padding-bottom:env(safe-area-inset-bottom,20px)}
+.header{background:var(--primary);color:#fff;padding:16px 20px;position:sticky;top:0;z-index:100}
+.header h1{font-size:18px;font-weight:600}
+.header .user-info{display:flex;align-items:center;gap:10px;margin-top:8px}
+.header .user-avatar{width:32px;height:32px;border-radius:50%;border:2px solid rgba(255,255,255,.3);object-fit:cover}
+.header .user-name{font-size:13px;opacity:.9}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);display:flex;z-index:100;padding-bottom:env(safe-area-inset-bottom,0)}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;padding:10px 0 8px;font-size:11px;color:var(--text-tertiary);cursor:pointer;border:none;background:none;font-family:var(--font)}
+.nav-item.active{color:var(--primary)}
+.nav-item svg{width:22px;height:22px;margin-bottom:3px}
+.container{padding:16px;padding-bottom:80px;max-width:480px;margin:0 auto}
+.card{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;margin-bottom:12px}
+.date-picker{display:flex;gap:8px;overflow-x:auto;padding:4px 0;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.date-picker::-webkit-scrollbar{display:none}
+.date-chip{flex-shrink:0;display:flex;flex-direction:column;align-items:center;padding:10px 14px;border-radius:10px;border:1.5px solid var(--border);background:var(--surface);cursor:pointer;transition:all .2s;min-width:56px;font-family:var(--font)}
+.date-chip:active{transform:scale(.96)}
+.date-chip.selected{background:var(--primary);border-color:var(--primary);color:#fff}
+.date-chip .day-name{font-size:11px;color:var(--text-tertiary);margin-bottom:2px}
+.date-chip.selected .day-name{color:rgba(255,255,255,.8)}
+.date-chip .day-num{font-size:18px;font-weight:600}
+.date-chip .month{font-size:10px;color:var(--text-tertiary);margin-top:1px}
+.date-chip.selected .month{color:rgba(255,255,255,.7)}
+.slots-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin-top:12px}
+.slot-btn{padding:12px;border-radius:10px;border:1.5px solid var(--border);background:var(--surface);cursor:pointer;text-align:center;transition:all .2s;font-family:var(--font)}
+.slot-btn:active{transform:scale(.97)}
+.slot-btn.selected{border-color:var(--primary);background:var(--primary-light)}
+.slot-btn .time{font-size:15px;font-weight:600;color:var(--text)}
+.slot-btn.selected .time{color:var(--primary-dark)}
+.slot-btn .time-range{font-size:11px;color:var(--text-tertiary);margin-top:2px}
+.form-group{margin-bottom:16px}
+.form-label{display:block;font-size:13px;font-weight:500;color:var(--text-secondary);margin-bottom:6px}
+.form-required{color:var(--danger);margin-left:2px}
+.form-input,.form-textarea,.form-select{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:15px;font-family:var(--font);color:var(--text);background:var(--surface);transition:border-color .2s;-webkit-appearance:none}
+.form-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' fill='none' stroke='%239CA3AF' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
+.form-input:focus,.form-textarea:focus,.form-select:focus{outline:none;border-color:var(--primary)}
+.form-textarea{resize:vertical;min-height:70px}
+.sub-select-wrap{max-height:0;overflow:hidden;transition:max-height .3s ease,margin-top .3s ease;margin-top:0}
+.sub-select-wrap.show{max-height:200px;margin-top:12px}
+.btn-primary{width:100%;padding:14px;background:var(--primary);color:#fff;border:none;border-radius:var(--radius);font-size:16px;font-weight:600;font-family:var(--font);cursor:pointer;transition:all .2s}
+.btn-primary:active{transform:scale(.98);opacity:.9}
+.btn-primary:disabled{background:var(--border);color:var(--text-tertiary);cursor:not-allowed}
+.btn-danger{padding:10px 16px;background:var(--danger-light);color:var(--danger);border:1px solid #FECACA;border-radius:8px;font-size:13px;font-weight:500;font-family:var(--font);cursor:pointer}
+.booking-card{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;margin-bottom:12px;border-left:4px solid var(--primary)}
+.booking-card .booking-topic{font-size:11px;font-weight:600;color:var(--accent);letter-spacing:.5px}
+.booking-card .booking-date{font-size:17px;font-weight:600;margin-top:4px}
+.booking-card .booking-time{font-size:14px;color:var(--text-secondary);margin-top:2px}
+.booking-card .booking-id{font-size:11px;color:var(--text-tertiary);margin-top:8px}
+.booking-card .booking-actions{margin-top:12px;display:flex;gap:8px;justify-content:flex-end}
+.steps{display:flex;justify-content:center;gap:8px;margin-bottom:20px}
+.step-dot{width:8px;height:8px;border-radius:50%;background:var(--border);transition:all .3s}
+.step-dot.active{background:var(--primary);width:24px;border-radius:4px}
+.empty-state{text-align:center;padding:40px 20px;color:var(--text-tertiary)}
+.empty-state svg{width:48px;height:48px;margin-bottom:12px;opacity:.4}
+.empty-state p{font-size:14px}
+.success-screen{text-align:center;padding:40px 20px}
+.success-icon{width:64px;height:64px;background:#D1FAE5;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+.success-icon svg{width:32px;height:32px;color:var(--success)}
+.cal-add-btns{display:flex;flex-direction:column;gap:8px;margin-top:16px}
+.cal-add-btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:12px;border-radius:10px;border:1.5px solid var(--border);background:var(--surface);font-size:14px;font-weight:500;font-family:var(--font);color:var(--text);cursor:pointer;text-decoration:none;transition:all .2s}
+.cal-add-btn:active{transform:scale(.98);background:var(--bg)}
+.cal-add-btn svg{width:20px;height:20px}
+.loading{text-align:center;padding:40px}
+.spinner{width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.section-title{font-size:14px;font-weight:600;color:var(--text-secondary);margin-bottom:12px}
+.summary-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+.summary-row:last-child{border-bottom:none}
+.summary-label{color:var(--text-secondary)}
+.summary-value{font-weight:500;text-align:right;max-width:60%}
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--text);color:#fff;padding:12px 20px;border-radius:10px;font-size:14px;z-index:200;transition:transform .3s ease;white-space:nowrap}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.line-id-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;background:#E8F5E9;border-radius:6px;font-size:11px;color:#2E7D32;font-weight:500}
 </style>
 </head>
 <body>
-
 <div id="app"></div>
-
 <script>
-// ============================================================
-// 設定
-// ============================================================
-const APP_CONFIG = {
-  LIFF_ID: '2009432886-66cVxKUj',
-  GAS_URL: 'https://script.google.com/macros/s/AKfycbyxWW_zjy2HpmPb5AaFXM5EpDK5ttMdyzRzAoZ9_N_zNMcoo-e5tqPvnJ0uuRm6ySZl/exec',
-};
+const C={LIFF_ID:'2009432886-66cVxKUj',GAS_URL:'https://script.google.com/macros/s/AKfycbyxWW_zjy2HpmPb5AaFXM5EpDK5ttMdyzRzAoZ9_N_zNMcoo-e5tqPvnJ0uuRm6ySZl/exec'};
+const S={liffReady:false,profile:null,currentTab:'book',bookingStep:1,slots:[],myBookings:[],selectedDate:null,selectedSlot:null,realName:'',topicCategory:'課程',instrument:'',otherNote:'',loading:false,bookingSuccess:false,lastBooking:null};
 
-// ============================================================
-// 狀態
-// ============================================================
-const state = {
-  liffReady: false,
-  profile: null,
-  currentTab: 'book',
-  bookingStep: 1,  // 1=選日期時段, 2=填資料, 3=確認
-  slots: [],
-  myBookings: [],
-  selectedDate: null,
-  selectedSlot: null,
-  // 表單欄位
-  realName: '',
-  topicCategory: '', // 談話 / 課程學習
-  topicDetail: '',
-  loading: false,
-  bookingSuccess: false,
-  lastBooking: null,
-};
+async function api(action,params={},method='GET'){
+  let url=C.GAS_URL;
+  if(method==='GET'){url+='?'+new URLSearchParams({action,...params}).toString();const r=await fetch(url);return r.json();}
+  else{url+='?action='+action;const r=await fetch(url,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify(params)});return r.json();}
+}
+async function initLiff(){
+  try{await liff.init({liffId:C.LIFF_ID});if(!liff.isLoggedIn()){liff.login();return;}
+  const p=await liff.getProfile();S.profile={userId:p.userId,displayName:p.displayName,pictureUrl:p.pictureUrl||null};
+  }catch(e){S.profile={userId:'dev-user',displayName:'測試用戶',pictureUrl:null};}
+  S.liffReady=true;await loadSlots();render();
+}
+async function loadSlots(){try{const r=await api('getSlots');if(r.success)S.slots=r.slots;}catch(e){}}
+async function loadMyBookings(){if(!S.profile)return;try{const r=await api('myBookings',{lineUserId:S.profile.userId});if(r.success)S.myBookings=r.bookings;}catch(e){}}
 
-// ============================================================
-// API
-// ============================================================
-async function apiCall(action, params = {}, method = 'GET') {
-  let url = APP_CONFIG.GAS_URL;
-  if (method === 'GET') {
-    const query = new URLSearchParams({ action, ...params }).toString();
-    url += '?' + query;
-    const res = await fetch(url);
-    return res.json();
-  } else {
-    url += '?action=' + action;
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify(params),
-    });
-    return res.json();
-  }
+async function submitBooking(){
+  if(!S.selectedSlot||!S.realName||!S.profile)return;
+  S.loading=true;render();
+  let t=S.topicCategory;if(S.topicCategory==='課程'&&S.instrument)t='課程：'+S.instrument;
+  try{
+    const r=await api('book',{slotRowIndex:S.selectedSlot.rowIndex,type:t,lineUserId:S.profile.userId,lineDisplayName:S.profile.displayName,userName:S.realName,message:S.otherNote||''},'POST');
+    if(r.success){S.bookingSuccess=true;S.lastBooking=r.booking;await loadSlots();}else showToast(r.error||'預約失敗');
+  }catch(e){showToast('網路錯誤');}
+  S.loading=false;render();
+}
+async function cancelBooking(id){
+  if(!confirm('確定要取消這個預約嗎？'))return;
+  S.loading=true;render();
+  try{const r=await api('cancel',{bookingId:id,lineUserId:S.profile.userId},'POST');if(r.success){showToast('預約已取消');await loadMyBookings();}else showToast(r.error||'取消失敗');}catch(e){showToast('網路錯誤');}
+  S.loading=false;render();
+}
+function resetBooking(){S.bookingStep=1;S.selectedDate=null;S.selectedSlot=null;S.realName='';S.topicCategory='課程';S.instrument='';S.otherNote='';S.bookingSuccess=false;S.lastBooking=null;render();}
+
+function gcalUrl(b){const d=b.date.replace(/-/g,''),s=b.startTime.replace(':','')+'00',e=b.endTime.replace(':','')+'00';return'https://calendar.google.com/calendar/render?'+new URLSearchParams({action:'TEMPLATE',text:'牧養約談',dates:d+'T'+s+'/'+d+'T'+e,details:'與 Kanas 牧師的約談',location:'花蓮靈糧堂',ctz:'Asia/Taipei'}).toString();}
+function dlIcs(b){const d=b.date.replace(/-/g,''),s=b.startTime.replace(':','')+'00',e=b.endTime.replace(':','')+'00';const ics=['BEGIN:VCALENDAR','VERSION:2.0','BEGIN:VEVENT','DTSTART;TZID=Asia/Taipei:'+d+'T'+s,'DTEND;TZID=Asia/Taipei:'+d+'T'+e,'SUMMARY:牧養約談','LOCATION:花蓮靈糧堂','BEGIN:VALARM','TRIGGER:-PT30M','ACTION:DISPLAY','DESCRIPTION:約談提醒','END:VALARM','END:VEVENT','END:VCALENDAR'].join('\r\n');const bl=new Blob([ics],{type:'text/calendar'});const u=URL.createObjectURL(bl);const a=document.createElement('a');a.href=u;a.download='約談_'+b.date+'.ics';a.click();URL.revokeObjectURL(u);}
+function showToast(m){let t=document.querySelector('.toast');if(!t){t=document.createElement('div');t.className='toast';document.body.appendChild(t);}t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
+
+function render(){document.getElementById('app').innerHTML=renderHeader()+renderContent()+renderNav();bindEvents();}
+
+function renderHeader(){let u='';if(S.profile){const av=S.profile.pictureUrl?'<img class="user-avatar" src="'+S.profile.pictureUrl+'" />':'';u='<div class="user-info">'+av+'<span class="user-name">'+S.profile.displayName+'，平安！</span></div>';}return'<div class="header"><h1>牧養約談預約</h1>'+u+'</div>';}
+function renderContent(){if(!S.liffReady)return'<div class="container"><div class="loading"><div class="spinner"></div><p>連線中...</p></div></div>';if(S.currentTab==='book')return renderBookTab();if(S.currentTab==='my')return renderMyTab();return renderInfoTab();}
+
+function renderBookTab(){
+  if(S.bookingSuccess)return renderSuccess();
+  if(S.loading)return'<div class="container"><div class="loading"><div class="spinner"></div><p>處理中...</p></div></div>';
+  let c='<div class="container"><div class="steps">';for(let i=1;i<=3;i++)c+='<div class="step-dot '+(S.bookingStep>=i?'active':'')+'"></div>';c+='</div>';
+  if(S.bookingStep===1)c+=renderStep1();else if(S.bookingStep===2)c+=renderStep2();else c+=renderStep3();
+  return c+'</div>';
 }
 
-// ============================================================
-// LIFF
-// ============================================================
-async function initLiff() {
-  try {
-    await liff.init({ liffId: APP_CONFIG.LIFF_ID });
-    if (!liff.isLoggedIn()) { liff.login(); return; }
-    const profile = await liff.getProfile();
-    state.profile = {
-      userId: profile.userId,
-      displayName: profile.displayName,
-      pictureUrl: profile.pictureUrl || null,
-    };
-    state.liffReady = true;
-    await loadSlots();
-    render();
-  } catch (err) {
-    console.error('LIFF init error:', err);
-    state.profile = { userId: 'dev-user', displayName: '測試用戶', pictureUrl: null };
-    state.liffReady = true;
-    await loadSlots();
-    render();
-  }
+function renderStep1(){
+  const dm={};S.slots.forEach(s=>{if(!dm[s.date])dm[s.date]={date:s.date,dayOfWeek:s.dayOfWeek,slots:[]};dm[s.date].slots.push(s);});
+  const dates=Object.values(dm).slice(0,14);
+  if(!dates.length)return'<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><p>目前沒有開放的時段<br/>請稍後再查看</p></div>';
+  let h='<p class="section-title">選擇日期</p><div class="date-picker">';
+  dates.forEach(d=>{const dt=new Date(d.date);h+='<div class="date-chip '+(S.selectedDate===d.date?'selected':'')+'" data-date="'+d.date+'"><span class="day-name">週'+d.dayOfWeek+'</span><span class="day-num">'+dt.getDate()+'</span><span class="month">'+(dt.getMonth()+1)+'月</span></div>';});
+  h+='</div>';
+  if(S.selectedDate&&dm[S.selectedDate]){h+='<p class="section-title" style="margin-top:20px">選擇時段</p><div class="slots-grid">';dm[S.selectedDate].slots.forEach(s=>{const sel=S.selectedSlot&&S.selectedSlot.rowIndex===s.rowIndex;h+='<div class="slot-btn '+(sel?'selected':'')+'" data-row="'+s.rowIndex+'"><div class="time">'+s.startTime+'</div><div class="time-range">'+s.startTime+' - '+s.endTime+'</div></div>';});h+='</div>';}
+  h+='<div style="margin-top:24px"><button class="btn-primary" id="bn1" '+(!S.selectedSlot?'disabled':'')+'>下一步：填寫資料</button></div>';
+  return h;
 }
 
-async function loadSlots() {
-  try {
-    const result = await apiCall('getSlots');
-    if (result.success) state.slots = result.slots;
-  } catch (err) { console.error('載入時段失敗:', err); }
+function renderStep2(){
+  const showInst=S.topicCategory==='課程';
+  let h='<div class="card"><p class="section-title" style="margin-bottom:16px">預約資料</p>';
+  h+='<div class="form-group"><label class="form-label">你的姓名<span class="form-required">*</span></label><input type="text" class="form-input" id="iName" placeholder="請填寫你的真實姓名" value="'+esc(S.realName)+'" /></div>';
+  h+='<div class="form-group"><label class="form-label">預約項目<span class="form-required">*</span></label><select class="form-select" id="sTopic"><option value="牧養"'+(S.topicCategory==='牧養'?' selected':'')+'>牧養</option><option value="課程"'+(S.topicCategory==='課程'?' selected':'')+'>課程</option></select></div>';
+  h+='<div class="sub-select-wrap '+(showInst?'show':'')+'"><div class="form-group" style="margin-bottom:0"><label class="form-label">課程項目<span class="form-required">*</span></label><select class="form-select" id="sInst"><option value="">— 請選擇 —</option><option value="鍵盤"'+(S.instrument==='鍵盤'?' selected':'')+'>鍵盤</option><option value="歌唱"'+(S.instrument==='歌唱'?' selected':'')+'>歌唱</option><option value="吉他"'+(S.instrument==='吉他'?' selected':'')+'>吉他</option><option value="木箱鼓"'+(S.instrument==='木箱鼓'?' selected':'')+'>木箱鼓</option></select></div></div>';
+  h+='<div class="form-group" style="margin-top:16px"><label class="form-label">其他說明（選填）</label><textarea class="form-textarea" id="iNote" placeholder="有什麼想讓牧師先知道的？">'+S.otherNote+'</textarea></div>';
+  h+='</div>';
+  const ok=S.realName.trim()&&(S.topicCategory==='牧養'||(S.topicCategory==='課程'&&S.instrument));
+  h+='<div style="display:flex;gap:8px;margin-top:16px"><button class="btn-primary" id="bb2" style="flex:1;background:var(--border);color:var(--text)">上一步</button><button class="btn-primary" id="bn2" style="flex:2"'+(ok?'':' disabled')+'>下一步：確認預約</button></div>';
+  return h;
 }
 
-async function loadMyBookings() {
-  if (!state.profile) return;
-  try {
-    const result = await apiCall('myBookings', { lineUserId: state.profile.userId });
-    if (result.success) state.myBookings = result.bookings;
-  } catch (err) { console.error('載入預約失敗:', err); }
+function renderStep3(){
+  const s=S.selectedSlot;let td=S.topicCategory;if(S.topicCategory==='課程'&&S.instrument)td='課程：'+S.instrument;
+  let h='<div class="card"><p class="section-title" style="margin-bottom:8px">預約摘要</p>';
+  h+=sr('日期',s.date+'（週'+s.dayOfWeek+'）')+sr('時間',s.startTime+' - '+s.endTime)+sr('姓名',S.realName);
+  if(S.profile)h+=sr('LINE','<span class="line-id-badge">已驗證</span> '+S.profile.displayName);
+  h+=sr('項目',td);if(S.otherNote)h+=sr('說明',S.otherNote);h+='</div>';
+  h+='<div style="display:flex;gap:8px;margin-top:16px"><button class="btn-primary" id="bb3" style="flex:1;background:var(--border);color:var(--text)">上一步</button><button class="btn-primary" id="bCf" style="flex:2;background:var(--accent)">確認預約</button></div>';
+  return h;
+}
+function sr(l,v){return'<div class="summary-row"><span class="summary-label">'+l+'</span><span class="summary-value">'+v+'</span></div>';}
+
+function renderSuccess(){
+  const b=S.lastBooking,g=gcalUrl(b);
+  return'<div class="container"><div class="success-screen"><div class="success-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div><h2 style="font-size:20px;margin-bottom:8px">預約成功！</h2><p style="color:var(--text-secondary);font-size:14px;margin-bottom:20px">確認通知已發送到你的 LINE</p><div class="card" style="text-align:left">'+sr('預約編號',b.bookingId)+sr('日期',b.date)+sr('時間',b.startTime+' - '+b.endTime)+'</div><div class="cal-add-btns"><a class="cal-add-btn" href="'+g+'" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>加到 Google 行事曆</a><button class="cal-add-btn" id="bIcs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><path d="M12 11v6M9 14h6"/></svg>加到 Apple / 其他行事曆</button></div><button class="btn-primary" id="bHome" style="margin-top:16px">返回首頁</button></div></div>';
 }
 
-// ============================================================
-// 動作
-// ============================================================
-async function submitBooking() {
-  if (!state.selectedSlot || !state.realName || !state.profile) return;
+function renderMyTab(){
+  if(S.loading)return'<div class="container"><div class="loading"><div class="spinner"></div><p>載入中...</p></div></div>';
+  let h='<div class="container"><p class="section-title">我的預約</p>';
+  if(!S.myBookings.length){h+='<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg><p>目前沒有預約</p></div>';}
+  else{const dn=['日','一','二','三','四','五','六'];S.myBookings.forEach(b=>{const d=new Date(b.date),g=gcalUrl(b);h+='<div class="booking-card">'+(b.type?'<div class="booking-topic">'+b.type+'</div>':'')+'<div class="booking-date">'+b.date+'（週'+dn[d.getDay()]+'）</div><div class="booking-time">'+b.startTime+' - '+b.endTime+'</div>'+(b.message?'<div style="font-size:12px;color:var(--text-secondary);margin-top:4px">'+b.message+'</div>':'')+'<div class="booking-id">預約編號：'+b.bookingId+'</div><div class="booking-actions"><a class="cal-add-btn" href="'+g+'" target="_blank" style="padding:8px 12px;font-size:12px;flex:none">行事曆</a><button class="btn-danger" data-cancel="'+b.bookingId+'">取消預約</button></div></div>';});}
+  return h+'</div>';
+}
+function renderInfoTab(){return'<div class="container"><div class="card"><p class="section-title">關於牧養約談</p><p style="font-size:14px;color:var(--text-secondary);line-height:1.8">牧養約談是一個讓我們可以一對一深入交流的空間。無論你正在面對什麼樣的生命課題，或是希望在信仰上有更深的成長，都歡迎你預約一個時段來聊聊。</p></div><div class="card"><p class="section-title">注意事項</p><div style="font-size:14px;color:var(--text-secondary);line-height:1.8"><p>每次約談約 50 分鐘</p><p>如需取消，請於約談前 2 小時前操作</p><p>預約確認與提醒將透過 LINE 通知</p><p>地點：花蓮靈糧堂</p></div></div></div>';}
 
-  state.loading = true;
-  render();
-
-  const topicText = state.topicCategory
-    ? (state.topicCategory + (state.topicDetail ? '：' + state.topicDetail : ''))
-    : '';
-
-  try {
-    const result = await apiCall('book', {
-      slotRowIndex: state.selectedSlot.rowIndex,
-      type: state.topicCategory || '約談',
-      lineUserId: state.profile.userId,
-      lineDisplayName: state.profile.displayName,
-      userName: state.realName,
-      message: topicText,
-    }, 'POST');
-
-    if (result.success) {
-      state.bookingSuccess = true;
-      state.lastBooking = result.booking;
-      await loadSlots();
-    } else {
-      showToast(result.error || '預約失敗');
-    }
-  } catch (err) {
-    showToast('網路錯誤，請稍後再試');
-  }
-
-  state.loading = false;
-  render();
+function renderNav(){
+  const tabs=[{id:'book',label:'預約',icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>'},{id:'my',label:'我的預約',icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 14l2 2 4-4"/></svg>'},{id:'info',label:'說明',icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>'}];
+  let h='<div class="bottom-nav">';tabs.forEach(t=>{h+='<button class="nav-item '+(S.currentTab===t.id?'active':'')+'" data-tab="'+t.id+'">'+t.icon+'<span>'+t.label+'</span></button>';});return h+'</div>';
 }
 
-async function cancelBooking(bookingId) {
-  if (!confirm('確定要取消這個預約嗎？')) return;
-  state.loading = true;
-  render();
-
-  try {
-    const result = await apiCall('cancel', {
-      bookingId,
-      lineUserId: state.profile.userId,
-    }, 'POST');
-
-    if (result.success) {
-      showToast('預約已取消');
-      await loadMyBookings();
-    } else {
-      showToast(result.error || '取消失敗');
-    }
-  } catch (err) {
-    showToast('網路錯誤，請稍後再試');
-  }
-
-  state.loading = false;
-  render();
+function bindEvents(){
+  document.querySelectorAll('.nav-item').forEach(el=>{el.addEventListener('click',async()=>{S.currentTab=el.dataset.tab;if(el.dataset.tab==='my'){S.loading=true;render();await loadMyBookings();S.loading=false;}if(el.dataset.tab==='book')resetBooking();render();});});
+  document.querySelectorAll('.date-chip').forEach(el=>{el.addEventListener('click',()=>{S.selectedDate=el.dataset.date;S.selectedSlot=null;render();});});
+  document.querySelectorAll('.slot-btn').forEach(el=>{el.addEventListener('click',()=>{S.selectedSlot=S.slots.find(s=>s.rowIndex===parseInt(el.dataset.row));render();});});
+  const bn1=document.getElementById('bn1');if(bn1)bn1.addEventListener('click',()=>{S.bookingStep=2;render();});
+  const bb2=document.getElementById('bb2');if(bb2)bb2.addEventListener('click',()=>{S.bookingStep=1;render();});
+  const bn2=document.getElementById('bn2');if(bn2)bn2.addEventListener('click',()=>{saveForm();if(!S.realName.trim()){showToast('請填寫姓名');return;}if(S.topicCategory==='課程'&&!S.instrument){showToast('請選擇課程項目');return;}S.bookingStep=3;render();});
+  const bb3=document.getElementById('bb3');if(bb3)bb3.addEventListener('click',()=>{S.bookingStep=2;render();});
+  const bCf=document.getElementById('bCf');if(bCf)bCf.addEventListener('click',submitBooking);
+  const bHome=document.getElementById('bHome');if(bHome)bHome.addEventListener('click',resetBooking);
+  const bIcs=document.getElementById('bIcs');if(bIcs)bIcs.addEventListener('click',()=>dlIcs(S.lastBooking));
+  document.querySelectorAll('[data-cancel]').forEach(el=>{el.addEventListener('click',()=>cancelBooking(el.dataset.cancel));});
+  const iName=document.getElementById('iName');if(iName)iName.addEventListener('input',()=>{S.realName=iName.value;updBtn();});
+  const sTopic=document.getElementById('sTopic');if(sTopic)sTopic.addEventListener('change',()=>{S.topicCategory=sTopic.value;S.instrument='';const w=document.querySelector('.sub-select-wrap');if(w)w.classList.toggle('show',sTopic.value==='課程');const si=document.getElementById('sInst');if(si)si.value='';updBtn();});
+  const sInst=document.getElementById('sInst');if(sInst)sInst.addEventListener('change',()=>{S.instrument=sInst.value;updBtn();});
+  const iNote=document.getElementById('iNote');if(iNote)iNote.addEventListener('input',()=>{S.otherNote=iNote.value;});
 }
-
-function resetBooking() {
-  state.bookingStep = 1;
-  state.selectedDate = null;
-  state.selectedSlot = null;
-  state.realName = '';
-  state.topicCategory = '';
-  state.topicDetail = '';
-  state.bookingSuccess = false;
-  state.lastBooking = null;
-  render();
-}
-
-// ============================================================
-// 行事曆連結產生
-// ============================================================
-function generateGoogleCalUrl(booking) {
-  const dateStr = booking.date.replace(/-/g, '');
-  const startTime = booking.startTime.replace(':', '') + '00';
-  const endTime = booking.endTime.replace(':', '') + '00';
-  const params = new URLSearchParams({
-    action: 'TEMPLATE',
-    text: '牧養約談',
-    dates: dateStr + 'T' + startTime + '/' + dateStr + 'T' + endTime,
-    details: '與 Kanas 牧師的約談',
-    location: '花蓮靈糧堂',
-    ctz: 'Asia/Taipei',
-  });
-  return 'https://calendar.google.com/calendar/render?' + params.toString();
-}
-
-function generateIcsContent(booking) {
-  const dateStr = booking.date.replace(/-/g, '');
-  const startTime = booking.startTime.replace(':', '') + '00';
-  const endTime = booking.endTime.replace(':', '') + '00';
-  const ics = [
-    'BEGIN:VCALENDAR',
-    'VERSION:2.0',
-    'PRODID:-//PastoralBooking//TW',
-    'BEGIN:VEVENT',
-    'DTSTART;TZID=Asia/Taipei:' + dateStr + 'T' + startTime,
-    'DTEND;TZID=Asia/Taipei:' + dateStr + 'T' + endTime,
-    'SUMMARY:牧養約談',
-    'DESCRIPTION:與 Kanas 牧師的約談',
-    'LOCATION:花蓮靈糧堂',
-    'BEGIN:VALARM',
-    'TRIGGER:-PT30M',
-    'ACTION:DISPLAY',
-    'DESCRIPTION:約談提醒',
-    'END:VALARM',
-    'END:VEVENT',
-    'END:VCALENDAR',
-  ].join('\r\n');
-  return ics;
-}
-
-function downloadIcs(booking) {
-  const ics = generateIcsContent(booking);
-  const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = '牧養約談_' + booking.date + '.ics';
-  a.click();
-  URL.revokeObjectURL(url);
-}
-
-// ============================================================
-// Toast
-// ============================================================
-function showToast(message) {
-  let toast = document.querySelector('.toast');
-  if (!toast) {
-    toast = document.createElement('div');
-    toast.className = 'toast';
-    document.body.appendChild(toast);
-  }
-  toast.textContent = message;
-  toast.classList.add('show');
-  setTimeout(() => toast.classList.remove('show'), 3000);
-}
-
-// ============================================================
-// 渲染
-// ============================================================
-function render() {
-  const app = document.getElementById('app');
-  app.innerHTML = renderHeader() + renderContent() + renderBottomNav();
-  bindEvents();
-}
-
-function renderHeader() {
-  let userHtml = '';
-  if (state.profile) {
-    const avatar = state.profile.pictureUrl
-      ? '<img class="user-avatar" src="' + state.profile.pictureUrl + '" alt="" />'
-      : '';
-    userHtml = '<div class="user-info">' + avatar +
-      '<span class="user-name">' + state.profile.displayName + '，平安！</span></div>';
-  }
-  return '<div class="header"><h1>牧養約談預約</h1>' + userHtml + '</div>';
-}
-
-function renderContent() {
-  if (!state.liffReady) {
-    return '<div class="container"><div class="loading"><div class="spinner"></div><p>連線中...</p></div></div>';
-  }
-  switch (state.currentTab) {
-    case 'book': return renderBookTab();
-    case 'my': return renderMyTab();
-    case 'info': return renderInfoTab();
-    default: return '';
-  }
-}
-
-// ── 預約頁面 ──
-function renderBookTab() {
-  if (state.bookingSuccess) return renderSuccessScreen();
-  if (state.loading) {
-    return '<div class="container"><div class="loading"><div class="spinner"></div><p>處理中...</p></div></div>';
-  }
-
-  let content = '<div class="container">';
-  content += '<div class="steps">' +
-    '<div class="step-dot ' + (state.bookingStep >= 1 ? 'active' : '') + '"></div>' +
-    '<div class="step-dot ' + (state.bookingStep >= 2 ? 'active' : '') + '"></div>' +
-    '<div class="step-dot ' + (state.bookingStep >= 3 ? 'active' : '') + '"></div>' +
-    '</div>';
-
-  if (state.bookingStep === 1) content += renderStep1();
-  else if (state.bookingStep === 2) content += renderStep2();
-  else if (state.bookingStep === 3) content += renderStep3();
-
-  content += '</div>';
-  return content;
-}
-
-function renderStep1() {
-  const dateMap = {};
-  state.slots.forEach(slot => {
-    if (!dateMap[slot.date]) dateMap[slot.date] = { date: slot.date, dayOfWeek: slot.dayOfWeek, slots: [] };
-    dateMap[slot.date].slots.push(slot);
-  });
-  const dates = Object.values(dateMap).slice(0, 14);
-
-  if (dates.length === 0) {
-    return '<div class="empty-state">' +
-      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>' +
-      '<p>目前沒有開放的時段<br/>請稍後再查看</p></div>';
-  }
-
-  let html = '<p class="section-title">選擇日期</p><div class="date-picker">';
-  dates.forEach(d => {
-    const dateObj = new Date(d.date);
-    const month = dateObj.getMonth() + 1;
-    const day = dateObj.getDate();
-    const sel = state.selectedDate === d.date;
-    html += '<div class="date-chip ' + (sel ? 'selected' : '') + '" data-date="' + d.date + '">' +
-      '<span class="day-name">週' + d.dayOfWeek + '</span>' +
-      '<span class="day-num">' + day + '</span>' +
-      '<span class="month">' + month + '月</span></div>';
-  });
-  html += '</div>';
-
-  if (state.selectedDate && dateMap[state.selectedDate]) {
-    const selectedSlots = dateMap[state.selectedDate].slots;
-    html += '<p class="section-title" style="margin-top:20px">選擇時段</p><div class="slots-grid">';
-    selectedSlots.forEach(slot => {
-      const sel = state.selectedSlot && state.selectedSlot.rowIndex === slot.rowIndex;
-      html += '<div class="slot-btn ' + (sel ? 'selected' : '') + '" data-row="' + slot.rowIndex + '">' +
-        '<div class="time">' + slot.startTime + '</div>' +
-        '<div class="time-range">' + slot.startTime + ' - ' + slot.endTime + '</div></div>';
-    });
-    html += '</div>';
-  }
-
-  html += '<div style="margin-top:24px">' +
-    '<button class="btn-primary" id="btn-step1-next" ' + (!state.selectedSlot ? 'disabled' : '') + '>' +
-    '下一步：填寫資料</button></div>';
-
-  return html;
-}
-
-function renderStep2() {
-  const showDetail = state.topicCategory !== '';
-
-  let html = '<div class="card">';
-  html += '<p class="section-title" style="margin-bottom:16px">預約資料</p>';
-
-  // 姓名
-  html += '<div class="form-group">' +
-    '<label class="form-label">你的姓名<span class="form-required">*</span></label>' +
-    '<input type="text" class="form-input" id="input-name" placeholder="請填寫你的真實姓名" value="' + escAttr(state.realName) + '" />' +
-    '</div>';
-
-  // 主題類別 — 下拉選單
-  html += '<div class="form-group">' +
-    '<label class="form-label">想聊的主題</label>' +
-    '<select class="form-select" id="select-topic">' +
-    '<option value="">— 請選擇 —</option>' +
-    '<option value="談話"' + (state.topicCategory === '談話' ? ' selected' : '') + '>談話</option>' +
-    '<option value="課程學習"' + (state.topicCategory === '課程學習' ? ' selected' : '') + '>課程學習</option>' +
-    '</select>' +
-    '<div class="form-hint">選擇後可以進一步說明</div>' +
-    '</div>';
-
-  // 詳細說明（條件顯示）
-  html += '<div class="detail-input-wrap ' + (showDetail ? 'show' : '') + '">' +
-    '<div class="form-group" style="margin-bottom:0">' +
-    '<label class="form-label">詳細說明（選填）</label>' +
-    '<textarea class="form-textarea" id="input-detail" placeholder="' +
-    (state.topicCategory === '談話' ? '想聊什麼話題？有什麼需要？' : '想學習什麼課程或主題？') +
-    '">' + state.topicDetail + '</textarea>' +
-    '</div></div>';
-
-  html += '</div>'; // end card
-
-  html += '<div style="display:flex;gap:8px;margin-top:16px">' +
-    '<button class="btn-primary" id="btn-step2-back" style="flex:1;background:var(--border);color:var(--text)">上一步</button>' +
-    '<button class="btn-primary" id="btn-step2-next" style="flex:2"' +
-    (!state.realName.trim() ? ' disabled' : '') + '>下一步：確認預約</button></div>';
-
-  return html;
-}
-
-function renderStep3() {
-  const slot = state.selectedSlot;
-  const topicText = state.topicCategory
-    ? (state.topicCategory + (state.topicDetail ? '：' + state.topicDetail : ''))
-    : '未指定';
-
-  let html = '<div class="card">';
-  html += '<p class="section-title" style="margin-bottom:8px">預約摘要</p>';
-  html += summaryRow('日期', slot.date + '（週' + slot.dayOfWeek + '）');
-  html += summaryRow('時間', slot.startTime + ' - ' + slot.endTime);
-  html += summaryRow('姓名', state.realName);
-  if (state.profile) {
-    html += summaryRow('LINE', '<span class="line-id-badge">LINE 已驗證</span> ' + state.profile.displayName);
-  }
-  html += summaryRow('主題', topicText);
-  html += '</div>';
-
-  html += '<div style="display:flex;gap:8px;margin-top:16px">' +
-    '<button class="btn-primary" id="btn-step3-back" style="flex:1;background:var(--border);color:var(--text)">上一步</button>' +
-    '<button class="btn-primary" id="btn-confirm" style="flex:2;background:var(--accent)">確認預約</button></div>';
-
-  return html;
-}
-
-function summaryRow(label, value) {
-  return '<div class="summary-row"><span class="summary-label">' + label + '</span><span class="summary-value">' + value + '</span></div>';
-}
-
-function renderSuccessScreen() {
-  const b = state.lastBooking;
-  const gcalUrl = generateGoogleCalUrl(b);
-
-  return '<div class="container"><div class="success-screen">' +
-    '<div class="success-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>' +
-    '<h2 style="font-size:20px;margin-bottom:8px">預約成功！</h2>' +
-    '<p style="color:var(--text-secondary);font-size:14px;margin-bottom:20px">確認通知已發送到你的 LINE</p>' +
-    '<div class="card" style="text-align:left">' +
-    summaryRow('預約編號', b.bookingId) +
-    summaryRow('日期', b.date) +
-    summaryRow('時間', b.startTime + ' - ' + b.endTime) +
-    '</div>' +
-
-    // 加到行事曆按鈕
-    '<div class="cal-add-btns">' +
-    '<a class="cal-add-btn" href="' + gcalUrl + '" target="_blank" rel="noopener">' +
-    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>' +
-    '加到 Google 行事曆</a>' +
-    '<button class="cal-add-btn" id="btn-add-ics">' +
-    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><path d="M12 11v6M9 14h6"/></svg>' +
-    '加到 Apple / 其他行事曆</button>' +
-    '</div>' +
-
-    '<button class="btn-primary" id="btn-back-home" style="margin-top:16px">返回首頁</button>' +
-    '</div></div>';
-}
-
-// ── 我的預約 ──
-function renderMyTab() {
-  if (state.loading) {
-    return '<div class="container"><div class="loading"><div class="spinner"></div><p>載入中...</p></div></div>';
-  }
-
-  let html = '<div class="container"><p class="section-title">我的預約</p>';
-
-  if (state.myBookings.length === 0) {
-    html += '<div class="empty-state">' +
-      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg>' +
-      '<p>目前沒有預約</p></div>';
-  } else {
-    state.myBookings.forEach(b => {
-      const dateObj = new Date(b.date);
-      const dayNames = ['日','一','二','三','四','五','六'];
-      const dayName = dayNames[dateObj.getDay()];
-      const gcalUrl = generateGoogleCalUrl(b);
-
-      html += '<div class="booking-card">' +
-        (b.message ? '<div class="booking-topic">' + b.message + '</div>' : '') +
-        '<div class="booking-date">' + b.date + '（週' + dayName + '）</div>' +
-        '<div class="booking-time">' + b.startTime + ' - ' + b.endTime + '</div>' +
-        '<div class="booking-id">預約編號：' + b.bookingId + '</div>' +
-        '<div class="booking-actions">' +
-        '<a class="cal-add-btn" href="' + gcalUrl + '" target="_blank" style="padding:8px 12px;font-size:12px">行事曆</a>' +
-        '<button class="btn-danger" data-cancel="' + b.bookingId + '">取消預約</button>' +
-        '</div></div>';
-    });
-  }
-
-  html += '</div>';
-  return html;
-}
-
-// ── 資訊頁 ──
-function renderInfoTab() {
-  return '<div class="container">' +
-    '<div class="card"><p class="section-title">關於牧養約談</p>' +
-    '<p style="font-size:14px;color:var(--text-secondary);line-height:1.8">' +
-    '牧養約談是一個讓我們可以一對一深入交流的空間。無論你正在面對什麼樣的生命課題，' +
-    '或是希望在信仰上有更深的成長，都歡迎你預約一個時段來聊聊。</p></div>' +
-    '<div class="card"><p class="section-title">注意事項</p>' +
-    '<div style="font-size:14px;color:var(--text-secondary);line-height:1.8">' +
-    '<p>每次約談約 50 分鐘</p>' +
-    '<p>如需取消，請於約談前 2 小時前操作</p>' +
-    '<p>預約確認與提醒將透過 LINE 通知</p>' +
-    '<p>地點：花蓮靈糧堂</p>' +
-    '</div></div></div>';
-}
-
-// ── Bottom Nav ──
-function renderBottomNav() {
-  const tabs = [
-    { id: 'book', label: '預約', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>' },
-    { id: 'my', label: '我的預約', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 14l2 2 4-4"/></svg>' },
-    { id: 'info', label: '說明', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>' },
-  ];
-  let html = '<div class="bottom-nav">';
-  tabs.forEach(tab => {
-    html += '<button class="nav-item ' + (state.currentTab === tab.id ? 'active' : '') + '" data-tab="' + tab.id + '">' +
-      tab.icon + '<span>' + tab.label + '</span></button>';
-  });
-  html += '</div>';
-  return html;
-}
-
-// ============================================================
-// 事件綁定
-// ============================================================
-function bindEvents() {
-  // Tab 切換
-  document.querySelectorAll('.nav-item').forEach(el => {
-    el.addEventListener('click', async () => {
-      const tab = el.dataset.tab;
-      state.currentTab = tab;
-      if (tab === 'my') {
-        state.loading = true;
-        render();
-        await loadMyBookings();
-        state.loading = false;
-      }
-      if (tab === 'book') resetBooking();
-      render();
-    });
-  });
-
-  // 日期選擇
-  document.querySelectorAll('.date-chip').forEach(el => {
-    el.addEventListener('click', () => {
-      state.selectedDate = el.dataset.date;
-      state.selectedSlot = null;
-      render();
-    });
-  });
-
-  // 時段選擇
-  document.querySelectorAll('.slot-btn').forEach(el => {
-    el.addEventListener('click', () => {
-      const rowIndex = parseInt(el.dataset.row);
-      state.selectedSlot = state.slots.find(s => s.rowIndex === rowIndex);
-      render();
-    });
-  });
-
-  // Step 1 → 2
-  const step1Next = document.getElementById('btn-step1-next');
-  if (step1Next) step1Next.addEventListener('click', () => { state.bookingStep = 2; render(); });
-
-  // Step 2 回退
-  const step2Back = document.getElementById('btn-step2-back');
-  if (step2Back) step2Back.addEventListener('click', () => { state.bookingStep = 1; render(); });
-
-  // Step 2 → 3
-  const step2Next = document.getElementById('btn-step2-next');
-  if (step2Next) step2Next.addEventListener('click', () => {
-    saveFormState();
-    if (!state.realName.trim()) { showToast('請填寫你的姓名'); return; }
-    state.bookingStep = 3;
-    render();
-  });
-
-  // Step 3 回退
-  const step3Back = document.getElementById('btn-step3-back');
-  if (step3Back) step3Back.addEventListener('click', () => { state.bookingStep = 2; render(); });
-
-  // 確認預約
-  const confirmBtn = document.getElementById('btn-confirm');
-  if (confirmBtn) confirmBtn.addEventListener('click', submitBooking);
-
-  // 返回首頁
-  const backHomeBtn = document.getElementById('btn-back-home');
-  if (backHomeBtn) backHomeBtn.addEventListener('click', resetBooking);
-
-  // 下載 ICS
-  const icsBtn = document.getElementById('btn-add-ics');
-  if (icsBtn) icsBtn.addEventListener('click', () => downloadIcs(state.lastBooking));
-
-  // 取消預約
-  document.querySelectorAll('[data-cancel]').forEach(el => {
-    el.addEventListener('click', () => cancelBooking(el.dataset.cancel));
-  });
-
-  // 即時更新表單欄位
-  const nameInput = document.getElementById('input-name');
-  if (nameInput) {
-    nameInput.addEventListener('input', () => {
-      state.realName = nameInput.value;
-      const nextBtn = document.getElementById('btn-step2-next');
-      if (nextBtn) nextBtn.disabled = !state.realName.trim();
-    });
-  }
-
-  // 主題類別下拉選單
-  const topicSelect = document.getElementById('select-topic');
-  if (topicSelect) {
-    topicSelect.addEventListener('change', () => {
-      state.topicCategory = topicSelect.value;
-      state.topicDetail = '';
-      // 動態顯示詳細說明
-      const detailWrap = document.querySelector('.detail-input-wrap');
-      if (detailWrap) {
-        detailWrap.classList.toggle('show', state.topicCategory !== '');
-        // 更新 placeholder
-        const textarea = document.getElementById('input-detail');
-        if (textarea) {
-          textarea.placeholder = state.topicCategory === '談話'
-            ? '想聊什麼話題？有什麼需要？'
-            : '想學習什麼課程或主題？';
-          textarea.value = '';
-        }
-      }
-    });
-  }
-
-  const detailInput = document.getElementById('input-detail');
-  if (detailInput) {
-    detailInput.addEventListener('input', () => {
-      state.topicDetail = detailInput.value;
-    });
-  }
-}
-
-function saveFormState() {
-  const nameInput = document.getElementById('input-name');
-  if (nameInput) state.realName = nameInput.value.trim();
-  const topicSelect = document.getElementById('select-topic');
-  if (topicSelect) state.topicCategory = topicSelect.value;
-  const detailInput = document.getElementById('input-detail');
-  if (detailInput) state.topicDetail = detailInput.value.trim();
-}
-
-function escAttr(s) {
-  return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-}
-
-// ============================================================
-// 啟動
-// ============================================================
+function updBtn(){const b=document.getElementById('bn2');if(!b)return;b.disabled=!(S.realName.trim()&&(S.topicCategory==='牧養'||(S.topicCategory==='課程'&&S.instrument)));}
+function saveForm(){const a=document.getElementById('iName');if(a)S.realName=a.value.trim();const b=document.getElementById('sTopic');if(b)S.topicCategory=b.value;const c=document.getElementById('sInst');if(c)S.instrument=c.value;const d=document.getElementById('iNote');if(d)S.otherNote=d.value.trim();}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 initLiff();
 </script>
 </body>
