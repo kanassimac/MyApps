@@ -77,13 +77,14 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:
 .summary-row:last-child{border-bottom:none}
 .summary-label{color:var(--text-secondary)}
 .summary-value{font-weight:500;text-align:right;max-width:60%}
-.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--text);color:#fff;padding:12px 20px;border-radius:10px;font-size:14px;z-index:200;transition:transform .3s ease;white-space:nowrap}
+.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--text);color:#fff;padding:12px 20px;border-radius:10px;font-size:14px;z-index:200;transition:transform .3s ease;white-space:nowrap;pointer-events:none}
 .toast.show{transform:translateX(-50%) translateY(0)}
 .line-id-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;background:#E8F5E9;border-radius:6px;font-size:11px;color:#2E7D32;font-weight:500}
 </style>
 </head>
 <body>
 <div id="app"></div>
+<div class="toast" id="globalToast"></div>
 <script>
 const C={LIFF_ID:'2009432886-66cVxKUj',GAS_URL:'https://script.google.com/macros/s/AKfycbyxWW_zjy2HpmPb5AaFXM5EpDK5ttMdyzRzAoZ9_N_zNMcoo-e5tqPvnJ0uuRm6ySZl/exec'};
 const S={liffReady:false,profile:null,currentTab:'book',bookingStep:1,slots:[],myBookings:[],selectedDate:null,selectedSlot:null,realName:'',topicCategory:'課程',instrument:'',otherNote:'',loading:false,bookingSuccess:false,lastBooking:null};
@@ -122,7 +123,7 @@ function resetBooking(){S.bookingStep=1;S.selectedDate=null;S.selectedSlot=null;
 
 function gcalUrl(b){const d=b.date.replace(/-/g,''),s=b.startTime.replace(':','')+'00',e=b.endTime.replace(':','')+'00';return'https://calendar.google.com/calendar/render?'+new URLSearchParams({action:'TEMPLATE',text:'牧養約談',dates:d+'T'+s+'/'+d+'T'+e,details:'與 Kanas 牧師的約談',location:'花蓮靈糧堂',ctz:'Asia/Taipei'}).toString();}
 function dlIcs(b){const d=b.date.replace(/-/g,''),s=b.startTime.replace(':','')+'00',e=b.endTime.replace(':','')+'00';const ics=['BEGIN:VCALENDAR','VERSION:2.0','BEGIN:VEVENT','DTSTART;TZID=Asia/Taipei:'+d+'T'+s,'DTEND;TZID=Asia/Taipei:'+d+'T'+e,'SUMMARY:牧養約談','LOCATION:花蓮靈糧堂','BEGIN:VALARM','TRIGGER:-PT30M','ACTION:DISPLAY','DESCRIPTION:約談提醒','END:VALARM','END:VEVENT','END:VCALENDAR'].join('\r\n');const bl=new Blob([ics],{type:'text/calendar'});const u=URL.createObjectURL(bl);const a=document.createElement('a');a.href=u;a.download='約談_'+b.date+'.ics';a.click();URL.revokeObjectURL(u);}
-function showToast(m){let t=document.querySelector('.toast');if(!t){t=document.createElement('div');t.className='toast';document.body.appendChild(t);}t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
+function showToast(m){const t=document.getElementById('globalToast');t.textContent=m;t.classList.add('show');clearTimeout(window._toastTimer);window._toastTimer=setTimeout(()=>t.classList.remove('show'),2500);}
 
 function render(){document.getElementById('app').innerHTML=renderHeader()+renderContent()+renderNav();bindEvents();}
 
