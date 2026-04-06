@@ -89,6 +89,33 @@ body {
   text-align: center; font-weight: 500;
 }
 .bg-notice.show { display: block; }
+/* ===== 雲端同步狀態列 ===== */
+.cloud-sync-bar {
+  display: none;
+  align-items: center; gap: 8px;
+  padding: 8px 16px;
+  font-size: 12px; font-weight: 500;
+  border-bottom: 1px solid var(--border);
+}
+.cloud-sync-bar.show { display: flex; }
+.cloud-sync-bar.syncing { background: #eff6ff; color: #1d4ed8; }
+.cloud-sync-bar.success { background: var(--green-soft); color: #15803d; }
+.cloud-sync-bar.error { background: #fef2f2; color: #991b1b; }
+.cloud-sync-bar.info { background: #fefce8; color: #854d0e; }
+.cloud-sync-dot {
+  width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+}
+.cloud-sync-bar.syncing .cloud-sync-dot { background: #1d4ed8; animation: blink 1s infinite; }
+.cloud-sync-bar.success .cloud-sync-dot { background: #15803d; }
+.cloud-sync-bar.error .cloud-sync-dot { background: #991b1b; }
+.cloud-sync-bar.info .cloud-sync-dot { background: #854d0e; }
+.cloud-sync-text { flex: 1; }
+.cloud-sync-action {
+  background: none; border: 1.5px solid currentColor; border-radius: 14px;
+  padding: 3px 10px; font-size: 11px; font-weight: 700; cursor: pointer;
+  color: inherit; font-family: 'Noto Sans TC', sans-serif;
+}
+.cloud-sync-action:active { opacity: 0.6; }
 .nav-logo { display: flex; align-items: center; gap: 10px; }
 .nav-avatar {
   width: 36px; height: 36px;
@@ -396,7 +423,6 @@ body {
 .sync-badge.success { background:#f0fdf4; color:#15803d; border:1px solid #bbf7d0; }
 .sync-badge.error   { background:#fef2f2; color:#991b1b; border:1px solid #fecaca; }
 .sync-badge.local   { background:#f9fafb; color:#6b7280; border:1px solid #e5e7eb; }
-/* ★ 新增：調整起始時間面板 */
 .adjust-start-panel {
   display: none;
   margin: 10px 16px 0;
@@ -482,7 +508,6 @@ body {
 .adj-result-msg.show { display: block; }
 .adj-result-msg.success { background: var(--green-soft); color: #15803d; }
 .adj-result-msg.error { background: #fef2f2; color: var(--danger); }
-/* ★ 結束：調整起始時間面板 */
 .auto-bar { display:none; margin:10px 16px 0; background:var(--pause-soft); border:1px solid #fde68a; border-radius:var(--radius-sm); padding:10px 14px; }
 .auto-bar.show { display:block; }
 .auto-bar-top { display:flex; justify-content:space-between; font-size:12px; color:var(--gold); font-weight:600; margin-bottom:6px; }
@@ -636,29 +661,11 @@ body {
 .step-list li { display:flex; gap:10px; padding:8px 0; border-bottom:1px solid var(--border); font-size:13px; line-height:1.5; }
 .step-list li:last-child { border-bottom:none; }
 .step-num { width:22px; height:22px; background:var(--accent); color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; flex-shrink:0; margin-top:1px; }
-.tab-bar { position:fixed; bottom:0; left:50%; transform:translateX(-50%); width:100%; max-width:430px; background:var(--white); border-top:1px solid var(--border); display:flex; z-index:100; padding-bottom:env(safe-area-inset-bottom); }
-.tab-item { flex:1; padding:10px 0 8px; display:flex; flex-direction:column; align-items:center; gap:3px; cursor:pointer; border:none; background:transparent; -webkit-appearance:none; }
-.tab-icon { font-size:22px; transition:transform 0.2s; }
-.tab-item.active .tab-icon { transform:scale(1.1); }
-.tab-lbl { font-size:10px; font-weight:600; color:var(--text-light); font-family:'Noto Sans TC',sans-serif; }
-.tab-item.active .tab-lbl { color:var(--accent); }
-.toast { position:fixed; bottom:88px; left:50%; transform:translateX(-50%) translateY(16px); background:rgba(26,26,46,0.92); color:white; padding:11px 20px; border-radius:24px; font-size:13px; font-weight:500; opacity:0; transition:all 0.3s; z-index:200; backdrop-filter:blur(10px); max-width:90vw; text-align:center; white-space:normal; }
-.toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
-/* ========== 行事曆頁樣式 ========== */
-.cal-api-banner {
-  margin: 12px 16px 0;
-  background: linear-gradient(135deg, #1a3a5c, #0f2840);
-  border-radius: var(--radius);
-  padding: 14px 16px;
-  color: white;
-}
+/* ===== 行事曆頁樣式 ===== */
+.cal-api-banner { margin: 12px 16px 0; background: linear-gradient(135deg, #1a3a5c, #0f2840); border-radius: var(--radius); padding: 14px 16px; color: white; }
 .cal-api-banner.connected { background: linear-gradient(135deg, #064e3b, #065f46); }
 .cal-api-row { display: flex; gap: 8px; align-items: center; margin-top: 8px; }
-.cal-api-input {
-  flex: 1; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
-  border-radius: 8px; padding: 8px 12px; color: white; font-size: 11px;
-  font-family: 'Space Mono', monospace; outline: none;
-}
+.cal-api-input { flex: 1; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 8px 12px; color: white; font-size: 11px; font-family: 'Space Mono', monospace; outline: none; }
 .cal-api-input::placeholder { color: rgba(255,255,255,0.35); }
 .cal-api-input:focus { border-color: var(--line-green); }
 .cal-loading { text-align:center; padding:40px 20px; color:var(--text-light); }
@@ -681,11 +688,7 @@ body {
 .cal-grid-wrap { padding:0 16px; }
 .cal-weekdays { display:grid; grid-template-columns:repeat(7,1fr); text-align:center; font-size:11px; font-weight:600; color:var(--text-light); padding:8px 0 4px; }
 .cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:2px; }
-.cal-day {
-  aspect-ratio:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
-  border-radius:10px; cursor:pointer; font-size:13px; font-weight:500; position:relative;
-  transition:background 0.15s; gap:2px;
-}
+.cal-day { aspect-ratio:1; display:flex; flex-direction:column; align-items:center; justify-content:center; border-radius:10px; cursor:pointer; font-size:13px; font-weight:500; position:relative; transition:background 0.15s; gap:2px; }
 .cal-day:active { background:var(--accent-soft); }
 .cal-day.today { background:var(--accent-soft); font-weight:700; color:var(--accent); }
 .cal-day.selected { background:var(--accent); color:white; }
@@ -699,90 +702,27 @@ body {
 .dot-mine { background:#EF4444; }
 .cal-day-detail { margin:10px 16px 0; }
 .cal-day-title { font-size:14px; font-weight:700; color:var(--text-sub); margin-bottom:8px; padding-left:2px; }
-.cal-event-card {
-  border-radius: 8px; padding: 8px 12px;
-  box-shadow: var(--shadow); margin-bottom: 6px;
-  border-left: 3px solid var(--border);
-  transition: transform 0.1s;
-  font-size: 13px;
-}
+.cal-event-card { border-radius: 8px; padding: 8px 12px; box-shadow: var(--shadow); margin-bottom: 6px; border-left: 3px solid var(--border); transition: transform 0.1s; font-size: 13px; }
 .cal-event-card:active { transform:scale(0.98); }
 .cal-event-card.mine { border-left-color:var(--line-green); }
 .cal-event-card.church { border-left-color:var(--accent); background: var(--cal-church-bg); }
 .cal-event-card.student { border-left-color:#06C755; background: var(--cal-student-bg); }
 .cal-event-card.off { opacity:0.55; border-left-color:var(--text-light); }
-.ce-compact-row {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex-wrap: wrap;
-  min-height: 24px;
-}
-.ce-compact-row .ce-src-tag {
-  font-size: 10px;
-  padding: 1px 6px;
-  border-radius: 8px;
-  font-weight: 700;
-  flex-shrink: 0;
-  line-height: 1.6;
-}
+.ce-compact-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; min-height: 24px; }
+.ce-compact-row .ce-src-tag { font-size: 10px; padding: 1px 6px; border-radius: 8px; font-weight: 700; flex-shrink: 0; line-height: 1.6; }
 .ce-src-tag.tag-church { background: rgba(45,125,210,0.15); color: var(--accent); }
 .ce-src-tag.tag-student { background: rgba(6,199,85,0.15); color: #15803d; }
-.ce-compact-row .ce-loc {
-  font-size: 12px; color: var(--text-sub); flex-shrink: 0;
-}
-.ce-compact-row .ce-main-info {
-  font-size: 13px; font-weight: 600; color: var(--text);
-  flex: 1; min-width: 0;
-}
-.ce-compact-row .ce-venue-tag {
-  font-size: 10px;
-  padding: 1px 6px;
-  border-radius: 8px;
-  font-weight: 600;
-  flex-shrink: 0;
-  background: #fef3c7;
-  color: #92400e;
-}
-.ce-compact-row .ce-my-badge-inline {
-  font-size: 10px;
-  font-weight: 700;
-  padding: 1px 7px;
-  border-radius: 10px;
-  background: linear-gradient(135deg,#dcfce7,#bbf7d0);
-  color: #15803d;
-  flex-shrink: 0;
-}
-.ce-details-toggle {
-  display: flex; align-items: center; gap: 4px;
-  font-size: 11px; color: var(--accent); font-weight: 600;
-  cursor: pointer; padding: 4px 0 0;
-  user-select: none;
-}
+.ce-compact-row .ce-loc { font-size: 12px; color: var(--text-sub); flex-shrink: 0; }
+.ce-compact-row .ce-main-info { font-size: 13px; font-weight: 600; color: var(--text); flex: 1; min-width: 0; }
+.ce-compact-row .ce-venue-tag { font-size: 10px; padding: 1px 6px; border-radius: 8px; font-weight: 600; flex-shrink: 0; background: #fef3c7; color: #92400e; }
+.ce-compact-row .ce-my-badge-inline { font-size: 10px; font-weight: 700; padding: 1px 7px; border-radius: 10px; background: linear-gradient(135deg,#dcfce7,#bbf7d0); color: #15803d; flex-shrink: 0; }
+.ce-details-toggle { display: flex; align-items: center; gap: 4px; font-size: 11px; color: var(--accent); font-weight: 600; cursor: pointer; padding: 4px 0 0; user-select: none; }
 .ce-details-toggle:active { opacity: 0.6; }
-.ce-details-arrow {
-  font-size: 11px; transition: transform 0.2s;
-  display: inline-block; width: 12px;
-}
-.ce-details-body {
-  padding: 6px 0 2px 16px;
-  border-left: 2px solid var(--border);
-  margin: 4px 0 0 5px;
-}
-.ce-detail-row {
-  display: flex; gap: 8px; padding: 3px 0;
-  font-size: 12px; line-height: 1.6;
-  flex-wrap: wrap;
-}
-.ce-detail-label {
-  color: var(--text-sub); font-weight: 600;
-  white-space: nowrap; min-width: 56px;
-}
-.ce-detail-value {
-  color: var(--text); flex: 1; min-width: 0;
-  word-break: break-word;
-  white-space: pre-line;
-}
+.ce-details-arrow { font-size: 11px; transition: transform 0.2s; display: inline-block; width: 12px; }
+.ce-details-body { padding: 6px 0 2px 16px; border-left: 2px solid var(--border); margin: 4px 0 0 5px; }
+.ce-detail-row { display: flex; gap: 8px; padding: 3px 0; font-size: 12px; line-height: 1.6; flex-wrap: wrap; }
+.ce-detail-label { color: var(--text-sub); font-weight: 600; white-space: nowrap; min-width: 56px; }
+.ce-detail-value { color: var(--text); flex: 1; min-width: 0; word-break: break-word; white-space: pre-line; }
 .ce-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; }
 .ce-title { font-size:14px; font-weight:700; flex:1; }
 .ce-source { font-size:10px; padding:2px 8px; border-radius:10px; font-weight:600; }
@@ -803,59 +743,33 @@ body {
 .cal-stat-txt { font-size:11px; color:var(--text-sub); margin-top:2px; }
 /* ===== 匯出/匯入 ===== */
 .io-btn-row { display: flex; gap: 10px; margin-top: 12px; }
-.io-btn {
-  flex: 1; padding: 13px 8px; border-radius: var(--radius-sm); border: none;
-  font-size: 14px; font-weight: 700; font-family: 'Noto Sans TC', sans-serif;
-  cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;
-  transition: transform 0.15s, opacity 0.15s;
-}
+.io-btn { flex: 1; padding: 13px 8px; border-radius: var(--radius-sm); border: none; font-size: 14px; font-weight: 700; font-family: 'Noto Sans TC', sans-serif; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: transform 0.15s, opacity 0.15s; }
 .io-btn:active { transform: scale(0.96); }
 .io-btn-export { background: var(--accent); color: white; }
 .io-btn-import { background: var(--green-soft); color: #15803d; border: 1.5px solid #bbf7d0; }
-.io-textarea {
-  width: 100%; border: 1.5px solid var(--border); border-radius: var(--radius-sm);
-  padding: 10px 12px; font-size: 11px; font-family: 'Space Mono', monospace;
-  color: var(--text); outline: none; resize: vertical; height: 100px;
-  transition: border-color 0.2s; background: var(--bg);
-  margin-top: 10px;
-}
+.io-textarea { width: 100%; border: 1.5px solid var(--border); border-radius: var(--radius-sm); padding: 10px 12px; font-size: 11px; font-family: 'Space Mono', monospace; color: var(--text); outline: none; resize: vertical; height: 100px; transition: border-color 0.2s; background: var(--bg); margin-top: 10px; }
 .io-textarea:focus { border-color: var(--accent); background: var(--white); }
 .io-hint { font-size: 11px; color: var(--text-light); line-height: 1.6; margin-top: 6px; }
-.io-result {
-  display: none; margin-top: 10px; padding: 10px 14px; border-radius: var(--radius-sm);
-  font-size: 13px; font-weight: 600; line-height: 1.5;
-}
+.io-result { display: none; margin-top: 10px; padding: 10px 14px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; line-height: 1.5; }
 .io-result.show { display: block; }
 .io-result.success { background: var(--green-soft); color: #15803d; border: 1px solid #bbf7d0; }
 .io-result.error { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
 .io-result.info { background: var(--accent-soft); color: var(--accent); border: 1px solid #bfdbfe; }
 /* ===== 設定頁：密碼欄顯示/隱藏 ===== */
-.setting-secret-row {
-  display: flex; gap: 8px; align-items: center;
-}
-.setting-secret-input {
-  flex: 1;
-  background: rgba(255,255,255,0.1);
-  border: 1px solid rgba(255,255,255,0.2);
-  border-radius: 8px;
-  padding: 9px 12px;
-  color: white;
-  font-size: 12px;
-  font-family: 'Space Mono', monospace;
-  outline: none;
-}
+.setting-secret-row { display: flex; gap: 8px; align-items: center; }
+.setting-secret-input { flex: 1; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 9px 12px; color: white; font-size: 12px; font-family: 'Space Mono', monospace; outline: none; }
 .setting-secret-input::placeholder { color: rgba(255,255,255,0.35); }
 .setting-secret-input:focus { border-color: var(--line-green); }
-.btn-toggle-vis {
-  padding: 9px 10px;
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.2);
-  border-radius: 8px;
-  color: white; font-size: 14px;
-  cursor: pointer; flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-}
+.btn-toggle-vis { padding: 9px 10px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: white; font-size: 14px; cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
 .btn-toggle-vis:active { background: rgba(255,255,255,0.15); }
+.tab-bar { position:fixed; bottom:0; left:50%; transform:translateX(-50%); width:100%; max-width:430px; background:var(--white); border-top:1px solid var(--border); display:flex; z-index:100; padding-bottom:env(safe-area-inset-bottom); }
+.tab-item { flex:1; padding:10px 0 8px; display:flex; flex-direction:column; align-items:center; gap:3px; cursor:pointer; border:none; background:transparent; -webkit-appearance:none; }
+.tab-icon { font-size:22px; transition:transform 0.2s; }
+.tab-item.active .tab-icon { transform:scale(1.1); }
+.tab-lbl { font-size:10px; font-weight:600; color:var(--text-light); font-family:'Noto Sans TC',sans-serif; }
+.tab-item.active .tab-lbl { color:var(--accent); }
+.toast { position:fixed; bottom:88px; left:50%; transform:translateX(-50%) translateY(16px); background:rgba(26,26,46,0.92); color:white; padding:11px 20px; border-radius:24px; font-size:13px; font-weight:500; opacity:0; transition:all 0.3s; z-index:200; backdrop-filter:blur(10px); max-width:90vw; text-align:center; white-space:normal; }
+.toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
 </style>
 </head>
 <body>
@@ -874,6 +788,12 @@ body {
     </div>
     <div class="nav-date" id="navDate"></div>
   </div>
+</div>
+<!-- ===== 雲端同步狀態列 ===== -->
+<div class="cloud-sync-bar" id="cloudSyncBar">
+  <div class="cloud-sync-dot"></div>
+  <span class="cloud-sync-text" id="cloudSyncText">正在同步…</span>
+  <button class="cloud-sync-action" id="cloudSyncAction" onclick="cloudSync()" style="display:none">手動同步</button>
 </div>
 <div class="bg-notice" id="bgNotice">⚠️ 計時器在背景繼續運行中，切回此頁面時數字會自動更新</div>
 <div class="pwa-banner" id="pwaBanner">
@@ -919,7 +839,6 @@ body {
       <div class="suggest-list" id="catSuggestList"></div>
     </div>
   </div>
-  <!-- ===== YouTube 速讀播放器 ===== -->
   <div class="yt-player-section" id="ytSection">
     <div class="yt-header" onclick="toggleYtBody()">
       <div class="yt-header-left">
@@ -982,7 +901,6 @@ body {
       <div class="meta-item"><div class="meta-val" id="mCat">—</div><div class="meta-key">分類</div></div>
     </div>
   </div>
-  <!-- ★ 新增：調整起始時間面板 -->
   <div class="adjust-start-panel" id="adjustStartPanel">
     <div class="adjust-start-header" onclick="toggleAdjustPanel()">
       <div class="adjust-start-header-left">⏪ 調整起始時間</div>
@@ -1008,7 +926,6 @@ body {
       <div class="adj-result-msg" id="adjResultMsg"></div>
     </div>
   </div>
-  <!-- ★ 結束：調整起始時間面板 -->
   <div class="auto-bar" id="autoBar">
     <div class="auto-bar-top"><span>⏸ 暫停中，自動結束倒計時</span><span id="autoCD">30:00</span></div>
     <div class="auto-progress"><div class="auto-fill" id="autoFill"></div></div>
@@ -1034,14 +951,8 @@ body {
     <button class="back-btn" style="width:auto;padding:0 12px;border-radius:20px;font-size:12px;" onclick="calRefresh()">🔄 重新整理</button>
   </div>
   <div class="cal-stats-row" id="calStats" style="display:none">
-    <div class="cal-stat-card">
-      <div class="cal-stat-num" id="calMyCount">0</div>
-      <div class="cal-stat-txt">我的服事（篩選範圍）</div>
-    </div>
-    <div class="cal-stat-card">
-      <div class="cal-stat-num" id="calAllCount">0</div>
-      <div class="cal-stat-txt">全部事件</div>
-    </div>
+    <div class="cal-stat-card"><div class="cal-stat-num" id="calMyCount">0</div><div class="cal-stat-txt">我的服事（篩選範圍）</div></div>
+    <div class="cal-stat-card"><div class="cal-stat-num" id="calAllCount">0</div><div class="cal-stat-txt">全部事件</div></div>
   </div>
   <div class="cal-filter-bar" id="calFilterBar">
     <button class="cal-f-chip" onclick="calSetFilter('all',this)">全部</button>
@@ -1135,6 +1046,7 @@ body {
       <span id="sText" style="font-size:13px;font-weight:600;">尚未設定任務同步 API</span>
     </div>
     <div class="sp-title" style="color:white;">📋 GAS 任務同步 API</div>
+    <div class="sp-desc" style="color:rgba(255,255,255,0.6);margin-bottom:8px;font-size:11px;">☁️ 此 URL 設定後會自動同步到雲端，其他瀏覽器也能自動載入。</div>
     <div class="setting-secret-row" style="margin-top:8px;">
       <input type="password" class="setting-secret-input" id="gasUrlInput" placeholder="貼上 GAS Web App 部署網址（/exec 結尾）" />
       <button class="btn-toggle-vis" onclick="toggleVis('gasUrlInput',this)" title="顯示/隱藏">👁</button>
@@ -1148,12 +1060,25 @@ body {
       <span id="calApiText" style="font-size:13px;font-weight:600;">尚未設定行事曆 API</span>
     </div>
     <div class="sp-title" style="color:white;">📅 行事曆 GAS API</div>
+    <div class="sp-desc" style="color:rgba(255,255,255,0.6);margin-bottom:8px;font-size:11px;">☁️ 此 URL 設定後會自動同步到雲端。</div>
     <div class="setting-secret-row" style="margin-top:8px;">
       <input type="password" class="setting-secret-input" id="calApiInput" placeholder="貼上 GAS Web App 網址" />
       <button class="btn-toggle-vis" onclick="toggleVis('calApiInput',this)" title="顯示/隱藏">👁</button>
       <button class="btn-save-url" onclick="saveCalApi()">儲存</button>
     </div>
     <div class="setup-hint">部署 Google Apps Script 後，把 Web App 網址貼在這裡。</div>
+  </div>
+  <!-- ===== 雲端同步專區 ===== -->
+  <div class="setup-page-card">
+    <div class="sp-title">☁️ 跨瀏覽器雲端同步</div>
+    <div class="sp-desc">
+      任務記錄會透過 GAS 任務同步 API 自動雙向同步。<br>
+      Safari、Chrome、LINE 開啟此頁時，會自動從雲端拉取最新記錄並合併。<br>
+      <b>上次同步：</b><span id="lastSyncTime">尚未同步</span>
+    </div>
+    <div class="io-btn-row">
+      <button class="io-btn io-btn-export" onclick="cloudSync()" style="background:var(--line-green);">☁️ 立即同步</button>
+    </div>
   </div>
   <div class="setup-page-card">
     <div class="sp-title">📦 資料匯出 / 匯入</div>
@@ -1172,7 +1097,7 @@ body {
   <div class="setup-page-card">
     <div class="sp-title">🛠 GAS 任務同步設定步驟</div>
     <ul class="step-list">
-      <li><div class="step-num">1</div><div>到 <b>script.google.com</b> 建立新專案，貼上「任務同步 GAS v2 程式碼」</div></li>
+      <li><div class="step-num">1</div><div>到 <b>script.google.com</b> 建立新專案，貼上「GAS 後端 <b>v3.0</b>」程式碼</div></li>
       <li><div class="step-num">2</div><div>修改 <b>CALENDAR_ID</b> 為你的 Gmail 信箱（或日曆 ID）</div></li>
       <li><div class="step-num">3</div><div>先在 GAS 編輯器中執行 <b>testSave()</b> 測試寫入是否正常</div></li>
       <li><div class="step-num">4</div><div>「部署」→「新增部署」→ 類型選「網頁應用程式」</div></li>
@@ -1258,6 +1183,7 @@ const CAL_API_KEY = 'kanas_cal_api_url';
 const CAL_DATA_KEY = 'kanas_cal_cache';
 const YT_URL_KEY = 'kanas_yt_url';
 const PAUSE_STATE_KEY = 'kanas_pause_state';
+const LAST_SYNC_KEY = 'kanas_last_sync';
 const AUTO_TIMEOUT_MS = 30 * 60 * 1000;
 const DEFAULT_CATS = ['講道','牧養','行政','個人','其他'];
 let timerInterval=null,autoInterval=null,nowClockInterval=null;
@@ -1269,323 +1195,345 @@ let currentRange='all',rangeStartDate=null,rangeEndDate=null;
 let selectMode=false,selectedIds=new Set();
 let batchCatChoice='';
 let nowClockVisible=true;
+let cloudSyncing=false;
+
 // ============================================================
-//  ★ 調整起始時間面板邏輯
+//  ★★★ 雲端同步核心模組 ★★★
+// ============================================================
+
+/**
+ * 顯示/更新雲端同步狀態列
+ */
+function showCloudBar(type, text, showAction) {
+  const bar = document.getElementById('cloudSyncBar');
+  bar.className = 'cloud-sync-bar show ' + type;
+  document.getElementById('cloudSyncText').textContent = text;
+  document.getElementById('cloudSyncAction').style.display = showAction ? '' : 'none';
+}
+function hideCloudBar() {
+  document.getElementById('cloudSyncBar').classList.remove('show');
+}
+
+/**
+ * 用 JSONP 呼叫 GAS（通用）
+ * @returns {Promise<object>}
+ */
+function gasJsonp(gasUrl, params) {
+  return new Promise(function(resolve, reject) {
+    var cbName = '_gasCb_' + Date.now() + '_' + Math.floor(Math.random() * 100000);
+    var timeout = setTimeout(function() {
+      delete window[cbName];
+      var s = document.getElementById('gasJsonp_' + cbName); if(s) s.remove();
+      reject(new Error('GAS 回應逾時'));
+    }, 20000);
+    window[cbName] = function(result) {
+      clearTimeout(timeout);
+      delete window[cbName];
+      var s = document.getElementById('gasJsonp_' + cbName); if(s) s.remove();
+      resolve(result);
+    };
+    var qs = 'callback=' + cbName;
+    Object.keys(params).forEach(function(k) { qs += '&' + k + '=' + encodeURIComponent(params[k]); });
+    var old = document.getElementById('gasJsonp_' + cbName); if(old) old.remove();
+    var script = document.createElement('script');
+    script.id = 'gasJsonp_' + cbName;
+    script.src = gasUrl + '?' + qs;
+    script.onerror = function() {
+      clearTimeout(timeout);
+      delete window[cbName];
+      script.remove();
+      reject(new Error('GAS 請求失敗'));
+    };
+    document.body.appendChild(script);
+  });
+}
+
+/**
+ * ★ 主要雲端同步函式：雙向合併
+ * 1. 從 GAS ?action=list 拉取雲端記錄
+ * 2. 與本地 localStorage 合併（以 id 為 key 去重）
+ * 3. 將本地有但雲端沒有的記錄推送到雲端
+ * 4. 將雲端有但本地沒有的記錄寫入本地
+ * 5. 同步設定值
+ */
+async function cloudSync() {
+  var gasUrl = loadGasUrl();
+  if (!gasUrl) {
+    showCloudBar('info', '⚠ 請先到設定頁設定 GAS 任務同步 API 網址', false);
+    setTimeout(hideCloudBar, 4000);
+    return;
+  }
+  if (cloudSyncing) return;
+  cloudSyncing = true;
+  showCloudBar('syncing', '☁️ 正在從雲端拉取記錄…', false);
+
+  try {
+    // === Step 1：拉取雲端記錄 ===
+    var result = await gasJsonp(gasUrl, { action: 'list' });
+    if (!result || !result.success) throw new Error(result?.message || 'API 回傳失敗');
+
+    var cloudRecords = result.records || [];
+    var localHist = loadHist();
+
+    // === Step 2：合併 ===
+    var localById = {};
+    localHist.forEach(function(r) { localById[r.id] = r; });
+    var cloudById = {};
+    cloudRecords.forEach(function(r) { cloudById[r.id] = r; });
+
+    // 雲端有、本地沒有 → 加入本地
+    var newFromCloud = 0;
+    cloudRecords.forEach(function(r) {
+      if (!localById[r.id]) {
+        r.synced = true;
+        localHist.push(r);
+        localById[r.id] = r;
+        newFromCloud++;
+      }
+    });
+
+    // 本地有、雲端沒有、且尚未同步 → 推送到雲端
+    var needPush = localHist.filter(function(r) { return !r.synced && !cloudById[r.id]; });
+    var pushCount = 0;
+
+    showCloudBar('syncing', '☁️ 合併完成，正在推送 ' + needPush.length + ' 筆本地記錄…', false);
+
+    for (var i = 0; i < needPush.length; i++) {
+      try {
+        await gasJsonp(gasUrl, { action: 'save', data: JSON.stringify(needPush[i]) });
+        needPush[i].synced = true;
+        pushCount++;
+      } catch (e) {
+        console.log('推送失敗：', needPush[i].id, e);
+      }
+    }
+
+    // 排序：最新的在前面
+    localHist.sort(function(a, b) { return new Date(b.start) - new Date(a.start); });
+    saveHist(localHist);
+
+    // === Step 3：同步設定值 ===
+    await syncSettingsFromCloud(gasUrl);
+
+    // === Step 4：完成 ===
+    var now = new Date();
+    var syncTime = now.toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit' });
+    localStorage.setItem(LAST_SYNC_KEY, now.toISOString());
+    updateLastSyncDisplay();
+
+    var msg = '✓ 同步完成！';
+    var parts = [];
+    if (newFromCloud > 0) parts.push('雲端新增 ' + newFromCloud + ' 筆');
+    if (pushCount > 0) parts.push('推送 ' + pushCount + ' 筆');
+    if (parts.length) msg += parts.join('，');
+    else msg += '記錄已是最新';
+
+    showCloudBar('success', msg, true);
+    toast('☁️ ' + msg);
+    setTimeout(function() { hideCloudBar(); }, 5000);
+
+    renderHome();
+    if (document.getElementById('page-history').classList.contains('active')) {
+      renderFilterChips(); renderHistPage();
+    }
+  } catch (err) {
+    showCloudBar('error', '⚠ 同步失敗：' + err.message, true);
+    setTimeout(function() { hideCloudBar(); }, 6000);
+  } finally {
+    cloudSyncing = false;
+  }
+}
+
+/**
+ * 從雲端讀取設定並套用到本地
+ */
+async function syncSettingsFromCloud(gasUrl) {
+  try {
+    var result = await gasJsonp(gasUrl, { action: 'settings_get' });
+    if (!result || !result.success) return;
+    var settings = result.settings || {};
+
+    // 行事曆 API URL：雲端有、本地沒有 → 自動套用
+    if (settings.cal_api_url && !localStorage.getItem(CAL_API_KEY)) {
+      localStorage.setItem(CAL_API_KEY, settings.cal_api_url);
+      updateCalApiStatus();
+    }
+    // YouTube URL
+    if (settings.yt_url && !localStorage.getItem(YT_URL_KEY)) {
+      localStorage.setItem(YT_URL_KEY, settings.yt_url);
+      ytUpdateSavedDisplay();
+    }
+  } catch (e) {
+    console.log('設定同步失敗：', e);
+  }
+}
+
+/**
+ * 將本地設定推送到雲端（在使用者儲存設定時呼叫）
+ */
+async function pushSettingsToCloud() {
+  var gasUrl = loadGasUrl();
+  if (!gasUrl) return;
+  var settings = {};
+  var calApi = localStorage.getItem(CAL_API_KEY);
+  if (calApi) settings.cal_api_url = calApi;
+  var ytUrl = localStorage.getItem(YT_URL_KEY);
+  if (ytUrl) settings.yt_url = ytUrl;
+  if (!Object.keys(settings).length) return;
+  try {
+    await gasJsonp(gasUrl, { action: 'settings_set', data: JSON.stringify(settings) });
+  } catch (e) {
+    console.log('設定推送失敗：', e);
+  }
+}
+
+/**
+ * 更新「上次同步」顯示
+ */
+function updateLastSyncDisplay() {
+  var el = document.getElementById('lastSyncTime');
+  if (!el) return;
+  var ts = localStorage.getItem(LAST_SYNC_KEY);
+  if (!ts) { el.textContent = '尚未同步'; return; }
+  var d = new Date(ts);
+  el.textContent = d.toLocaleDateString('zh-TW') + ' ' + d.toLocaleTimeString('zh-TW', { hour:'2-digit', minute:'2-digit' });
+}
+
+// ============================================================
+//  調整起始時間面板邏輯
 // ============================================================
 let adjPanelCollapsed = false;
-
 function toggleAdjustPanel() {
   adjPanelCollapsed = !adjPanelCollapsed;
   document.getElementById('adjBody').classList.toggle('collapsed', adjPanelCollapsed);
   document.getElementById('adjToggleIcon').classList.toggle('collapsed', adjPanelCollapsed);
 }
-
-/** 更新面板中顯示的「目前起始時間」，並同步 input 預設值 */
 function updateAdjustDisplay() {
   if (!startTime) return;
-  const timeStr = fmtTime(startTime);
-  document.getElementById('adjCurrentTime').textContent = timeStr;
-  // 同步 time input 預設值
-  document.getElementById('adjTimeInput').value =
-    pad(startTime.getHours()) + ':' + pad(startTime.getMinutes());
+  document.getElementById('adjCurrentTime').textContent = fmtTime(startTime);
+  document.getElementById('adjTimeInput').value = pad(startTime.getHours()) + ':' + pad(startTime.getMinutes());
 }
-
-/** 快捷按鈕：將起始時間往前推 N 分鐘 */
 function adjustStartByMin(minutes) {
   if (!isRunning || !startTime) { toast('⚠ 尚未開始計時'); return; }
-  const newStart = new Date(startTime.getTime() - minutes * 60000);
-  // 安全檢查：不能早於今天 00:00
-  const todayMidnight = new Date();
-  todayMidnight.setHours(0, 0, 0, 0);
-  if (newStart < todayMidnight) {
-    showAdjResult('error', '⚠ 起始時間不能早於今天 00:00');
-    return;
-  }
-  const oldStart = new Date(startTime.getTime());
+  var newStart = new Date(startTime.getTime() - minutes * 60000);
+  var todayMidnight = new Date(); todayMidnight.setHours(0, 0, 0, 0);
+  if (newStart < todayMidnight) { showAdjResult('error', '⚠ 起始時間不能早於今天 00:00'); return; }
+  var oldStart = new Date(startTime.getTime());
   startTime = newStart;
-  // 重新計算已過時間（不影響已累積的暫停時間）
-  if (!isPaused) {
-    elapsedMs = Date.now() - startTime.getTime() - totalPausedMs;
-    document.getElementById('digits').textContent = fmtDur(elapsedMs);
-  } else {
-    elapsedMs = pausedAt - startTime.getTime() - totalPausedMs;
-    document.getElementById('digits').textContent = fmtDur(elapsedMs);
-  }
+  if (!isPaused) { elapsedMs = Date.now() - startTime.getTime() - totalPausedMs; }
+  else { elapsedMs = pausedAt - startTime.getTime() - totalPausedMs; }
+  document.getElementById('digits').textContent = fmtDur(elapsedMs);
   document.getElementById('mStart').textContent = fmtTime(startTime);
   updateAdjustDisplay();
   showAdjResult('success', '✓ 已將起始時間從 ' + fmtTime(oldStart) + ' 調整為 ' + fmtTime(startTime));
   toast('⏪ 起始時間已往前推 ' + minutes + ' 分鐘');
 }
-
-/** 精確指定起始時間（使用 time input） */
 function adjustStartToExact() {
   if (!isRunning || !startTime) { toast('⚠ 尚未開始計時'); return; }
-  const timeVal = document.getElementById('adjTimeInput').value;
+  var timeVal = document.getElementById('adjTimeInput').value;
   if (!timeVal) { showAdjResult('error', '⚠ 請先選擇時間'); return; }
-  const [h, m] = timeVal.split(':').map(Number);
-  const newStart = new Date(startTime.getTime());
-  newStart.setHours(h, m, 0, 0);
-  // 安全檢查：不能晚於目前時間
-  if (newStart >= new Date()) {
-    showAdjResult('error', '⚠ 起始時間不能晚於現在');
-    return;
-  }
-  // 安全檢查：不能早於今天 00:00
-  const todayMidnight = new Date();
-  todayMidnight.setHours(0, 0, 0, 0);
-  if (newStart < todayMidnight) {
-    showAdjResult('error', '⚠ 起始時間不能早於今天 00:00');
-    return;
-  }
-  const oldStart = new Date(startTime.getTime());
+  var parts = timeVal.split(':').map(Number);
+  var newStart = new Date(startTime.getTime());
+  newStart.setHours(parts[0], parts[1], 0, 0);
+  if (newStart >= new Date()) { showAdjResult('error', '⚠ 起始時間不能晚於現在'); return; }
+  var todayMidnight = new Date(); todayMidnight.setHours(0, 0, 0, 0);
+  if (newStart < todayMidnight) { showAdjResult('error', '⚠ 起始時間不能早於今天 00:00'); return; }
+  var oldStart = new Date(startTime.getTime());
   startTime = newStart;
-  if (!isPaused) {
-    elapsedMs = Date.now() - startTime.getTime() - totalPausedMs;
-    document.getElementById('digits').textContent = fmtDur(elapsedMs);
-  } else {
-    elapsedMs = pausedAt - startTime.getTime() - totalPausedMs;
-    document.getElementById('digits').textContent = fmtDur(elapsedMs);
-  }
+  if (!isPaused) { elapsedMs = Date.now() - startTime.getTime() - totalPausedMs; }
+  else { elapsedMs = pausedAt - startTime.getTime() - totalPausedMs; }
+  document.getElementById('digits').textContent = fmtDur(elapsedMs);
   document.getElementById('mStart').textContent = fmtTime(startTime);
   updateAdjustDisplay();
   showAdjResult('success', '✓ 起始時間已從 ' + fmtTime(oldStart) + ' 調整為 ' + fmtTime(startTime));
   toast('⏪ 起始時間已調整為 ' + fmtTime(startTime));
 }
-
 function showAdjResult(type, msg) {
-  const el = document.getElementById('adjResultMsg');
+  var el = document.getElementById('adjResultMsg');
   el.className = 'adj-result-msg show ' + type;
   el.textContent = msg;
   clearTimeout(el._t);
-  el._t = setTimeout(() => el.classList.remove('show'), 4000);
+  el._t = setTimeout(function() { el.classList.remove('show'); }, 4000);
 }
 
 // ============================================================
-//  ★ 暫停狀態持久化（localStorage）
+//  暫停狀態持久化
 // ============================================================
 function savePauseState() {
-  const state = {
-    pausedAt: pausedAt,
-    startTime: startTime.getTime(),
-    totalPausedMs: totalPausedMs,
-    taskName: document.getElementById('taskName').value.trim(),
-    cat: getEffectiveCat(),
-    note: document.getElementById('taskNote').value.trim()
-  };
+  var state = { pausedAt: pausedAt, startTime: startTime.getTime(), totalPausedMs: totalPausedMs, taskName: document.getElementById('taskName').value.trim(), cat: getEffectiveCat(), note: document.getElementById('taskNote').value.trim() };
   localStorage.setItem(PAUSE_STATE_KEY, JSON.stringify(state));
 }
-function clearPauseState() {
-  localStorage.removeItem(PAUSE_STATE_KEY);
-}
+function clearPauseState() { localStorage.removeItem(PAUSE_STATE_KEY); }
 function checkPauseExpiry() {
-  const raw = localStorage.getItem(PAUSE_STATE_KEY);
+  var raw = localStorage.getItem(PAUSE_STATE_KEY);
   if (!raw) return false;
   try {
-    const state = JSON.parse(raw);
-    const elapsed = Date.now() - state.pausedAt;
+    var state = JSON.parse(raw);
+    var elapsed = Date.now() - state.pausedAt;
     if (elapsed >= AUTO_TIMEOUT_MS) {
-      if (isRunning && isPaused) {
-        stopTimer(true);
-        toast('⏱ 暫停超過 30 分鐘，已自動結束');
-      } else {
-        autoFinishFromStorage(state);
-      }
+      if (isRunning && isPaused) { stopTimer(true); toast('⏱ 暫停超過 30 分鐘，已自動結束'); }
+      else { autoFinishFromStorage(state); }
       clearPauseState();
       return true;
     }
-  } catch (e) {
-    clearPauseState();
-  }
+  } catch (e) { clearPauseState(); }
   return false;
 }
 async function autoFinishFromStorage(state) {
-  const endTime = new Date(state.pausedAt);
-  const dur = Math.max(0, state.pausedAt - state.startTime - state.totalPausedMs);
+  var endTime = new Date(state.pausedAt);
+  var dur = Math.max(0, state.pausedAt - state.startTime - state.totalPausedMs);
   if (dur < 1000) { clearPauseState(); return; }
-  const rec = {
-    id: Date.now(),
-    task: state.taskName,
-    cat: state.cat,
-    note: state.note || '',
-    start: new Date(state.startTime).toISOString(),
-    end: endTime.toISOString(),
-    dur: dur,
-    synced: false
-  };
-  const hist = loadHist();
-  hist.unshift(rec);
-  const gasUrl = loadGasUrl();
+  var rec = { id: Date.now(), task: state.taskName, cat: state.cat, note: state.note || '', start: new Date(state.startTime).toISOString(), end: endTime.toISOString(), dur: dur, synced: false };
+  var hist = loadHist(); hist.unshift(rec);
+  var gasUrl = loadGasUrl();
   if (gasUrl) {
-    try {
-      await sendToGAS(rec);
-      rec.synced = true;
-      hist[0].synced = true;
-      toast('⏱ 暫停逾時自動結束，已同步到 Google 日曆 ✓');
-    } catch (err) {
-      toast('⏱ 暫停逾時自動結束（同步失敗：' + err.message + '）');
-    }
-  } else {
-    toast('⏱ 暫停逾時自動結束，已儲存本地');
-  }
-  saveHist(hist);
-  renderHome();
+    try { await sendToGAS(rec); rec.synced = true; hist[0].synced = true; toast('⏱ 暫停逾時自動結束，已同步 ✓'); }
+    catch (err) { toast('⏱ 暫停逾時自動結束（同步失敗：' + err.message + '）'); }
+  } else { toast('⏱ 暫停逾時自動結束，已儲存本地'); }
+  saveHist(hist); renderHome();
 }
+
 // ============================================================
-//  ★ 顯示/隱藏密碼欄切換
+//  顯示/隱藏密碼欄
 // ============================================================
 function toggleVis(inputId, btn) {
-  const inp = document.getElementById(inputId);
+  var inp = document.getElementById(inputId);
   if (inp.type === 'password') { inp.type = 'text'; btn.textContent = '🙈'; }
   else { inp.type = 'password'; btn.textContent = '👁'; }
 }
+
 // ============================================================
-//  YouTube 播放器相關
+//  YouTube 播放器
 // ============================================================
-let ytPlayer = null;
-let ytReady = false;
-let ytCurrentSpeed = 1.0;
-let ytBodyCollapsed = false;
-let ytApiLoaded = false;
-function loadYTApi() {
-  if (ytApiLoaded) return;
-  ytApiLoaded = true;
-  const tag = document.createElement('script');
-  tag.src = 'https://www.youtube.com/iframe_api';
-  document.head.appendChild(tag);
-}
-window.onYouTubeIframeAPIReady = function() {
-  ytReady = true;
-  const section = document.getElementById('ytSection');
-  if (section.classList.contains('show')) {
-    const savedUrl = localStorage.getItem(YT_URL_KEY);
-    if (savedUrl) {
-      document.getElementById('ytUrlInput').value = savedUrl;
-      ytLoadFromSaved();
-    }
-  }
-};
-function parseYTUrl(url) {
-  if (!url) return null;
-  let videoId = null;
-  let startSeconds = 0;
-  try {
-    const urlObj = new URL(url);
-    if (urlObj.hostname.includes('youtu.be')) {
-      videoId = urlObj.pathname.slice(1).split('/')[0];
-    } else if (urlObj.hostname.includes('youtube.com')) {
-      videoId = urlObj.searchParams.get('v');
-    }
-    let tParam = urlObj.searchParams.get('t') || urlObj.searchParams.get('start');
-    if (tParam) {
-      const hmMatch = tParam.match(/(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s?)?/);
-      if (hmMatch) {
-        const h = parseInt(hmMatch[1] || 0);
-        const m = parseInt(hmMatch[2] || 0);
-        const s = parseInt(hmMatch[3] || 0);
-        startSeconds = h * 3600 + m * 60 + s;
-      }
-      if (!startSeconds && /^\d+$/.test(tParam)) {
-        startSeconds = parseInt(tParam);
-      }
-    }
-  } catch (e) {
-    const match = url.match(/(?:v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
-    if (match) videoId = match[1];
-  }
-  return videoId ? { videoId, startSeconds } : null;
-}
-function ytCreatePlayer(videoId, startSeconds) {
-  document.getElementById('ytPlaceholder').style.display = 'none';
-  if (ytPlayer) { ytPlayer.destroy(); ytPlayer = null; }
-  const container = document.getElementById('ytPlayerContainer');
-  container.innerHTML = '<div id="ytIframe"></div>';
-  ytPlayer = new YT.Player('ytIframe', {
-    width: '100%', height: '100%', videoId: videoId,
-    playerVars: { start: startSeconds || 0, autoplay: 0, playsinline: 1, rel: 0, modestbranding: 1 },
-    events: {
-      onReady: function(event) {
-        event.target.setPlaybackRate(ytCurrentSpeed);
-        const iframe = container.querySelector('iframe');
-        if (iframe) { iframe.style.position = 'absolute'; iframe.style.top = '0'; iframe.style.left = '0'; iframe.style.width = '100%'; iframe.style.height = '100%'; }
-      },
-      onStateChange: function(event) {
-        const section = document.getElementById('ytSection');
-        if (event.data === YT.PlayerState.PLAYING) {
-          section.classList.add('active-border');
-          if (!isRunning && document.getElementById('taskName').value.trim() === '速讀') {
-            startTimer();
-          }
-          if (isRunning && isPaused) {
-            togglePause();
-          }
-        } else if (event.data === YT.PlayerState.PAUSED) {
-          section.classList.remove('active-border');
-          if (isRunning && !isPaused) {
-            togglePause();
-          }
-        } else {
-          section.classList.remove('active-border');
-        }
-      }
-    }
-  });
-}
-function ytLoadUrl() {
-  const url = document.getElementById('ytUrlInput').value.trim();
-  if (!url) { toast('⚠ 請貼上 YouTube 連結'); return; }
-  const parsed = parseYTUrl(url);
-  if (!parsed) { toast('⚠ 無法辨識此 YouTube 連結'); return; }
-  localStorage.setItem(YT_URL_KEY, url);
-  ytUpdateSavedDisplay();
-  if (!ytApiLoaded) {
-    loadYTApi();
-    const waitReady = setInterval(() => { if (ytReady) { clearInterval(waitReady); ytCreatePlayer(parsed.videoId, parsed.startSeconds); } }, 200);
-  } else if (ytReady) { ytCreatePlayer(parsed.videoId, parsed.startSeconds); }
-  toast('▶ 已載入影片');
-}
-function ytLoadFromSaved() {
-  const url = localStorage.getItem(YT_URL_KEY);
-  if (!url) return;
-  const parsed = parseYTUrl(url);
-  if (!parsed) return;
-  ytUpdateSavedDisplay();
-  if (ytReady) { ytCreatePlayer(parsed.videoId, parsed.startSeconds); }
-}
+let ytPlayer = null, ytReady = false, ytCurrentSpeed = 1.0, ytBodyCollapsed = false, ytApiLoaded = false;
+function loadYTApi() { if (ytApiLoaded) return; ytApiLoaded = true; var tag = document.createElement('script'); tag.src = 'https://www.youtube.com/iframe_api'; document.head.appendChild(tag); }
+window.onYouTubeIframeAPIReady = function() { ytReady = true; var section = document.getElementById('ytSection'); if (section.classList.contains('show')) { var savedUrl = localStorage.getItem(YT_URL_KEY); if (savedUrl) { document.getElementById('ytUrlInput').value = savedUrl; ytLoadFromSaved(); } } };
+function parseYTUrl(url) { if (!url) return null; var videoId = null, startSeconds = 0; try { var urlObj = new URL(url); if (urlObj.hostname.includes('youtu.be')) { videoId = urlObj.pathname.slice(1).split('/')[0]; } else if (urlObj.hostname.includes('youtube.com')) { videoId = urlObj.searchParams.get('v'); } var tParam = urlObj.searchParams.get('t') || urlObj.searchParams.get('start'); if (tParam) { var hmMatch = tParam.match(/(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s?)?/); if (hmMatch) { startSeconds = parseInt(hmMatch[1]||0)*3600 + parseInt(hmMatch[2]||0)*60 + parseInt(hmMatch[3]||0); } if (!startSeconds && /^\d+$/.test(tParam)) startSeconds = parseInt(tParam); } } catch (e) { var match = url.match(/(?:v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/); if (match) videoId = match[1]; } return videoId ? { videoId, startSeconds } : null; }
+function ytCreatePlayer(videoId, startSeconds) { document.getElementById('ytPlaceholder').style.display = 'none'; if (ytPlayer) { ytPlayer.destroy(); ytPlayer = null; } var container = document.getElementById('ytPlayerContainer'); container.innerHTML = '<div id="ytIframe"></div>'; ytPlayer = new YT.Player('ytIframe', { width:'100%', height:'100%', videoId: videoId, playerVars: { start: startSeconds||0, autoplay:0, playsinline:1, rel:0, modestbranding:1 }, events: { onReady: function(event) { event.target.setPlaybackRate(ytCurrentSpeed); var iframe = container.querySelector('iframe'); if(iframe){iframe.style.position='absolute';iframe.style.top='0';iframe.style.left='0';iframe.style.width='100%';iframe.style.height='100%';} }, onStateChange: function(event) { var section = document.getElementById('ytSection'); if(event.data===YT.PlayerState.PLAYING){section.classList.add('active-border');if(!isRunning&&document.getElementById('taskName').value.trim()==='速讀')startTimer();if(isRunning&&isPaused)togglePause();}else if(event.data===YT.PlayerState.PAUSED){section.classList.remove('active-border');if(isRunning&&!isPaused)togglePause();}else{section.classList.remove('active-border');}} } }); }
+function ytLoadUrl() { var url = document.getElementById('ytUrlInput').value.trim(); if (!url) { toast('⚠ 請貼上 YouTube 連結'); return; } var parsed = parseYTUrl(url); if (!parsed) { toast('⚠ 無法辨識此 YouTube 連結'); return; } localStorage.setItem(YT_URL_KEY, url); ytUpdateSavedDisplay(); pushSettingsToCloud(); if (!ytApiLoaded) { loadYTApi(); var waitReady = setInterval(function() { if (ytReady) { clearInterval(waitReady); ytCreatePlayer(parsed.videoId, parsed.startSeconds); } }, 200); } else if (ytReady) { ytCreatePlayer(parsed.videoId, parsed.startSeconds); } toast('▶ 已載入影片'); }
+function ytLoadFromSaved() { var url = localStorage.getItem(YT_URL_KEY); if (!url) return; var parsed = parseYTUrl(url); if (!parsed) return; ytUpdateSavedDisplay(); if (ytReady) { ytCreatePlayer(parsed.videoId, parsed.startSeconds); } }
 function ytChangeSpeed(delta) { ytCurrentSpeed = Math.round((ytCurrentSpeed + delta) * 10) / 10; ytCurrentSpeed = Math.max(0.25, Math.min(3.0, ytCurrentSpeed)); ytApplySpeed(); }
 function ytSetSpeed(speed) { ytCurrentSpeed = speed; ytApplySpeed(); }
-function ytApplySpeed() {
-  document.getElementById('ytSpeedDisplay').textContent = ytCurrentSpeed.toFixed(1) + 'x';
-  document.querySelectorAll('.yt-preset-btn').forEach(btn => { const val = parseFloat(btn.textContent); btn.classList.toggle('active', Math.abs(val - ytCurrentSpeed) < 0.01); });
-  if (ytPlayer && typeof ytPlayer.setPlaybackRate === 'function') { ytPlayer.setPlaybackRate(ytCurrentSpeed); }
-}
+function ytApplySpeed() { document.getElementById('ytSpeedDisplay').textContent = ytCurrentSpeed.toFixed(1) + 'x'; document.querySelectorAll('.yt-preset-btn').forEach(function(btn) { var val = parseFloat(btn.textContent); btn.classList.toggle('active', Math.abs(val - ytCurrentSpeed) < 0.01); }); if (ytPlayer && typeof ytPlayer.setPlaybackRate === 'function') { ytPlayer.setPlaybackRate(ytCurrentSpeed); } }
 function toggleYtBody() { ytBodyCollapsed = !ytBodyCollapsed; document.getElementById('ytBody').classList.toggle('collapsed', ytBodyCollapsed); document.getElementById('ytToggleIcon').classList.toggle('collapsed', ytBodyCollapsed); document.getElementById('ytHeaderSub').textContent = ytBodyCollapsed ? '已收合，點擊展開' : '點擊展開／收合'; }
-function ytCheckVisibility() {
-  const taskName = document.getElementById('taskName').value.trim();
-  const section = document.getElementById('ytSection');
-  const shouldShow = taskName === '速讀';
-  if (shouldShow && !section.classList.contains('show')) { section.classList.add('show'); loadYTApi(); const savedUrl = localStorage.getItem(YT_URL_KEY); if (savedUrl) { document.getElementById('ytUrlInput').value = savedUrl; ytUpdateSavedDisplay(); if (ytReady) { ytLoadFromSaved(); } } }
-  else if (!shouldShow && section.classList.contains('show')) { section.classList.remove('show'); section.classList.remove('active-border'); if (ytPlayer && typeof ytPlayer.pauseVideo === 'function') { ytPlayer.pauseVideo(); } }
-}
-function ytUpdateSavedDisplay() { const savedUrl = localStorage.getItem(YT_URL_KEY); const el = document.getElementById('ytSavedUrl'); if (savedUrl) { el.classList.add('show'); document.getElementById('ytSavedUrlText').textContent = savedUrl; } else { el.classList.remove('show'); } }
-function ytClearSavedUrl() { localStorage.removeItem(YT_URL_KEY); ytUpdateSavedDisplay(); document.getElementById('ytUrlInput').value = ''; toast('已清除儲存的連結'); }
-function ytSaveCurrentPosition() {
-  if (!ytPlayer || typeof ytPlayer.getCurrentTime !== 'function') return;
-  try { const currentTime = Math.floor(ytPlayer.getCurrentTime()); if (currentTime <= 0) return; const videoUrl = ytPlayer.getVideoUrl(); if (!videoUrl) return; const parsed = parseYTUrl(videoUrl); if (!parsed) return; const newUrl = 'https://www.youtube.com/watch?v=' + parsed.videoId + '&t=' + currentTime; localStorage.setItem(YT_URL_KEY, newUrl); document.getElementById('ytUrlInput').value = newUrl; ytUpdateSavedDisplay(); } catch(e) { console.log('YT save position error:', e); }
-}
+function ytCheckVisibility() { var taskName = document.getElementById('taskName').value.trim(); var section = document.getElementById('ytSection'); var shouldShow = taskName === '速讀'; if (shouldShow && !section.classList.contains('show')) { section.classList.add('show'); loadYTApi(); var savedUrl = localStorage.getItem(YT_URL_KEY); if (savedUrl) { document.getElementById('ytUrlInput').value = savedUrl; ytUpdateSavedDisplay(); if (ytReady) { ytLoadFromSaved(); } } } else if (!shouldShow && section.classList.contains('show')) { section.classList.remove('show'); section.classList.remove('active-border'); if (ytPlayer && typeof ytPlayer.pauseVideo === 'function') { ytPlayer.pauseVideo(); } } }
+function ytUpdateSavedDisplay() { var savedUrl = localStorage.getItem(YT_URL_KEY); var el = document.getElementById('ytSavedUrl'); if (savedUrl) { el.classList.add('show'); document.getElementById('ytSavedUrlText').textContent = savedUrl; } else { el.classList.remove('show'); } }
+function ytClearSavedUrl() { localStorage.removeItem(YT_URL_KEY); ytUpdateSavedDisplay(); document.getElementById('ytUrlInput').value = ''; toast('已清除儲存的連結'); pushSettingsToCloud(); }
+function ytSaveCurrentPosition() { if (!ytPlayer || typeof ytPlayer.getCurrentTime !== 'function') return; try { var currentTime = Math.floor(ytPlayer.getCurrentTime()); if (currentTime <= 0) return; var videoUrl = ytPlayer.getVideoUrl(); if (!videoUrl) return; var parsed = parseYTUrl(videoUrl); if (!parsed) return; var newUrl = 'https://www.youtube.com/watch?v=' + parsed.videoId + '&t=' + currentTime; localStorage.setItem(YT_URL_KEY, newUrl); document.getElementById('ytUrlInput').value = newUrl; ytUpdateSavedDisplay(); pushSettingsToCloud(); } catch(e) {} }
+
 // ============================================================
-//  計時器、歷史記錄等核心功能
+//  計時器核心
 // ============================================================
-function getAllCats(){const hist=loadHist();const cats=new Set(DEFAULT_CATS);hist.forEach(r=>cats.add(r.cat));return [...cats];}
+function getAllCats(){var hist=loadHist();var cats=new Set(DEFAULT_CATS);hist.forEach(function(r){cats.add(r.cat);});return [...cats];}
 function goTab(tab) {
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.tab-item').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
+  document.querySelectorAll('.tab-item').forEach(function(t){t.classList.remove('active');});
   document.getElementById('page-'+tab).classList.add('active');
-  const tb=document.getElementById('tab-'+tab);
-  if(tb) tb.classList.add('active');
+  var tb=document.getElementById('tab-'+tab);if(tb)tb.classList.add('active');
   if(tab==='history'){renderFilterChips();renderHistPage();}
   if(tab==='home'){renderHome();}
   if(tab==='calendar'){calInit();}
-  if(tab==='setup'){updateGasStatus();updateCalApiStatus();}
+  if(tab==='setup'){updateGasStatus();updateCalApiStatus();updateLastSyncDisplay();}
 }
 function loadGasUrl(){return localStorage.getItem(GAS_URL_KEY)||'';}
 function sendToGAS(data, maxRetries) {
@@ -1597,445 +1545,211 @@ function sendToGAS(data, maxRetries) {
     function attempt() {
       attemptNum++;
       var cbName = '_gasCb_' + Date.now() + '_' + Math.floor(Math.random() * 10000);
-      var timeout = setTimeout(function() {
-        delete window[cbName];
-        var s = document.getElementById('gasJsonpScript'); if (s) s.remove();
-        if (attemptNum <= maxRetries) {
-          console.log('[GAS] 回應逾時，第 ' + attemptNum + ' 次重試…');
-          toast('⏳ 同步逾時，重試中（' + attemptNum + '/' + maxRetries + '）…');
-          setTimeout(attempt, 2000);
-        } else {
-          reject(new Error('GAS 回應逾時（已重試 ' + maxRetries + ' 次）'));
-        }
-      }, 15000);
-      window[cbName] = function(result) {
-        clearTimeout(timeout);
-        delete window[cbName];
-        var s = document.getElementById('gasJsonpScript'); if (s) s.remove();
-        if (result && result.success) { resolve(result); }
-        else { reject(new Error(result && result.message || 'GAS 回傳錯誤')); }
-      };
-      var old = document.getElementById('gasJsonpScript'); if (old) old.remove();
+      var timeout = setTimeout(function() { delete window[cbName]; var s = document.getElementById('gasJsonpScript'); if(s)s.remove(); if(attemptNum<=maxRetries){toast('⏳ 同步逾時，重試中（'+attemptNum+'/'+maxRetries+'）…');setTimeout(attempt,2000);}else{reject(new Error('GAS 回應逾時'));} }, 15000);
+      window[cbName] = function(result) { clearTimeout(timeout); delete window[cbName]; var s = document.getElementById('gasJsonpScript'); if(s)s.remove(); if(result&&result.success){resolve(result);}else{reject(new Error(result&&result.message||'GAS 回傳錯誤'));} };
+      var old = document.getElementById('gasJsonpScript'); if(old)old.remove();
       var encoded = encodeURIComponent(JSON.stringify(data));
-      var script = document.createElement('script');
-      script.id = 'gasJsonpScript';
-      script.src = gasUrl + '?action=save&data=' + encoded + '&callback=' + cbName;
-      script.onerror = function() {
-        clearTimeout(timeout);
-        delete window[cbName];
-        script.remove();
-        if (attemptNum <= maxRetries) {
-          console.log('[GAS] script 載入失敗，第 ' + attemptNum + ' 次重試…');
-          toast('⏳ 連線失敗，重試中（' + attemptNum + '/' + maxRetries + '）…');
-          setTimeout(attempt, 2000);
-        } else {
-          reject(new Error('GAS 請求失敗（已重試 ' + maxRetries + ' 次），請檢查網址'));
-        }
-      };
+      var script = document.createElement('script'); script.id = 'gasJsonpScript'; script.src = gasUrl + '?action=save&data=' + encoded + '&callback=' + cbName;
+      script.onerror = function() { clearTimeout(timeout); delete window[cbName]; script.remove(); if(attemptNum<=maxRetries){toast('⏳ 連線失敗，重試中…');setTimeout(attempt,2000);}else{reject(new Error('GAS 請求失敗'));} };
       document.body.appendChild(script);
     }
     attempt();
   });
 }
-function saveGasUrl(){const url=document.getElementById('gasUrlInput').value.trim();if(!url){toast('\u26a0 請輸入 GAS Web App 網址');return;}if(!url.startsWith('https://script.google.com/')){toast('\u26a0 網址需以 https://script.google.com/ 開頭');return;}localStorage.setItem(GAS_URL_KEY,url);updateGasStatus();toast('\u23f3 正在測試連線…');const cbName='_gasTestCb_'+Date.now();const timeout=setTimeout(()=>{delete window[cbName];toast('\u26a0 連線測試逾時，請確認 GAS 已部署為最新版本');},10000);window[cbName]=function(result){clearTimeout(timeout);delete window[cbName];const s=document.getElementById('gasTestScript');if(s)s.remove();if(result&&result.status==='ok'){toast('\u2713 連線成功！API 運作正常');}else{toast('\u26a0 API 回傳異常，請確認部署設定');}};const old=document.getElementById('gasTestScript');if(old)old.remove();const script=document.createElement('script');script.id='gasTestScript';script.src=url+'?callback='+cbName;script.onerror=function(){clearTimeout(timeout);delete window[cbName];script.remove();toast('\u26a0 連線失敗，請檢查網址是否正確');};document.body.appendChild(script);}
-function updateGasStatus(){const url=loadGasUrl();const dot=document.getElementById('sDot');const txt=document.getElementById('sText');const card=document.getElementById('setupWebhookCard');if(url){dot.className='s-dot ok';txt.textContent='✓ 任務同步 API 已連接';card.style.background='linear-gradient(135deg, #064e3b, #065f46)';document.getElementById('gasUrlInput').value=url;}else{dot.className='s-dot';txt.textContent='尚未設定任務同步 API';card.style.background='linear-gradient(135deg,#1a3a5c,#0f2840)';}}
-function getEffectiveCat(){const val=document.getElementById('catInput').value.trim();return val||'個人';}
-function getTaskFrequency(){const hist=loadHist();const freq={};hist.forEach(r=>{const key=r.task;if(!freq[key])freq[key]={count:0,cat:r.cat};freq[key].count++;});return Object.entries(freq).sort((a,b)=>b[1].count-a[1].count).map(([name,v])=>({name,count:v.count,cat:v.cat}));}
-function getCatFrequency(){const hist=loadHist();const freq={};hist.forEach(r=>{if(!freq[r.cat])freq[r.cat]=0;freq[r.cat]++;});return Object.entries(freq).sort((a,b)=>b[1]-a[1]).map(([cat,count])=>({cat,count}));}
-function showCatSuggestions(){const input=document.getElementById('catInput');const list=document.getElementById('catSuggestList');const val=input.value.trim().toLowerCase();const all=getCatFrequency();const filtered=val?all.filter(t=>t.cat.toLowerCase().includes(val)):all;if(!filtered.length&&!val){list.classList.remove('show');return;}let items=filtered.slice(0,8).map(t=>'<div class="suggest-item" onmousedown="pickCatSuggest(\''+esc(t.cat)+'\')"><span class="s-name">'+esc(t.cat)+'</span><span class="s-count">×'+t.count+'</span></div>').join('');if(val&&!filtered.some(t=>t.cat.toLowerCase()===val)){items='<div class="suggest-item" onmousedown="pickCatSuggest(\''+esc(input.value.trim())+'\')"><span class="s-name">➕ 新增「'+esc(input.value.trim())+'」</span></div>'+items;}list.innerHTML=items;list.classList.add('show');}
+function saveGasUrl(){
+  var url=document.getElementById('gasUrlInput').value.trim();
+  if(!url){toast('⚠ 請輸入 GAS Web App 網址');return;}
+  if(!url.startsWith('https://script.google.com/')){toast('⚠ 網址需以 https://script.google.com/ 開頭');return;}
+  localStorage.setItem(GAS_URL_KEY,url);
+  updateGasStatus();
+  // 儲存後立刻推送設定到雲端 + 觸發首次同步
+  pushSettingsToCloud();
+  toast('✓ API 網址已儲存！正在執行首次雲端同步…');
+  setTimeout(cloudSync, 500);
+}
+function updateGasStatus(){var url=loadGasUrl();var dot=document.getElementById('sDot');var txt=document.getElementById('sText');var card=document.getElementById('setupWebhookCard');if(url){dot.className='s-dot ok';txt.textContent='✓ 任務同步 API 已連接';card.style.background='linear-gradient(135deg, #064e3b, #065f46)';document.getElementById('gasUrlInput').value=url;}else{dot.className='s-dot';txt.textContent='尚未設定任務同步 API';card.style.background='linear-gradient(135deg,#1a3a5c,#0f2840)';}}
+function getEffectiveCat(){var val=document.getElementById('catInput').value.trim();return val||'個人';}
+function getTaskFrequency(){var hist=loadHist();var freq={};hist.forEach(function(r){var key=r.task;if(!freq[key])freq[key]={count:0,cat:r.cat};freq[key].count++;});return Object.entries(freq).sort(function(a,b){return b[1].count-a[1].count;}).map(function(e){return{name:e[0],count:e[1].count,cat:e[1].cat};});}
+function getCatFrequency(){var hist=loadHist();var freq={};hist.forEach(function(r){if(!freq[r.cat])freq[r.cat]=0;freq[r.cat]++;});return Object.entries(freq).sort(function(a,b){return b[1]-a[1];}).map(function(e){return{cat:e[0],count:e[1]};});}
+function showCatSuggestions(){var input=document.getElementById('catInput');var list=document.getElementById('catSuggestList');var val=input.value.trim().toLowerCase();var all=getCatFrequency();var filtered=val?all.filter(function(t){return t.cat.toLowerCase().includes(val);}):all;if(!filtered.length&&!val){list.classList.remove('show');return;}var items=filtered.slice(0,8).map(function(t){return '<div class="suggest-item" onmousedown="pickCatSuggest(\''+esc(t.cat)+'\')"><span class="s-name">'+esc(t.cat)+'</span><span class="s-count">×'+t.count+'</span></div>';}).join('');if(val&&!filtered.some(function(t){return t.cat.toLowerCase()===val;})){items='<div class="suggest-item" onmousedown="pickCatSuggest(\''+esc(input.value.trim())+'\')"><span class="s-name">➕ 新增「'+esc(input.value.trim())+'」</span></div>'+items;}list.innerHTML=items;list.classList.add('show');}
 function pickCatSuggest(cat){document.getElementById('catInput').value=cat;document.getElementById('catSuggestList').classList.remove('show');}
-function hideCatSuggestions(){setTimeout(()=>document.getElementById('catSuggestList').classList.remove('show'),150);}
-function showSuggestions(){const input=document.getElementById('taskName');const list=document.getElementById('suggestList');const val=input.value.trim().toLowerCase();const all=getTaskFrequency();const filtered=val?all.filter(t=>t.name.toLowerCase().includes(val)):all;if(!filtered.length){list.classList.remove('show');return;}list.innerHTML=filtered.slice(0,8).map(t=>`<div class="suggest-item" onmousedown="pickSuggest('${esc(t.name)}','${esc(t.cat)}')"><span class="s-name">${esc(t.name)}</span><span class="s-cat">${t.cat}</span><span class="s-count">×${t.count}</span></div>`).join('');list.classList.add('show');}
+function hideCatSuggestions(){setTimeout(function(){document.getElementById('catSuggestList').classList.remove('show');},150);}
+function showSuggestions(){var input=document.getElementById('taskName');var list=document.getElementById('suggestList');var val=input.value.trim().toLowerCase();var all=getTaskFrequency();var filtered=val?all.filter(function(t){return t.name.toLowerCase().includes(val);}):all;if(!filtered.length){list.classList.remove('show');return;}list.innerHTML=filtered.slice(0,8).map(function(t){return '<div class="suggest-item" onmousedown="pickSuggest(\''+esc(t.name)+'\',\''+esc(t.cat)+'\')"><span class="s-name">'+esc(t.name)+'</span><span class="s-cat">'+t.cat+'</span><span class="s-count">×'+t.count+'</span></div>';}).join('');list.classList.add('show');}
 function pickSuggest(name,cat){document.getElementById('taskName').value=name;document.getElementById('suggestList').classList.remove('show');document.getElementById('catInput').value=cat;ytCheckVisibility();}
-function hideSuggestions(){setTimeout(()=>document.getElementById('suggestList').classList.remove('show'),150);}
+function hideSuggestions(){setTimeout(function(){document.getElementById('suggestList').classList.remove('show');},150);}
 function toggleNowClock(){nowClockVisible=!nowClockVisible;document.getElementById('nowClock').style.display=nowClockVisible?'':'none';document.getElementById('nowToggle').textContent=nowClockVisible?'👁':'👁‍🗨';}
-function updateNowClock(){if(!nowClockVisible)return;const now=new Date();document.getElementById('nowClock').textContent=pad(now.getHours())+':'+pad(now.getMinutes())+':'+pad(now.getSeconds());}
-function startTimer(){const name=document.getElementById('taskName').value.trim();if(!name){toast('⚠ 請先輸入任務名稱');const el=document.getElementById('taskName');el.classList.add('error');setTimeout(()=>el.classList.remove('error'),1500);return;}document.getElementById('suggestList').classList.remove('show');startTime=new Date();totalPausedMs=0;elapsedMs=0;isRunning=true;isPaused=false;clearPauseState();hideSyncBadge();uiRunning();timerInterval=setInterval(tick,100);document.getElementById('nowClockRow').classList.add('show');updateNowClock();nowClockInterval=setInterval(updateNowClock,1000);requestWakeLock();showTimerNotification(name,getEffectiveCat());toast('▶ 開始計時！');}
+function updateNowClock(){if(!nowClockVisible)return;var now=new Date();document.getElementById('nowClock').textContent=pad(now.getHours())+':'+pad(now.getMinutes())+':'+pad(now.getSeconds());}
+function startTimer(){var name=document.getElementById('taskName').value.trim();if(!name){toast('⚠ 請先輸入任務名稱');var el=document.getElementById('taskName');el.classList.add('error');setTimeout(function(){el.classList.remove('error');},1500);return;}document.getElementById('suggestList').classList.remove('show');startTime=new Date();totalPausedMs=0;elapsedMs=0;isRunning=true;isPaused=false;clearPauseState();hideSyncBadge();uiRunning();timerInterval=setInterval(tick,100);document.getElementById('nowClockRow').classList.add('show');updateNowClock();nowClockInterval=setInterval(updateNowClock,1000);requestWakeLock();showTimerNotification(name,getEffectiveCat());toast('▶ 開始計時！');}
 function tick(){if(!isPaused){elapsedMs=Date.now()-startTime.getTime()-totalPausedMs;document.getElementById('digits').textContent=fmtDur(elapsedMs);document.getElementById('mPaused').textContent=fmtMin(totalPausedMs);}}
 function togglePause(){if(!isPaused){pausedAt=Date.now();isPaused=true;clearInterval(timerInterval);releaseWakeLock();uiPaused();savePauseState();startAutoCountdown();toast('⏸ 已暫停');}else{totalPausedMs+=Date.now()-pausedAt;isPaused=false;cancelAuto();clearPauseState();requestWakeLock();uiRunning();timerInterval=setInterval(tick,100);toast('▶ 繼續計時');}}
-async function stopTimer(fromAuto=false){if(!isRunning)return;const endTime=fromAuto?new Date(pausedAt):new Date();const dur=fromAuto?Math.max(0,pausedAt-startTime.getTime()-totalPausedMs):elapsedMs;clearInterval(timerInterval);cancelAuto();clearInterval(nowClockInterval);clearPauseState();isRunning=false;isPaused=false;releaseWakeLock();dismissTimerNotification();const taskName=document.getElementById('taskName').value.trim();if(taskName==='速讀'){ytSaveCurrentPosition();if(ytPlayer&&typeof ytPlayer.pauseVideo==='function'){ytPlayer.pauseVideo();}}const effectiveCat=getEffectiveCat();const rec={id:Date.now(),task:taskName,cat:effectiveCat,note:document.getElementById('taskNote').value.trim(),start:startTime.toISOString(),end:endTime.toISOString(),dur:dur,synced:false};const hist=loadHist();hist.unshift(rec);saveHist(hist);showSyncBadge('syncing','⏳','正在同步到 Google 日曆…');uiSyncing();const gasUrl=loadGasUrl();if(gasUrl){try{const gasResult=await sendToGAS(rec);rec.synced=true;hist[0].synced=true;saveHist(hist);showSyncBadge('success','📅','已同步到 Google Calendar + Sheets ✓');toast('✓ 任務結束！已同步到 Google 日曆');}catch(err){showSyncBadge('error','⚠','同步失敗：'+err.message);toast('⚠ 同步失敗：'+err.message);}}else{showSyncBadge('local','💾','已儲存本地（尚未設定任務同步 API）');toast('✓ 任務已儲存！');}uiIdle();document.getElementById('taskName').value='';document.getElementById('taskNote').value='';document.getElementById('catInput').value='';ytCheckVisibility();renderHome();}
-/** ★ 取消計時：直接丟棄本次任務，不儲存、不同步 */
+async function stopTimer(fromAuto){
+  if(fromAuto===undefined)fromAuto=false;
+  if(!isRunning)return;
+  var endTime=fromAuto?new Date(pausedAt):new Date();
+  var dur=fromAuto?Math.max(0,pausedAt-startTime.getTime()-totalPausedMs):elapsedMs;
+  clearInterval(timerInterval);cancelAuto();clearInterval(nowClockInterval);clearPauseState();
+  isRunning=false;isPaused=false;releaseWakeLock();dismissTimerNotification();
+  var taskName=document.getElementById('taskName').value.trim();
+  if(taskName==='速讀'){ytSaveCurrentPosition();if(ytPlayer&&typeof ytPlayer.pauseVideo==='function')ytPlayer.pauseVideo();}
+  var effectiveCat=getEffectiveCat();
+  var rec={id:Date.now(),task:taskName,cat:effectiveCat,note:document.getElementById('taskNote').value.trim(),start:startTime.toISOString(),end:endTime.toISOString(),dur:dur,synced:false};
+  var hist=loadHist();hist.unshift(rec);saveHist(hist);
+  showSyncBadge('syncing','⏳','正在同步到 Google 日曆…');uiSyncing();
+  var gasUrl=loadGasUrl();
+  if(gasUrl){
+    try{await sendToGAS(rec);rec.synced=true;hist[0].synced=true;saveHist(hist);showSyncBadge('success','📅','已同步到 Google Calendar + Sheets ✓');toast('✓ 任務結束！已同步到 Google 日曆');}
+    catch(err){showSyncBadge('error','⚠','同步失敗：'+err.message);toast('⚠ 同步失敗：'+err.message);}
+  }else{showSyncBadge('local','💾','已儲存本地（尚未設定任務同步 API）');toast('✓ 任務已儲存！');}
+  uiIdle();document.getElementById('taskName').value='';document.getElementById('taskNote').value='';document.getElementById('catInput').value='';ytCheckVisibility();renderHome();
+}
 function cancelTimer(){
-  if(!isRunning){return;}
-  const taskName=document.getElementById('taskName').value.trim();
-  const durStr=fmtDur(elapsedMs);
-  if(!confirm('確定要取消「'+taskName+'」的計時嗎？\n已計時 '+durStr+'，取消後不會儲存也不會同步。')){return;}
-  clearInterval(timerInterval);
-  cancelAuto();
-  clearInterval(nowClockInterval);
-  clearPauseState();
-  isRunning=false;
-  isPaused=false;
-  releaseWakeLock();
-  dismissTimerNotification();
-  hideSyncBadge();
-  // 速讀模式：暫停影片但不儲存播放位置
-  if(taskName==='速讀'&&ytPlayer&&typeof ytPlayer.pauseVideo==='function'){ytPlayer.pauseVideo();}
-  uiIdle();
-  document.getElementById('taskName').value='';
-  document.getElementById('taskNote').value='';
-  document.getElementById('catInput').value='';
-  ytCheckVisibility();
-  toast('✕ 已取消計時，本次記錄不會儲存');
+  if(!isRunning)return;
+  var taskName=document.getElementById('taskName').value.trim();
+  if(!confirm('確定要取消「'+taskName+'」的計時嗎？\n已計時 '+fmtDur(elapsedMs)+'，取消後不會儲存也不會同步。'))return;
+  clearInterval(timerInterval);cancelAuto();clearInterval(nowClockInterval);clearPauseState();
+  isRunning=false;isPaused=false;releaseWakeLock();dismissTimerNotification();hideSyncBadge();
+  if(taskName==='速讀'&&ytPlayer&&typeof ytPlayer.pauseVideo==='function')ytPlayer.pauseVideo();
+  uiIdle();document.getElementById('taskName').value='';document.getElementById('taskNote').value='';document.getElementById('catInput').value='';ytCheckVisibility();toast('✕ 已取消計時，本次記錄不會儲存');
 }
-function startAutoCountdown(){document.getElementById('autoBar').classList.add('show');document.getElementById('autoFill').style.width='100%';const t0=Date.now();autoInterval=setInterval(()=>{const rem=AUTO_TIMEOUT_MS-(Date.now()-t0);if(rem<=0){cancelAuto();stopTimer(true);toast('⏱ 暫停超過 30 分鐘，已自動結束');return;}document.getElementById('autoFill').style.width=(rem/AUTO_TIMEOUT_MS*100)+'%';document.getElementById('autoCD').textContent=fmtDur(rem);},1000);}
+function startAutoCountdown(){document.getElementById('autoBar').classList.add('show');document.getElementById('autoFill').style.width='100%';var t0=Date.now();autoInterval=setInterval(function(){var rem=AUTO_TIMEOUT_MS-(Date.now()-t0);if(rem<=0){cancelAuto();stopTimer(true);toast('⏱ 暫停超過 30 分鐘，已自動結束');return;}document.getElementById('autoFill').style.width=(rem/AUTO_TIMEOUT_MS*100)+'%';document.getElementById('autoCD').textContent=fmtDur(rem);},1000);}
 function cancelAuto(){clearInterval(autoInterval);document.getElementById('autoBar').classList.remove('show');}
-function uiRunning(){
-  document.getElementById('digits').className='timer-digits running';
-  document.getElementById('sInd').className='s-indicator running';
-  document.getElementById('sLabel').textContent='計時中';
-  document.getElementById('tMeta').style.display='flex';
-  document.getElementById('mStart').textContent=fmtTime(startTime);
-  document.getElementById('mCat').textContent=getEffectiveCat();
-  document.getElementById('noteCard').classList.add('show');
-  document.getElementById('taskName').disabled=true;
-  document.getElementById('catInput').disabled=true;
-  // ★ 按鈕切換：隱藏「開始」，顯示「暫停＋結束＋取消」
-  document.getElementById('btnStart').style.display='none';
-  document.getElementById('btnPause').style.display='';
-  document.getElementById('btnStop').style.display='';
-  document.getElementById('btnCancel').style.display='';
-  document.getElementById('btnArea').classList.add('running-mode');
-  document.getElementById('btnPause').className='action-btn btn-pause';
-  document.getElementById('btnPause').innerHTML='⏸ 暫停';
-  // ★ 顯示調整起始時間面板
-  document.getElementById('adjustStartPanel').classList.add('show');
-  updateAdjustDisplay();
-}
+function uiRunning(){document.getElementById('digits').className='timer-digits running';document.getElementById('sInd').className='s-indicator running';document.getElementById('sLabel').textContent='計時中';document.getElementById('tMeta').style.display='flex';document.getElementById('mStart').textContent=fmtTime(startTime);document.getElementById('mCat').textContent=getEffectiveCat();document.getElementById('noteCard').classList.add('show');document.getElementById('taskName').disabled=true;document.getElementById('catInput').disabled=true;document.getElementById('btnStart').style.display='none';document.getElementById('btnPause').style.display='';document.getElementById('btnStop').style.display='';document.getElementById('btnCancel').style.display='';document.getElementById('btnArea').classList.add('running-mode');document.getElementById('btnPause').className='action-btn btn-pause';document.getElementById('btnPause').innerHTML='⏸ 暫停';document.getElementById('adjustStartPanel').classList.add('show');updateAdjustDisplay();}
 function uiPaused(){document.getElementById('digits').className='timer-digits paused';document.getElementById('sInd').className='s-indicator paused';document.getElementById('sLabel').textContent='已暫停';document.getElementById('btnPause').className='action-btn btn-resume';document.getElementById('btnPause').innerHTML='▶ 繼續';}
 function uiSyncing(){document.getElementById('digits').className='timer-digits syncing';document.getElementById('sInd').className='s-indicator syncing';document.getElementById('sLabel').textContent='同步中…';}
-function uiIdle(){
-  document.getElementById('digits').className='timer-digits';
-  document.getElementById('digits').textContent='00:00:00';
-  document.getElementById('sInd').className='s-indicator';
-  document.getElementById('sLabel').textContent='待機中';
-  document.getElementById('tMeta').style.display='none';
-  document.getElementById('noteCard').classList.remove('show');
-  document.getElementById('nowClockRow').classList.remove('show');
-  clearInterval(nowClockInterval);
-  document.getElementById('taskName').disabled=false;
-  document.getElementById('catInput').disabled=false;
-  // ★ 按鈕切換：顯示「開始」，隱藏「暫停＋結束＋取消」
-  document.getElementById('btnStart').style.display='';
-  document.getElementById('btnPause').style.display='none';
-  document.getElementById('btnStop').style.display='none';
-  document.getElementById('btnCancel').style.display='none';
-  document.getElementById('btnArea').classList.remove('running-mode');
-  document.getElementById('btnPause').className='action-btn btn-pause';
-  document.getElementById('btnPause').innerHTML='⏸ 暫停';
-  // ★ 隱藏調整起始時間面板
-  document.getElementById('adjustStartPanel').classList.remove('show');
-}
-function showSyncBadge(type,icon,msg){const b=document.getElementById('syncBadge');b.style.display='inline-flex';b.className='sync-badge '+type;document.getElementById('syncIcon').textContent=icon;document.getElementById('syncMsg').textContent=msg;}
+function uiIdle(){document.getElementById('digits').className='timer-digits';document.getElementById('digits').textContent='00:00:00';document.getElementById('sInd').className='s-indicator';document.getElementById('sLabel').textContent='待機中';document.getElementById('tMeta').style.display='none';document.getElementById('noteCard').classList.remove('show');document.getElementById('nowClockRow').classList.remove('show');clearInterval(nowClockInterval);document.getElementById('taskName').disabled=false;document.getElementById('catInput').disabled=false;document.getElementById('btnStart').style.display='';document.getElementById('btnPause').style.display='none';document.getElementById('btnStop').style.display='none';document.getElementById('btnCancel').style.display='none';document.getElementById('btnArea').classList.remove('running-mode');document.getElementById('btnPause').className='action-btn btn-pause';document.getElementById('btnPause').innerHTML='⏸ 暫停';document.getElementById('adjustStartPanel').classList.remove('show');}
+function showSyncBadge(type,icon,msg){var b=document.getElementById('syncBadge');b.style.display='inline-flex';b.className='sync-badge '+type;document.getElementById('syncIcon').textContent=icon;document.getElementById('syncMsg').textContent=msg;}
 function hideSyncBadge(){document.getElementById('syncBadge').style.display='none';}
-function loadHist(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');}catch{return[];}}
+function loadHist(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');}catch(e){return[];}}
 function saveHist(h){localStorage.setItem(STORAGE_KEY,JSON.stringify(h));}
-function setRange(range,btn){document.querySelectorAll('#rangeQuick .rq-chip').forEach(c=>c.classList.remove('active'));btn.classList.add('active');currentRange=range;const customEl=document.getElementById('rangeCustom');if(range==='custom'){customEl.style.display='flex';return;}customEl.style.display='none';const now=new Date();const todayStart=new Date(now.getFullYear(),now.getMonth(),now.getDate());switch(range){case 'all':rangeStartDate=null;rangeEndDate=null;break;case 'today':rangeStartDate=todayStart;rangeEndDate=new Date(todayStart.getTime()+86400000);break;case 'week':rangeStartDate=new Date(now.getTime()-7*86400000);rangeEndDate=null;break;case 'month':rangeStartDate=new Date(now.getTime()-30*86400000);rangeEndDate=null;break;case '3month':rangeStartDate=new Date(now.getTime()-90*86400000);rangeEndDate=null;break;}renderHistPage();}
-function applyCustomRange(){const s=document.getElementById('rangeStart').value;const e=document.getElementById('rangeEnd').value;rangeStartDate=s?new Date(s):null;rangeEndDate=e?new Date(new Date(e).getTime()+86400000):null;renderHistPage();}
-function getFilteredByRange(hist){return hist.filter(r=>{const d=new Date(r.start);if(rangeStartDate&&d<rangeStartDate)return false;if(rangeEndDate&&d>=rangeEndDate)return false;return true;});}
-function renderFilterChips(){const cats=getAllCats();const el=document.getElementById('filterScroll');el.innerHTML='<button class="f-chip '+(currentFilter==='all'?'active':'')+'" onclick="setFilter(\'all\',this)">全部</button>'+cats.map(c=>'<button class="f-chip '+(currentFilter===c?'active':'')+'" onclick="setFilter(\''+esc(c)+'\',this)">'+c+'</button>').join('');}
+function setRange(range,btn){document.querySelectorAll('#rangeQuick .rq-chip').forEach(function(c){c.classList.remove('active');});btn.classList.add('active');currentRange=range;var customEl=document.getElementById('rangeCustom');if(range==='custom'){customEl.style.display='flex';return;}customEl.style.display='none';var now=new Date();var todayStart=new Date(now.getFullYear(),now.getMonth(),now.getDate());switch(range){case'all':rangeStartDate=null;rangeEndDate=null;break;case'today':rangeStartDate=todayStart;rangeEndDate=new Date(todayStart.getTime()+86400000);break;case'week':rangeStartDate=new Date(now.getTime()-7*86400000);rangeEndDate=null;break;case'month':rangeStartDate=new Date(now.getTime()-30*86400000);rangeEndDate=null;break;case'3month':rangeStartDate=new Date(now.getTime()-90*86400000);rangeEndDate=null;break;}renderHistPage();}
+function applyCustomRange(){var s=document.getElementById('rangeStart').value;var e=document.getElementById('rangeEnd').value;rangeStartDate=s?new Date(s):null;rangeEndDate=e?new Date(new Date(e).getTime()+86400000):null;renderHistPage();}
+function getFilteredByRange(hist){return hist.filter(function(r){var d=new Date(r.start);if(rangeStartDate&&d<rangeStartDate)return false;if(rangeEndDate&&d>=rangeEndDate)return false;return true;});}
+function renderFilterChips(){var cats=getAllCats();var el=document.getElementById('filterScroll');el.innerHTML='<button class="f-chip '+(currentFilter==='all'?'active':'')+'" onclick="setFilter(\'all\',this)">全部</button>'+cats.map(function(c){return '<button class="f-chip '+(currentFilter===c?'active':'')+'" onclick="setFilter(\''+esc(c)+'\',this)">'+c+'</button>';}).join('');}
 function renderHistPage(){renderHistStats();renderCatSummary();renderTaskFilterChips();renderHistList();}
-function getVisibleHist(){let hist=getFilteredByRange(loadHist());if(currentFilter!=='all')hist=hist.filter(r=>r.cat===currentFilter);if(currentTaskFilter!=='all')hist=hist.filter(r=>r.task===currentTaskFilter);return hist;}
-function renderHistStats(){const data=getVisibleHist();const totalMs=data.reduce((s,r)=>s+r.dur,0);const avgMs=data.length?totalMs/data.length:0;document.getElementById('hTotal').textContent=data.length;document.getElementById('hToday').textContent=fmtHM(totalMs);document.getElementById('hAvg').textContent=data.length?fmtHM(avgMs):'—';}
-function renderCatSummary(){const hist=getFilteredByRange(loadHist());if(currentFilter!=='all'){document.getElementById('catSummary').innerHTML='';return;}const CC={講道:'#B8860B',牧養:'#15803d',行政:'#1d4ed8',個人:'#7e22ce',其他:'#6b7280'};const map={};hist.forEach(r=>{if(!map[r.cat])map[r.cat]={dur:0,count:0};map[r.cat].dur+=r.dur;map[r.cat].count++;});const sorted=Object.entries(map).sort((a,b)=>b[1].dur-a[1].dur);if(!sorted.length){document.getElementById('catSummary').innerHTML='';return;}document.getElementById('catSummary').innerHTML=sorted.map(([cat,v])=>'<div class="cat-sum-item" onclick="setFilter(\''+esc(cat)+'\',null)" style="cursor:pointer"><div class="cat-sum-left"><div class="cat-sum-dot" style="background:'+(CC[cat]||'#999')+'"></div><div class="cat-sum-name">'+esc(cat)+'</div><div class="cat-sum-count">('+v.count+'筆)</div></div><div class="cat-sum-dur">'+fmtHM(v.dur)+'</div></div>').join('');}
-function setFilter(cat,btn){currentFilter=cat;currentTaskFilter='all';if(btn){document.querySelectorAll('#filterScroll .f-chip').forEach(c=>c.classList.remove('active'));btn.classList.add('active');}else{renderFilterChips();}renderHistPage();}
-function renderTaskFilterChips(){const el=document.getElementById('taskFilterScroll');if(currentFilter==='all'){el.classList.remove('show');el.innerHTML='';return;}let hist=getFilteredByRange(loadHist()).filter(r=>r.cat===currentFilter);const taskMap={};hist.forEach(r=>{if(!taskMap[r.task])taskMap[r.task]={dur:0,count:0};taskMap[r.task].dur+=r.dur;taskMap[r.task].count++;});const sorted=Object.entries(taskMap).sort((a,b)=>b[1].dur-a[1].dur);if(sorted.length<=1){el.classList.remove('show');el.innerHTML='';return;}el.classList.add('show');el.innerHTML='<button class="tf-chip '+(currentTaskFilter==='all'?'active':'')+'" onclick="setTaskFilter(\'all\',this)">全部任務</button>'+sorted.map(([name,v])=>'<button class="tf-chip '+(currentTaskFilter===name?'active':'')+'" onclick="setTaskFilter(\''+esc(name)+'\',this)">'+esc(name)+' ('+fmtHM(v.dur)+')</button>').join('');}
-function setTaskFilter(task,btn){currentTaskFilter=task;document.querySelectorAll('#taskFilterScroll .tf-chip').forEach(c=>c.classList.remove('active'));if(btn)btn.classList.add('active');renderHistStats();renderHistList();}
+function getVisibleHist(){var hist=getFilteredByRange(loadHist());if(currentFilter!=='all')hist=hist.filter(function(r){return r.cat===currentFilter;});if(currentTaskFilter!=='all')hist=hist.filter(function(r){return r.task===currentTaskFilter;});return hist;}
+function renderHistStats(){var data=getVisibleHist();var totalMs=data.reduce(function(s,r){return s+r.dur;},0);document.getElementById('hTotal').textContent=data.length;document.getElementById('hToday').textContent=fmtHM(totalMs);document.getElementById('hAvg').textContent=data.length?fmtHM(totalMs/data.length):'—';}
+function renderCatSummary(){var hist=getFilteredByRange(loadHist());if(currentFilter!=='all'){document.getElementById('catSummary').innerHTML='';return;}var CC={講道:'#B8860B',牧養:'#15803d',行政:'#1d4ed8',個人:'#7e22ce',其他:'#6b7280'};var map={};hist.forEach(function(r){if(!map[r.cat])map[r.cat]={dur:0,count:0};map[r.cat].dur+=r.dur;map[r.cat].count++;});var sorted=Object.entries(map).sort(function(a,b){return b[1].dur-a[1].dur;});if(!sorted.length){document.getElementById('catSummary').innerHTML='';return;}document.getElementById('catSummary').innerHTML=sorted.map(function(e){var cat=e[0],v=e[1];return '<div class="cat-sum-item" onclick="setFilter(\''+esc(cat)+'\',null)" style="cursor:pointer"><div class="cat-sum-left"><div class="cat-sum-dot" style="background:'+(CC[cat]||'#999')+'"></div><div class="cat-sum-name">'+esc(cat)+'</div><div class="cat-sum-count">('+v.count+'筆)</div></div><div class="cat-sum-dur">'+fmtHM(v.dur)+'</div></div>';}).join('');}
+function setFilter(cat,btn){currentFilter=cat;currentTaskFilter='all';if(btn){document.querySelectorAll('#filterScroll .f-chip').forEach(function(c){c.classList.remove('active');});btn.classList.add('active');}else{renderFilterChips();}renderHistPage();}
+function renderTaskFilterChips(){var el=document.getElementById('taskFilterScroll');if(currentFilter==='all'){el.classList.remove('show');el.innerHTML='';return;}var hist=getFilteredByRange(loadHist()).filter(function(r){return r.cat===currentFilter;});var taskMap={};hist.forEach(function(r){if(!taskMap[r.task])taskMap[r.task]={dur:0,count:0};taskMap[r.task].dur+=r.dur;taskMap[r.task].count++;});var sorted=Object.entries(taskMap).sort(function(a,b){return b[1].dur-a[1].dur;});if(sorted.length<=1){el.classList.remove('show');el.innerHTML='';return;}el.classList.add('show');el.innerHTML='<button class="tf-chip '+(currentTaskFilter==='all'?'active':'')+'" onclick="setTaskFilter(\'all\',this)">全部任務</button>'+sorted.map(function(e){var name=e[0],v=e[1];return '<button class="tf-chip '+(currentTaskFilter===name?'active':'')+'" onclick="setTaskFilter(\''+esc(name)+'\',this)">'+esc(name)+' ('+fmtHM(v.dur)+')</button>';}).join('');}
+function setTaskFilter(task,btn){currentTaskFilter=task;document.querySelectorAll('#taskFilterScroll .tf-chip').forEach(function(c){c.classList.remove('active');});if(btn)btn.classList.add('active');renderHistStats();renderHistList();}
 function toggleSelectMode(){selectMode=!selectMode;selectedIds.clear();document.getElementById('btnSelectMode').textContent=selectMode?'取消多選':'多選';document.getElementById('batchBar').classList.toggle('show',selectMode);document.getElementById('cbSelectAll').checked=false;updateBatchCount();renderHistList();}
-function toggleSelectAll(){const checked=document.getElementById('cbSelectAll').checked;const data=getVisibleHist();if(checked){data.forEach(r=>selectedIds.add(r.id));}else{selectedIds.clear();}updateBatchCount();renderHistList();}
-function toggleSelectItem(id){if(selectedIds.has(id))selectedIds.delete(id);else selectedIds.add(id);updateBatchCount();const cb=document.getElementById('cb-'+id);if(cb)cb.checked=selectedIds.has(id);}
+function toggleSelectAll(){var checked=document.getElementById('cbSelectAll').checked;var data=getVisibleHist();if(checked){data.forEach(function(r){selectedIds.add(r.id);});}else{selectedIds.clear();}updateBatchCount();renderHistList();}
+function toggleSelectItem(id){if(selectedIds.has(id))selectedIds.delete(id);else selectedIds.add(id);updateBatchCount();var cb=document.getElementById('cb-'+id);if(cb)cb.checked=selectedIds.has(id);}
 function updateBatchCount(){document.getElementById('batchCount').textContent='已選 '+selectedIds.size+' 筆';}
-function openBatchCat(){if(!selectedIds.size){toast('⚠ 請先選擇記錄');return;}const cats=getAllCats();batchCatChoice='';document.getElementById('batchCatOptions').innerHTML=cats.map(c=>'<button class="batch-cat-chip" onclick="pickBatchCat(this,\''+esc(c)+'\')">'+c+'</button>').join('');document.getElementById('batchCatModal').classList.add('show');}
-function pickBatchCat(btn,cat){document.querySelectorAll('.batch-cat-chip').forEach(c=>c.classList.remove('active'));btn.classList.add('active');batchCatChoice=cat;}
+function openBatchCat(){if(!selectedIds.size){toast('⚠ 請先選擇記錄');return;}var cats=getAllCats();batchCatChoice='';document.getElementById('batchCatOptions').innerHTML=cats.map(function(c){return '<button class="batch-cat-chip" onclick="pickBatchCat(this,\''+esc(c)+'\')">'+c+'</button>';}).join('');document.getElementById('batchCatModal').classList.add('show');}
+function pickBatchCat(btn,cat){document.querySelectorAll('.batch-cat-chip').forEach(function(c){c.classList.remove('active');});btn.classList.add('active');batchCatChoice=cat;}
 function closeBatchCat(){document.getElementById('batchCatModal').classList.remove('show');}
-function applyBatchCat(){if(!batchCatChoice){toast('⚠ 請選擇一個分類');return;}const hist=loadHist();let count=0;hist.forEach(r=>{if(selectedIds.has(r.id)){r.cat=batchCatChoice;r.synced=false;count++;}});saveHist(hist);closeBatchCat();toast('✓ 已將 '+count+' 筆記錄改為「'+batchCatChoice+'」');renderHistPage();}
-async function batchSync(){if(!selectedIds.size){toast('⚠ 請先選擇記錄');return;}const gasUrl=loadGasUrl();if(!gasUrl){toast('⚠ 尚未設定任務同步 API，請到設定頁設定');return;}const hist=loadHist();let count=0;let fail=0;for(const r of hist){if(!selectedIds.has(r.id))continue;try{await sendToGAS(r);r.synced=true;count++;}catch{fail++;}}saveHist(hist);if(fail>0){toast('✓ 同步 '+count+' 筆，'+fail+' 筆失敗');}else{toast('✓ 已同步 '+count+' 筆記錄到 Google Calendar + Sheets');}renderHistPage();}
-function batchDelete(){if(!selectedIds.size){toast('⚠ 請先選擇記錄');return;}if(!confirm('確定刪除 '+selectedIds.size+' 筆記錄？'))return;const hist=loadHist().filter(r=>!selectedIds.has(r.id));saveHist(hist);selectedIds.clear();updateBatchCount();toast('✓ 已刪除所選記錄');renderHistPage();renderHome();}
-function renderHistList(){const el=document.getElementById('histList');const data=getVisibleHist();if(!data.length){el.innerHTML='<div class="empty-hist"><div class="e-emoji">📭</div><p>尚無記錄</p></div>';return;}el.innerHTML=data.map(r=>'<div class="hist-item"><div style="display:flex;align-items:flex-start;"><div class="hi-select-wrap '+(selectMode?'show':'')+'"><input type="checkbox" class="hi-cb" id="cb-'+r.id+'" '+(selectedIds.has(r.id)?'checked':'')+' onchange="toggleSelectItem('+r.id+')" /></div><div style="flex:1;min-width:0;"><div class="hi-top"><div class="hi-name">'+esc(r.task)+(r.synced?'<span class="gcal-icon">📅</span>':'')+'</div><div class="hi-dur">'+fmtDur(r.dur)+'</div></div><div class="hi-bot"><div class="hi-time">'+fmtDate(new Date(r.start))+' '+fmtTime(new Date(r.start))+'–'+fmtTime(new Date(r.end))+'</div><div class="cat-tag cat-'+r.cat+'">'+esc(r.cat)+'</div></div>'+(r.note?'<div class="hi-note">'+esc(r.note)+'</div>':'')+'<div class="hi-actions"><button class="hi-btn hi-btn-edit" onclick="openEdit('+r.id+')">✏️ 編輯</button><button class="hi-btn hi-btn-resync" onclick="resyncRecord('+r.id+')">📅 同步</button><button class="hi-btn hi-btn-del" onclick="deleteRecord('+r.id+')">🗑 刪除</button></div></div></div></div>').join('');}
+function applyBatchCat(){if(!batchCatChoice){toast('⚠ 請選擇一個分類');return;}var hist=loadHist();var count=0;hist.forEach(function(r){if(selectedIds.has(r.id)){r.cat=batchCatChoice;r.synced=false;count++;}});saveHist(hist);closeBatchCat();toast('✓ 已將 '+count+' 筆記錄改為「'+batchCatChoice+'」');renderHistPage();}
+async function batchSync(){if(!selectedIds.size){toast('⚠ 請先選擇記錄');return;}var gasUrl=loadGasUrl();if(!gasUrl){toast('⚠ 尚未設定任務同步 API');return;}var hist=loadHist();var count=0,fail=0;for(var i=0;i<hist.length;i++){var r=hist[i];if(!selectedIds.has(r.id))continue;try{await sendToGAS(r);r.synced=true;count++;}catch(e){fail++;}}saveHist(hist);toast(fail>0?'✓ 同步 '+count+' 筆，'+fail+' 筆失敗':'✓ 已同步 '+count+' 筆記錄');renderHistPage();}
+function batchDelete(){if(!selectedIds.size){toast('⚠ 請先選擇記錄');return;}if(!confirm('確定刪除 '+selectedIds.size+' 筆記錄？'))return;var hist=loadHist().filter(function(r){return !selectedIds.has(r.id);});saveHist(hist);selectedIds.clear();updateBatchCount();toast('✓ 已刪除所選記錄');renderHistPage();renderHome();}
+function renderHistList(){var el=document.getElementById('histList');var data=getVisibleHist();if(!data.length){el.innerHTML='<div class="empty-hist"><div class="e-emoji">📭</div><p>尚無記錄</p></div>';return;}el.innerHTML=data.map(function(r){return '<div class="hist-item"><div style="display:flex;align-items:flex-start;"><div class="hi-select-wrap '+(selectMode?'show':'')+'"><input type="checkbox" class="hi-cb" id="cb-'+r.id+'" '+(selectedIds.has(r.id)?'checked':'')+' onchange="toggleSelectItem('+r.id+')" /></div><div style="flex:1;min-width:0;"><div class="hi-top"><div class="hi-name">'+esc(r.task)+(r.synced?'<span class="gcal-icon">📅</span>':'')+'</div><div class="hi-dur">'+fmtDur(r.dur)+'</div></div><div class="hi-bot"><div class="hi-time">'+fmtDate(new Date(r.start))+' '+fmtTime(new Date(r.start))+'–'+fmtTime(new Date(r.end))+'</div><div class="cat-tag cat-'+r.cat+'">'+esc(r.cat)+'</div></div>'+(r.note?'<div class="hi-note">'+esc(r.note)+'</div>':'')+'<div class="hi-actions"><button class="hi-btn hi-btn-edit" onclick="openEdit('+r.id+')">✏️ 編輯</button><button class="hi-btn hi-btn-resync" onclick="resyncRecord('+r.id+')">📅 同步</button><button class="hi-btn hi-btn-del" onclick="deleteRecord('+r.id+')">🗑 刪除</button></div></div></div></div>';}).join('');}
 function clearAll(){if(confirm('確定清除所有記錄？')){localStorage.removeItem(STORAGE_KEY);renderHistPage();renderHome();toast('已清除所有記錄');}}
-function renderHome(){const hist=loadHist();const today=new Date().toDateString();const tr=hist.filter(r=>new Date(r.start).toDateString()===today);const todayMs=tr.reduce((s,r)=>s+r.dur,0);const avgMs=hist.length?hist.reduce((s,r)=>s+r.dur,0)/hist.length:0;document.getElementById('homeCount').textContent=tr.length;document.getElementById('homeTime').textContent=fmtHM(todayMs);document.getElementById('homeAvg').textContent=hist.length?fmtHM(avgMs):'—';}
-function updateGreeting(){const now=new Date();const days=['SUNDAY','MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY'];const h=now.getHours();const p=h<5?'NIGHT':h<12?'MORNING':h<17?'AFTERNOON':h<21?'EVENING':'NIGHT';document.getElementById('greetingTime').textContent=days[now.getDay()]+' '+p;document.getElementById('navDate').innerHTML=(now.getMonth()+1)+'/'+now.getDate()+'<br>'+pad(now.getHours())+':'+pad(now.getMinutes());}
+function renderHome(){var hist=loadHist();var today=new Date().toDateString();var tr=hist.filter(function(r){return new Date(r.start).toDateString()===today;});var todayMs=tr.reduce(function(s,r){return s+r.dur;},0);var avgMs=hist.length?hist.reduce(function(s,r){return s+r.dur;},0)/hist.length:0;document.getElementById('homeCount').textContent=tr.length;document.getElementById('homeTime').textContent=fmtHM(todayMs);document.getElementById('homeAvg').textContent=hist.length?fmtHM(avgMs):'—';}
+function updateGreeting(){var now=new Date();var days=['SUNDAY','MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY'];var h=now.getHours();var p=h<5?'NIGHT':h<12?'MORNING':h<17?'AFTERNOON':h<21?'EVENING':'NIGHT';document.getElementById('greetingTime').textContent=days[now.getDay()]+' '+p;document.getElementById('navDate').innerHTML=(now.getMonth()+1)+'/'+now.getDate()+'<br>'+pad(now.getHours())+':'+pad(now.getMinutes());}
 let editingId=null,editingCat='個人';
-function updateDurPreview(){const s=document.getElementById('editStart').value;const e=document.getElementById('editEnd').value;const el=document.getElementById('durPreview');if(!s||!e){el.textContent='耗時：—';return;}const diff=new Date(e)-new Date(s);if(diff<=0){el.textContent='⚠ 結束時間必須晚於開始時間';el.style.color='var(--danger)';return;}el.style.color='var(--accent)';el.textContent='⏱ 耗時：'+fmtDur(diff);}
-function openEdit(id){const hist=loadHist();const rec=hist.find(r=>r.id===id);if(!rec)return;editingId=id;editingCat=rec.cat;document.getElementById('editTask').value=rec.task;document.getElementById('editNote').value=rec.note||'';document.getElementById('editStart').value=toLocalDTInput(new Date(rec.start));document.getElementById('editEnd').value=toLocalDTInput(new Date(rec.end));updateDurPreview();const cats=getAllCats();const row=document.getElementById('editCatRow');row.innerHTML=cats.map(c=>'<button class="edit-cat-chip '+(c===rec.cat?'active':'')+'" data-cat="'+esc(c)+'" onclick="selEditCat(this)">'+c+'</button>').join('');document.getElementById('editModal').classList.add('show');}
-function selEditCat(btn){document.querySelectorAll('#editCatRow .edit-cat-chip').forEach(c=>c.classList.remove('active'));btn.classList.add('active');editingCat=btn.dataset.cat;}
+function updateDurPreview(){var s=document.getElementById('editStart').value;var e=document.getElementById('editEnd').value;var el=document.getElementById('durPreview');if(!s||!e){el.textContent='耗時：—';return;}var diff=new Date(e)-new Date(s);if(diff<=0){el.textContent='⚠ 結束時間必須晚於開始時間';el.style.color='var(--danger)';return;}el.style.color='var(--accent)';el.textContent='⏱ 耗時：'+fmtDur(diff);}
+function openEdit(id){var hist=loadHist();var rec=hist.find(function(r){return r.id===id;});if(!rec)return;editingId=id;editingCat=rec.cat;document.getElementById('editTask').value=rec.task;document.getElementById('editNote').value=rec.note||'';document.getElementById('editStart').value=toLocalDTInput(new Date(rec.start));document.getElementById('editEnd').value=toLocalDTInput(new Date(rec.end));updateDurPreview();var cats=getAllCats();var row=document.getElementById('editCatRow');row.innerHTML=cats.map(function(c){return '<button class="edit-cat-chip '+(c===rec.cat?'active':'')+'" data-cat="'+esc(c)+'" onclick="selEditCat(this)">'+c+'</button>';}).join('');document.getElementById('editModal').classList.add('show');}
+function selEditCat(btn){document.querySelectorAll('#editCatRow .edit-cat-chip').forEach(function(c){c.classList.remove('active');});btn.classList.add('active');editingCat=btn.dataset.cat;}
 function closeModal(){document.getElementById('editModal').classList.remove('show');editingId=null;}
 function closeModalOnOverlay(e){if(e.target===document.getElementById('editModal'))closeModal();}
-async function saveEdit(){const task=document.getElementById('editTask').value.trim();if(!task){toast('⚠ 任務名稱不能為空');return;}const startVal=document.getElementById('editStart').value;const endVal=document.getElementById('editEnd').value;if(!startVal||!endVal){toast('⚠ 請填入開始與結束時間');return;}const newStart=new Date(startVal),newEnd=new Date(endVal);if(newEnd<=newStart){toast('⚠ 結束時間必須晚於開始時間');return;}const newDur=newEnd.getTime()-newStart.getTime();const hist=loadHist();const idx=hist.findIndex(r=>r.id===editingId);if(idx===-1){toast('⚠ 找不到此記錄');return;}hist[idx]={...hist[idx],task,cat:editingCat,note:document.getElementById('editNote').value.trim(),start:newStart.toISOString(),end:newEnd.toISOString(),dur:newDur,synced:false};saveHist(hist);closeModal();const gasUrl=loadGasUrl();if(gasUrl){toast('⏳ 正在同步更新到日曆…');try{await sendToGAS(hist[idx]);hist[idx].synced=true;saveHist(hist);toast('✓ 已更新並同步到 Google Calendar + Sheets 📅');}catch(err){toast('⚠ 本地已儲存，但同步失敗：'+err.message);}}else{toast('✓ 已儲存修改（尚未設定同步）');}renderHistPage();renderHome();}
-async function resyncRecord(id){const hist=loadHist();const rec=hist.find(r=>r.id===id);if(!rec)return;const gasUrl=loadGasUrl();if(!gasUrl){toast('⚠ 尚未設定任務同步 API，請到設定頁設定');return;}toast('⏳ 正在同步到 Google 日曆…');try{await sendToGAS(rec);const idx=hist.findIndex(r=>r.id===id);hist[idx].synced=true;saveHist(hist);toast('✓ 已同步到 Google Calendar + Sheets 📅');renderHistList();renderHome();}catch(err){toast('⚠ 同步失敗：'+err.message);}}
-function deleteRecord(id){if(!confirm('確定刪除此筆記錄？'))return;const hist=loadHist().filter(r=>r.id!==id);saveHist(hist);renderHistPage();renderHome();toast('已刪除此記錄');}
-function toLocalDTInput(date){const off=date.getTimezoneOffset()*60000;return new Date(date.getTime()-off).toISOString().slice(0,16);}
-function fmtDur(ms){const t=Math.floor(Math.max(0,ms)/1000);return pad(Math.floor(t/3600))+':'+pad(Math.floor(t%3600/60))+':'+pad(t%60);}
-function fmtHM(ms){const m=Math.floor(ms/60000),h=Math.floor(m/60);return h>0?h+'h'+(m%60)+'m':m+'m';}
+async function saveEdit(){var task=document.getElementById('editTask').value.trim();if(!task){toast('⚠ 任務名稱不能為空');return;}var startVal=document.getElementById('editStart').value;var endVal=document.getElementById('editEnd').value;if(!startVal||!endVal){toast('⚠ 請填入開始與結束時間');return;}var newStart=new Date(startVal),newEnd=new Date(endVal);if(newEnd<=newStart){toast('⚠ 結束時間必須晚於開始時間');return;}var newDur=newEnd.getTime()-newStart.getTime();var hist=loadHist();var idx=hist.findIndex(function(r){return r.id===editingId;});if(idx===-1){toast('⚠ 找不到此記錄');return;}hist[idx]=Object.assign({},hist[idx],{task:task,cat:editingCat,note:document.getElementById('editNote').value.trim(),start:newStart.toISOString(),end:newEnd.toISOString(),dur:newDur,synced:false});saveHist(hist);closeModal();var gasUrl=loadGasUrl();if(gasUrl){toast('⏳ 正在同步更新…');try{await sendToGAS(hist[idx]);hist[idx].synced=true;saveHist(hist);toast('✓ 已更新並同步 📅');}catch(err){toast('⚠ 本地已儲存，同步失敗：'+err.message);}}else{toast('✓ 已儲存修改');}renderHistPage();renderHome();}
+async function resyncRecord(id){var hist=loadHist();var rec=hist.find(function(r){return r.id===id;});if(!rec)return;var gasUrl=loadGasUrl();if(!gasUrl){toast('⚠ 尚未設定任務同步 API');return;}toast('⏳ 正在同步…');try{await sendToGAS(rec);var idx=hist.findIndex(function(r){return r.id===id;});hist[idx].synced=true;saveHist(hist);toast('✓ 已同步 📅');renderHistList();renderHome();}catch(err){toast('⚠ 同步失敗：'+err.message);}}
+function deleteRecord(id){if(!confirm('確定刪除此筆記錄？'))return;var hist=loadHist().filter(function(r){return r.id!==id;});saveHist(hist);renderHistPage();renderHome();toast('已刪除此記錄');}
+function toLocalDTInput(date){var off=date.getTimezoneOffset()*60000;return new Date(date.getTime()-off).toISOString().slice(0,16);}
+function fmtDur(ms){var t=Math.floor(Math.max(0,ms)/1000);return pad(Math.floor(t/3600))+':'+pad(Math.floor(t%3600/60))+':'+pad(t%60);}
+function fmtHM(ms){var m=Math.floor(ms/60000),h=Math.floor(m/60);return h>0?h+'h'+(m%60)+'m':m+'m';}
 function fmtMin(ms){return Math.floor(ms/60000)+' 分';}
 function fmtTime(d){return d.toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit',hour12:false});}
 function fmtDate(d){return d.toLocaleDateString('zh-TW',{month:'numeric',day:'numeric',weekday:'short'});}
 function pad(n){return String(n).padStart(2,'0');}
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/'/g,'&#39;').replace(/"/g,'&quot;');}
-function toast(msg){const t=document.getElementById('toastEl');t.textContent=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),3000);}
+function toast(msg){var t=document.getElementById('toastEl');t.textContent=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove('show');},3000);}
 let wakeLock=null;
-async function requestWakeLock(){if(!('wakeLock' in navigator))return;try{wakeLock=await navigator.wakeLock.request('screen');document.getElementById('wakeIndicator').classList.add('show');wakeLock.addEventListener('release',()=>document.getElementById('wakeIndicator').classList.remove('show'));}catch(e){console.log('Wake lock:',e);}}
+async function requestWakeLock(){if(!('wakeLock' in navigator))return;try{wakeLock=await navigator.wakeLock.request('screen');document.getElementById('wakeIndicator').classList.add('show');wakeLock.addEventListener('release',function(){document.getElementById('wakeIndicator').classList.remove('show');});}catch(e){}}
 function releaseWakeLock(){if(wakeLock){wakeLock.release();wakeLock=null;}document.getElementById('wakeIndicator').classList.remove('show');}
-document.addEventListener('visibilitychange',async()=>{
+document.addEventListener('visibilitychange',async function(){
   if(document.visibilityState==='visible'){
     document.getElementById('bgNotice').classList.remove('show');
     if(checkPauseExpiry()) return;
-    if(isRunning && isPaused && pausedAt){
-      const elapsed = Date.now() - pausedAt;
-      const rem = AUTO_TIMEOUT_MS - elapsed;
-      if(rem > 0){
-        cancelAuto();
-        document.getElementById('autoBar').classList.add('show');
-        autoInterval=setInterval(()=>{
-          const r=AUTO_TIMEOUT_MS-(Date.now()-pausedAt);
-          if(r<=0){cancelAuto();stopTimer(true);toast('⏱ 暫停超過 30 分鐘，已自動結束');return;}
-          document.getElementById('autoFill').style.width=(r/AUTO_TIMEOUT_MS*100)+'%';
-          document.getElementById('autoCD').textContent=fmtDur(r);
-        },1000);
-        document.getElementById('autoFill').style.width=(rem/AUTO_TIMEOUT_MS*100)+'%';
-        document.getElementById('autoCD').textContent=fmtDur(rem);
-      }
-    }
+    if(isRunning&&isPaused&&pausedAt){ var elapsed=Date.now()-pausedAt; var rem=AUTO_TIMEOUT_MS-elapsed; if(rem>0){ cancelAuto(); document.getElementById('autoBar').classList.add('show'); autoInterval=setInterval(function(){var r=AUTO_TIMEOUT_MS-(Date.now()-pausedAt);if(r<=0){cancelAuto();stopTimer(true);toast('⏱ 暫停超過 30 分鐘，已自動結束');return;}document.getElementById('autoFill').style.width=(r/AUTO_TIMEOUT_MS*100)+'%';document.getElementById('autoCD').textContent=fmtDur(r);},1000); document.getElementById('autoFill').style.width=(rem/AUTO_TIMEOUT_MS*100)+'%'; document.getElementById('autoCD').textContent=fmtDur(rem); } }
     if(isRunning&&!isPaused)await requestWakeLock();
+    // ★ 回到前景時，如果不在計時中，靜默同步一次
+    if(!isRunning && loadGasUrl()) { setTimeout(cloudSync, 1000); }
   }else{
     if(isRunning)document.getElementById('bgNotice').classList.add('show');
   }
 });
 async function requestNotificationPermission(){if(!('Notification' in window))return false;if(Notification.permission==='granted')return true;if(Notification.permission==='denied')return false;return(await Notification.requestPermission())==='granted';}
 let activeNotif=null;
-async function showTimerNotification(taskName,cat){const ok=await requestNotificationPermission();if(!ok)return;if(activeNotif)activeNotif.close();activeNotif=new Notification('⏱ 計時中：'+taskName,{body:'分類：'+cat+'\n點擊回到計時器',tag:'kanas-timer',requireInteraction:true,silent:true});activeNotif.onclick=()=>{window.focus();activeNotif.close();};}
+async function showTimerNotification(taskName,cat){var ok=await requestNotificationPermission();if(!ok)return;if(activeNotif)activeNotif.close();activeNotif=new Notification('⏱ 計時中：'+taskName,{body:'分類：'+cat+'\n點擊回到計時器',tag:'kanas-timer',requireInteraction:true,silent:true});activeNotif.onclick=function(){window.focus();activeNotif.close();};}
 function dismissTimerNotification(){if(activeNotif){activeNotif.close();activeNotif=null;}}
 function dismissPWA(){document.getElementById('pwaBanner').classList.remove('show');localStorage.setItem('pwa_dismissed','1');}
-function checkShowPWA(){if(window.navigator.standalone)return;if(localStorage.getItem('pwa_dismissed'))return;const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);const isSafari=/^((?!chrome|android).)*safari/i.test(navigator.userAgent);if(isIOS&&isSafari)setTimeout(()=>document.getElementById('pwaBanner').classList.add('show'),3000);}
+function checkShowPWA(){if(window.navigator.standalone)return;if(localStorage.getItem('pwa_dismissed'))return;var isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);var isSafari=/^((?!chrome|android).)*safari/i.test(navigator.userAgent);if(isIOS&&isSafari)setTimeout(function(){document.getElementById('pwaBanner').classList.add('show');},3000);}
+
 // ============================================================
 //  行事曆功能
 // ============================================================
-let calEvents = [];
-let calCurrentFilter = 'mine';
-let calCurrentRange = '3m';
-let calCurrentView = 'list';
-let calViewMonth = new Date().getMonth();
-let calViewYear = new Date().getFullYear();
-let calSelectedDate = null;
-function loadCalApi(){ return localStorage.getItem(CAL_API_KEY)||''; }
-function saveCalApi(){const url=document.getElementById('calApiInput').value.trim();if(!url){toast('⚠ 請輸入 GAS Web App 網址');return;}if(!url.startsWith('https://')){toast('⚠ 需以 https:// 開頭');return;}localStorage.setItem(CAL_API_KEY,url);updateCalApiStatus();toast('✓ 行事曆 API 已儲存！');calFetchData();}
-function updateCalApiStatus(){const url=loadCalApi();const dot=document.getElementById('calApiDot');const txt=document.getElementById('calApiText');const card=document.getElementById('setupCalApiCard');if(url){dot.className='s-dot ok';txt.textContent='✓ 行事曆 API 已連接';card.style.background='linear-gradient(135deg, #064e3b, #065f46)';document.getElementById('calApiInput').value=url;}else{dot.className='s-dot';txt.textContent='尚未設定行事曆 API';card.style.background='linear-gradient(135deg,#1a3a5c,#0f2840)';}}
-let calInited = false;
+let calEvents=[];let calCurrentFilter='mine';let calCurrentRange='3m';let calCurrentView='list';let calViewMonth=new Date().getMonth();let calViewYear=new Date().getFullYear();let calSelectedDate=null;
+function loadCalApi(){return localStorage.getItem(CAL_API_KEY)||'';}
+function saveCalApi(){var url=document.getElementById('calApiInput').value.trim();if(!url){toast('⚠ 請輸入 GAS Web App 網址');return;}if(!url.startsWith('https://')){toast('⚠ 需以 https:// 開頭');return;}localStorage.setItem(CAL_API_KEY,url);updateCalApiStatus();pushSettingsToCloud();toast('✓ 行事曆 API 已儲存！');calFetchData();}
+function updateCalApiStatus(){var url=loadCalApi();var dot=document.getElementById('calApiDot');var txt=document.getElementById('calApiText');var card=document.getElementById('setupCalApiCard');if(url){dot.className='s-dot ok';txt.textContent='✓ 行事曆 API 已連接';card.style.background='linear-gradient(135deg, #064e3b, #065f46)';document.getElementById('calApiInput').value=url;}else{dot.className='s-dot';txt.textContent='尚未設定行事曆 API';card.style.background='linear-gradient(135deg,#1a3a5c,#0f2840)';}}
+let calInited=false;
 function calInit(){if(!calInited&&loadCalApi()){calFetchData();calInited=true;}else{calRender();}}
 function calRefresh(){if(!loadCalApi()){toast('⚠ 請先到設定頁設定行事曆 API 網址');return;}calFetchData();}
-function calFetchData(){
-  const url=loadCalApi();if(!url)return;
-  document.getElementById('calLoading').style.display='block';
-  document.getElementById('calMonthView').style.display='none';
-  document.getElementById('calListView').style.display='none';
-  const cbName='_calJsonpCb_'+Date.now();
-  const timeout=setTimeout(()=>{delete window[cbName];const s=document.getElementById('calJsonpScript');if(s)s.remove();document.getElementById('calLoading').style.display='none';toast('⚠ 載入逾時，請確認 GAS 已部署為新版本');calRender();},20000);
-  window[cbName]=function(data){clearTimeout(timeout);delete window[cbName];const s=document.getElementById('calJsonpScript');if(s)s.remove();document.getElementById('calLoading').style.display='none';if(data&&data.success){calEvents=data.events||[];toast('✓ 載入 '+calEvents.length+' 筆事件');}else{toast('⚠ API 回傳錯誤：'+(data&&data.error||'未知'));}calRender();};
-  const old=document.getElementById('calJsonpScript');if(old)old.remove();
-  const script=document.createElement('script');script.id='calJsonpScript';script.src=url+'?action=all&callback='+cbName;script.onerror=function(){clearTimeout(timeout);delete window[cbName];script.remove();document.getElementById('calLoading').style.display='none';toast('⚠ 載入失敗，請檢查網址是否正確');calRender();};document.body.appendChild(script);
-}
-function calSetFilter(f,btn){calCurrentFilter=f;document.querySelectorAll('#calFilterBar .cal-f-chip').forEach(c=>{c.classList.remove('active');c.classList.remove('mine-active');});if(f==='mine')btn.classList.add('mine-active');else btn.classList.add('active');calRender();}
-function calSetRange(r,btn){calCurrentRange=r;document.querySelectorAll('#calRangeBar .cal-r-chip').forEach(c=>c.classList.remove('active'));btn.classList.add('active');calRender();}
+function calFetchData(){var url=loadCalApi();if(!url)return;document.getElementById('calLoading').style.display='block';document.getElementById('calMonthView').style.display='none';document.getElementById('calListView').style.display='none';var cbName='_calCb_'+Date.now();var timeout=setTimeout(function(){delete window[cbName];var s=document.getElementById('calJsonpScript');if(s)s.remove();document.getElementById('calLoading').style.display='none';toast('⚠ 載入逾時');calRender();},20000);window[cbName]=function(data){clearTimeout(timeout);delete window[cbName];var s=document.getElementById('calJsonpScript');if(s)s.remove();document.getElementById('calLoading').style.display='none';if(data&&data.success){calEvents=data.events||[];toast('✓ 載入 '+calEvents.length+' 筆事件');}else{toast('⚠ API 回傳錯誤');}calRender();};var old=document.getElementById('calJsonpScript');if(old)old.remove();var script=document.createElement('script');script.id='calJsonpScript';script.src=url+'?action=all&callback='+cbName;script.onerror=function(){clearTimeout(timeout);delete window[cbName];script.remove();document.getElementById('calLoading').style.display='none';toast('⚠ 載入失敗');calRender();};document.body.appendChild(script);}
+function calSetFilter(f,btn){calCurrentFilter=f;document.querySelectorAll('#calFilterBar .cal-f-chip').forEach(function(c){c.classList.remove('active');c.classList.remove('mine-active');});if(f==='mine')btn.classList.add('mine-active');else btn.classList.add('active');calRender();}
+function calSetRange(r,btn){calCurrentRange=r;document.querySelectorAll('#calRangeBar .cal-r-chip').forEach(function(c){c.classList.remove('active');});btn.classList.add('active');calRender();}
 function calSetView(v){calCurrentView=v;document.getElementById('calViewMonth').classList.toggle('active',v==='month');document.getElementById('calViewList').classList.toggle('active',v==='list');calRender();}
-function calGetFiltered(){
-  let events=[...calEvents];
-  const now=new Date();const today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
-  if(calCurrentRange!=='all'){
-    let days=7;
-    if(calCurrentRange==='2w')days=14;else if(calCurrentRange==='1m')days=30;else if(calCurrentRange==='3m')days=90;
-    const start=today;const end=new Date(today.getTime()+days*86400000);
-    events=events.filter(ev=>{const d=new Date(ev.date);return d>=start&&d<end;});
-  }
-  if(calCurrentFilter==='mine')events=events.filter(ev=>ev.isMyEvent);
-  else if(calCurrentFilter==='church')events=events.filter(ev=>ev.source==='church');
-  else if(calCurrentFilter==='student')events=events.filter(ev=>ev.source==='student');
-  return events;
-}
-function calRender(){
-  const filtered=calGetFiltered();
-  const myCount=filtered.filter(ev=>ev.isMyEvent).length;
-  document.getElementById('calStats').style.display=calEvents.length?'grid':'none';
-  document.getElementById('calMyCount').textContent=myCount;
-  document.getElementById('calAllCount').textContent=filtered.length;
-  if(calCurrentView==='month'){document.getElementById('calMonthView').style.display='block';document.getElementById('calListView').style.display='none';calRenderMonth(filtered);}
-  else{document.getElementById('calMonthView').style.display='none';document.getElementById('calListView').style.display='block';calRenderList(filtered);}
-}
+function calGetFiltered(){var events=[...calEvents];var now=new Date();var today=new Date(now.getFullYear(),now.getMonth(),now.getDate());if(calCurrentRange!=='all'){var days=7;if(calCurrentRange==='2w')days=14;else if(calCurrentRange==='1m')days=30;else if(calCurrentRange==='3m')days=90;var start=today;var end=new Date(today.getTime()+days*86400000);events=events.filter(function(ev){var d=new Date(ev.date);return d>=start&&d<end;});}if(calCurrentFilter==='mine')events=events.filter(function(ev){return ev.isMyEvent;});else if(calCurrentFilter==='church')events=events.filter(function(ev){return ev.source==='church';});else if(calCurrentFilter==='student')events=events.filter(function(ev){return ev.source==='student';});return events;}
+function calRender(){var filtered=calGetFiltered();var myCount=filtered.filter(function(ev){return ev.isMyEvent;}).length;document.getElementById('calStats').style.display=calEvents.length?'grid':'none';document.getElementById('calMyCount').textContent=myCount;document.getElementById('calAllCount').textContent=filtered.length;if(calCurrentView==='month'){document.getElementById('calMonthView').style.display='block';document.getElementById('calListView').style.display='none';calRenderMonth(filtered);}else{document.getElementById('calMonthView').style.display='none';document.getElementById('calListView').style.display='block';calRenderList(filtered);}}
 function calPrevMonth(){calViewMonth--;if(calViewMonth<0){calViewMonth=11;calViewYear--;}calRender();}
 function calNextMonth(){calViewMonth++;if(calViewMonth>11){calViewMonth=0;calViewYear++;}calRender();}
-function calRenderMonth(filtered){
-  document.getElementById('calMonthTitle').textContent=calViewYear+' 年 '+(calViewMonth+1)+' 月';
-  const grid=document.getElementById('calGrid');
-  const firstDay=new Date(calViewYear,calViewMonth,1).getDay();
-  const daysInMonth=new Date(calViewYear,calViewMonth+1,0).getDate();
-  const todayStr=new Date().toISOString().slice(0,10);
-  const dayMap={};
-  filtered.forEach(ev=>{if(!dayMap[ev.date])dayMap[ev.date]=[];dayMap[ev.date].push(ev);});
-  let html='';
-  const prevDays=new Date(calViewYear,calViewMonth,0).getDate();
-  for(let i=firstDay-1;i>=0;i--){html+='<div class="cal-day other-month"><span>'+(prevDays-i)+'</span></div>';}
-  for(let d=1;d<=daysInMonth;d++){
-    const dateStr=calViewYear+'-'+pad(calViewMonth+1)+'-'+pad(d);
-    const evs=dayMap[dateStr]||[];
-    const isToday=dateStr===todayStr;
-    const isSelected=dateStr===calSelectedDate;
-    const hasMine=evs.some(ev=>ev.isMyEvent);
-    const hasChurch=evs.some(ev=>ev.source==='church');
-    const hasStudent=evs.some(ev=>ev.source==='student');
-    let cls='cal-day';
-    if(isToday)cls+=' today';if(isSelected)cls+=' selected';if(hasMine)cls+=' has-mine';
-    let dots='';
-    if(evs.length){dots='<div class="cal-dots">';if(hasMine)dots+='<span class="dot-mine"></span>';if(hasChurch)dots+='<span class="dot-church"></span>';if(hasStudent)dots+='<span class="dot-student"></span>';dots+='</div>';}
-    html+='<div class="'+cls+'" onclick="calSelectDay(\''+dateStr+'\')"><span>'+d+'</span>'+dots+'</div>';
-  }
-  const totalCells=firstDay+daysInMonth;const remaining=(7-totalCells%7)%7;
-  for(let i=1;i<=remaining;i++){html+='<div class="cal-day other-month"><span>'+i+'</span></div>';}
-  grid.innerHTML=html;
-  const showDate=calSelectedDate||todayStr;
-  calRenderDayDetail(showDate,filtered);
-}
+function calRenderMonth(filtered){document.getElementById('calMonthTitle').textContent=calViewYear+' 年 '+(calViewMonth+1)+' 月';var grid=document.getElementById('calGrid');var firstDay=new Date(calViewYear,calViewMonth,1).getDay();var daysInMonth=new Date(calViewYear,calViewMonth+1,0).getDate();var todayStr=new Date().toISOString().slice(0,10);var dayMap={};filtered.forEach(function(ev){if(!dayMap[ev.date])dayMap[ev.date]=[];dayMap[ev.date].push(ev);});var html='';var prevDays=new Date(calViewYear,calViewMonth,0).getDate();for(var i=firstDay-1;i>=0;i--){html+='<div class="cal-day other-month"><span>'+(prevDays-i)+'</span></div>';}for(var d=1;d<=daysInMonth;d++){var dateStr=calViewYear+'-'+pad(calViewMonth+1)+'-'+pad(d);var evs=dayMap[dateStr]||[];var isToday=dateStr===todayStr;var isSelected=dateStr===calSelectedDate;var hasMine=evs.some(function(ev){return ev.isMyEvent;});var hasChurch=evs.some(function(ev){return ev.source==='church';});var hasStudent=evs.some(function(ev){return ev.source==='student';});var cls='cal-day';if(isToday)cls+=' today';if(isSelected)cls+=' selected';if(hasMine)cls+=' has-mine';var dots='';if(evs.length){dots='<div class="cal-dots">';if(hasMine)dots+='<span class="dot-mine"></span>';if(hasChurch)dots+='<span class="dot-church"></span>';if(hasStudent)dots+='<span class="dot-student"></span>';dots+='</div>';}html+='<div class="'+cls+'" onclick="calSelectDay(\''+dateStr+'\')"><span>'+d+'</span>'+dots+'</div>';}var totalCells=firstDay+daysInMonth;var remaining=(7-totalCells%7)%7;for(var i2=1;i2<=remaining;i2++){html+='<div class="cal-day other-month"><span>'+i2+'</span></div>';}grid.innerHTML=html;calRenderDayDetail(calSelectedDate||todayStr,filtered);}
 function calSelectDay(dateStr){calSelectedDate=dateStr;calRender();}
-function calRenderDayDetail(dateStr,filtered){
-  const el=document.getElementById('calDayDetail');
-  const dayEvs=filtered.filter(ev=>ev.date===dateStr);
-  const d=new Date(dateStr+'T00:00:00');
-  const label=d.toLocaleDateString('zh-TW',{year:'numeric',month:'long',day:'numeric',weekday:'long'});
-  if(!dayEvs.length){el.innerHTML='<div class="cal-day-title">'+label+'</div><div class="cal-empty"><div class="e-emoji">📭</div><p>這天沒有事件</p></div>';return;}
-  el.innerHTML='<div class="cal-day-title">'+label+'（'+dayEvs.length+' 個事件）</div>'+dayEvs.map(ev=>calRenderEventCard(ev)).join('');
-}
-function calRenderEventCard(ev){
-  const isOff=ev.type?.includes('off')||ev.title?.includes('暫停');
-  let cardCls='cal-event-card';
-  if(ev.isMyEvent)cardCls+=' mine';
-  if(ev.source==='church')cardCls+=' church';
-  else if(ev.source==='student')cardCls+=' student';
-  if(isOff)cardCls+=' off';
-  const srcLabel=ev.source==='church'?'教會':'學生';
-  const srcTagCls=ev.source==='church'?'tag-church':'tag-student';
-  const evIdx=calEvents.indexOf(ev);
-  let mainInfo = '';
-  let locationStr = '';
-  let venueTag = '';
-  if(ev.source === 'student'){
-    const typeStr = ev.title ? ev.title.replace('[學生] ','') : '';
-    mainInfo = typeStr;
-    locationStr = ev.location || '';
-  } else {
-    if(ev.myRoles && ev.myRoles.length){
-      mainInfo = ev.myRoles.join('、');
-    } else if(ev.roles && ev.roles['講員']){
-      mainInfo = '講員：' + ev.roles['講員'];
-    } else {
-      mainInfo = ev.title || '';
-    }
-    venueTag = detectVenue(ev);
-  }
-  let myBadgeHtml = '';
-  if(ev.isMyEvent && ev.myRoles && ev.myRoles.length){
-    myBadgeHtml = ev.myRoles.map(r=>'<span class="ce-my-badge-inline">⭐'+esc(r)+'</span>').join('');
-  }
-  let detailsHtml = '';
-  const filteredDetails = (ev.details || []).filter(d => !d.label.includes('同工行程'));
-  if(filteredDetails.length){
-    detailsHtml = '<div class="ce-details-toggle" onclick="event.stopPropagation();calToggleDetails('+evIdx+')"><span class="ce-details-arrow" id="ceArrow'+evIdx+'">▸</span> 詳細</div><div class="ce-details-body" id="ceDetails'+evIdx+'" style="display:none">'+filteredDetails.map(d=>'<div class="ce-detail-row"><span class="ce-detail-label">'+esc(d.label)+'</span><span class="ce-detail-value">'+esc(d.value)+'</span></div>').join('')+'</div>';
-  }
-  let compactHtml = '<div class="ce-compact-row">';
-  compactHtml += '<span class="ce-src-tag '+srcTagCls+'">'+srcLabel+'</span>';
-  if(locationStr) compactHtml += '<span class="ce-loc">📍'+esc(locationStr)+'</span>';
-  compactHtml += '<span class="ce-main-info">'+esc(mainInfo)+'</span>';
-  if(venueTag) compactHtml += '<span class="ce-venue-tag">'+esc(venueTag)+'</span>';
-  if(ev.source === 'church' && ev.isMyEvent && ev.myRoles && ev.myRoles.length){
-    compactHtml = '<div class="ce-compact-row">';
-    compactHtml += '<span class="ce-src-tag '+srcTagCls+'">'+srcLabel+'</span>';
-    compactHtml += '<span class="ce-main-info">'+esc(ev.title || '')+'</span>';
-    if(venueTag) compactHtml += '<span class="ce-venue-tag">'+esc(venueTag)+'</span>';
-    compactHtml += myBadgeHtml;
-  }
-  if(ev.source === 'student' && ev.isMyEvent && ev.myRoles && ev.myRoles.length){
-    compactHtml += myBadgeHtml;
-  }
-  compactHtml += '</div>';
-  return '<div class="'+cardCls+'" onclick="calShowEvent('+evIdx+')">'+compactHtml+detailsHtml+'</div>';
-}
-function detectVenue(ev){
-  if(!ev || ev.source !== 'church') return '';
-  if(!ev.date) return '';
-  const evDate = new Date(ev.date + 'T00:00:00');
-  if(evDate < new Date('2025-03-01')) return '';
-  const allRoleValues = Object.values(ev.roles || {}).join(' ');
-  const allDetailValues = (ev.details || []).map(d => d.value).join(' ');
-  const allText = (ev.title || '') + ' ' + allRoleValues + ' ' + allDetailValues + ' ' + (ev.staffNote || '');
-  if(allText.includes('新秀') && !allText.includes('本堂')) return '新秀';
-  if(allText.includes('本堂') && !allText.includes('新秀')) return '本堂';
-  if(allText.includes('新秀') && allText.includes('本堂')) return '';
-  return '';
-}
-function calToggleDetails(idx){
-  const body=document.getElementById('ceDetails'+idx);
-  const arrow=document.getElementById('ceArrow'+idx);
-  if(!body)return;
-  const show=body.style.display==='none';
-  body.style.display=show?'block':'none';
-  if(arrow)arrow.textContent=show?'▾':'▸';
-}
-function calRenderList(filtered){
-  const el=document.getElementById('calListSection');
-  if(!filtered.length){el.innerHTML='<div class="cal-empty"><div class="e-emoji">📭</div><p>篩選範圍內沒有事件</p></div>';return;}
-  const groups={};filtered.forEach(ev=>{if(!groups[ev.date])groups[ev.date]=[];groups[ev.date].push(ev);});
-  const sortedDates=Object.keys(groups).sort();
-  let html='';
-  sortedDates.forEach(dateStr=>{const d=new Date(dateStr+'T00:00:00');const label=d.toLocaleDateString('zh-TW',{month:'long',day:'numeric',weekday:'short'});const isToday=dateStr===new Date().toISOString().slice(0,10);html+='<div class="cal-list-date-header">'+(isToday?'📍 今天 — ':'')+label+'</div>';groups[dateStr].forEach(ev=>{html+=calRenderEventCard(ev);});});
-  el.innerHTML=html;
-}
-function calStartTimer(taskName){document.getElementById('taskName').value=taskName;document.getElementById('catInput').value='行政';goTab('timer');ytCheckVisibility();toast('已帶入任務名稱，按「開始」即可計時');}
-function calShowEvent(idx){
-  const ev=calEvents[idx];if(!ev)return;
-  document.getElementById('calModalTitle').textContent='📅 '+ev.title;
-  let body='';
-  if(ev.isMyEvent&&ev.myRoles?.length){body+='<div class="ce-my-roles" style="margin-bottom:12px">'+ev.myRoles.map(r=>'<span class="ce-my-badge">⭐ '+esc(r)+'</span>').join('')+'</div>';}
-  body+='<div class="edit-field"><label>日期</label><div style="font-size:14px;font-weight:600;">'+ev.date+'</div></div>';
-  body+='<div class="edit-field"><label>來源</label><div style="font-size:14px;">'+(ev.source==='church'?'⛪ 教會事工表':'🎓 學生事工表')+'</div></div>';
-  if(ev.roles&&Object.keys(ev.roles).length){body+='<div class="edit-field"><label>服事人員</label><div style="font-size:13px;line-height:2;">';Object.entries(ev.roles).forEach(([k,v])=>{body+='<div><strong>'+esc(k)+'</strong>：'+esc(v)+'</div>';});body+='</div></div>';}
-  if(ev.location)body+='<div class="edit-field"><label>地點</label><div style="font-size:14px;">'+esc(ev.location)+'</div></div>';
-  if(ev.counselorNote)body+='<div class="edit-field"><label>輔導行程</label><div style="font-size:13px;">'+esc(ev.counselorNote)+'</div></div>';
-  if(ev.missionCountry)body+='<div class="edit-field"><label>宣教國家</label><div style="font-size:14px;">🌍 '+esc(ev.missionCountry)+'</div></div>';
-  if(ev.mainSpeaker)body+='<div class="edit-field"><label>本堂講員</label><div style="font-size:14px;">'+esc(ev.mainSpeaker)+'</div></div>';
-  if(ev.xinxiuSpeaker)body+='<div class="edit-field"><label>新秀福音中心</label><div style="font-size:14px;">'+esc(ev.xinxiuSpeaker)+'</div></div>';
-  if(ev.songs)body+='<div class="edit-field"><label>詩歌</label><div style="font-size:13px;white-space:pre-line;">'+esc(ev.songs)+'</div></div>';
-  const venue = detectVenue(ev);
-  if(venue) body+='<div class="edit-field"><label>場地</label><div style="font-size:14px;">'+esc(venue)+'</div></div>';
-  document.getElementById('calModalBody').innerHTML=body;
-  let footer='<button class="btn-modal-cancel" onclick="closeCalEventModal()">關閉</button>';
-  if(ev.isMyEvent&&ev.myRoles?.length){const taskName=ev.myRoles[0]+'：'+ev.title.replace('[學生] ','');footer+='<button class="btn-modal-save" onclick="calStartTimer(\''+esc(taskName)+'\');closeCalEventModal();">⏱ 開始計時</button>';}
-  document.getElementById('calModalFooter').innerHTML=footer;
-  document.getElementById('calEventModal').classList.add('show');
-}
+function calRenderDayDetail(dateStr,filtered){var el=document.getElementById('calDayDetail');var dayEvs=filtered.filter(function(ev){return ev.date===dateStr;});var d=new Date(dateStr+'T00:00:00');var label=d.toLocaleDateString('zh-TW',{year:'numeric',month:'long',day:'numeric',weekday:'long'});if(!dayEvs.length){el.innerHTML='<div class="cal-day-title">'+label+'</div><div class="cal-empty"><div class="e-emoji">📭</div><p>這天沒有事件</p></div>';return;}el.innerHTML='<div class="cal-day-title">'+label+'（'+dayEvs.length+' 個事件）</div>'+dayEvs.map(function(ev){return calRenderEventCard(ev);}).join('');}
+function calRenderEventCard(ev){var isOff=(ev.type&&ev.type.includes('off'))||(ev.title&&ev.title.includes('暫停'));var cardCls='cal-event-card';if(ev.isMyEvent)cardCls+=' mine';if(ev.source==='church')cardCls+=' church';else if(ev.source==='student')cardCls+=' student';if(isOff)cardCls+=' off';var srcLabel=ev.source==='church'?'教會':'學生';var srcTagCls=ev.source==='church'?'tag-church':'tag-student';var evIdx=calEvents.indexOf(ev);var mainInfo='',locationStr='',venueTag='';if(ev.source==='student'){mainInfo=ev.title?ev.title.replace('[學生] ',''):'';locationStr=ev.location||'';}else{if(ev.myRoles&&ev.myRoles.length){mainInfo=ev.myRoles.join('、');}else if(ev.roles&&ev.roles['講員']){mainInfo='講員：'+ev.roles['講員'];}else{mainInfo=ev.title||'';}venueTag=detectVenue(ev);}var myBadgeHtml='';if(ev.isMyEvent&&ev.myRoles&&ev.myRoles.length){myBadgeHtml=ev.myRoles.map(function(r){return '<span class="ce-my-badge-inline">⭐'+esc(r)+'</span>';}).join('');}var detailsHtml='';var filteredDetails=(ev.details||[]).filter(function(d){return !d.label.includes('同工行程');});if(filteredDetails.length){detailsHtml='<div class="ce-details-toggle" onclick="event.stopPropagation();calToggleDetails('+evIdx+')"><span class="ce-details-arrow" id="ceArrow'+evIdx+'">▸</span> 詳細</div><div class="ce-details-body" id="ceDetails'+evIdx+'" style="display:none">'+filteredDetails.map(function(d){return '<div class="ce-detail-row"><span class="ce-detail-label">'+esc(d.label)+'</span><span class="ce-detail-value">'+esc(d.value)+'</span></div>';}).join('')+'</div>';}var compactHtml='<div class="ce-compact-row">';compactHtml+='<span class="ce-src-tag '+srcTagCls+'">'+srcLabel+'</span>';if(locationStr)compactHtml+='<span class="ce-loc">📍'+esc(locationStr)+'</span>';compactHtml+='<span class="ce-main-info">'+esc(mainInfo)+'</span>';if(venueTag)compactHtml+='<span class="ce-venue-tag">'+esc(venueTag)+'</span>';if(ev.source==='church'&&ev.isMyEvent&&ev.myRoles&&ev.myRoles.length){compactHtml='<div class="ce-compact-row">';compactHtml+='<span class="ce-src-tag '+srcTagCls+'">'+srcLabel+'</span>';compactHtml+='<span class="ce-main-info">'+esc(ev.title||'')+'</span>';if(venueTag)compactHtml+='<span class="ce-venue-tag">'+esc(venueTag)+'</span>';compactHtml+=myBadgeHtml;}if(ev.source==='student'&&ev.isMyEvent&&ev.myRoles&&ev.myRoles.length){compactHtml+=myBadgeHtml;}compactHtml+='</div>';return '<div class="'+cardCls+'" onclick="calShowEvent('+evIdx+')">'+compactHtml+detailsHtml+'</div>';}
+function detectVenue(ev){if(!ev||ev.source!=='church')return '';if(!ev.date)return '';var evDate=new Date(ev.date+'T00:00:00');if(evDate<new Date('2025-03-01'))return '';var allRoleValues=Object.values(ev.roles||{}).join(' ');var allDetailValues=(ev.details||[]).map(function(d){return d.value;}).join(' ');var allText=(ev.title||'')+' '+allRoleValues+' '+allDetailValues+' '+(ev.staffNote||'');if(allText.includes('新秀')&&!allText.includes('本堂'))return '新秀';if(allText.includes('本堂')&&!allText.includes('新秀'))return '本堂';return '';}
+function calToggleDetails(idx){var body=document.getElementById('ceDetails'+idx);var arrow=document.getElementById('ceArrow'+idx);if(!body)return;var show=body.style.display==='none';body.style.display=show?'block':'none';if(arrow)arrow.textContent=show?'▾':'▸';}
+function calRenderList(filtered){var el=document.getElementById('calListSection');if(!filtered.length){el.innerHTML='<div class="cal-empty"><div class="e-emoji">📭</div><p>篩選範圍內沒有事件</p></div>';return;}var groups={};filtered.forEach(function(ev){if(!groups[ev.date])groups[ev.date]=[];groups[ev.date].push(ev);});var sortedDates=Object.keys(groups).sort();var html='';sortedDates.forEach(function(dateStr){var d=new Date(dateStr+'T00:00:00');var label=d.toLocaleDateString('zh-TW',{month:'long',day:'numeric',weekday:'short'});var isToday=dateStr===new Date().toISOString().slice(0,10);html+='<div class="cal-list-date-header">'+(isToday?'📍 今天 — ':'')+label+'</div>';groups[dateStr].forEach(function(ev){html+=calRenderEventCard(ev);});});el.innerHTML=html;}
+function calStartTimer(taskName){document.getElementById('taskName').value=taskName;document.getElementById('catInput').value='行政';goTab('timer');ytCheckVisibility();toast('已帶入任務名稱');}
+function calShowEvent(idx){var ev=calEvents[idx];if(!ev)return;document.getElementById('calModalTitle').textContent='📅 '+ev.title;var body='';if(ev.isMyEvent&&ev.myRoles&&ev.myRoles.length){body+='<div class="ce-my-roles" style="margin-bottom:12px">'+ev.myRoles.map(function(r){return '<span class="ce-my-badge">⭐ '+esc(r)+'</span>';}).join('')+'</div>';}body+='<div class="edit-field"><label>日期</label><div style="font-size:14px;font-weight:600;">'+ev.date+'</div></div>';body+='<div class="edit-field"><label>來源</label><div style="font-size:14px;">'+(ev.source==='church'?'⛪ 教會事工表':'🎓 學生事工表')+'</div></div>';if(ev.roles&&Object.keys(ev.roles).length){body+='<div class="edit-field"><label>服事人員</label><div style="font-size:13px;line-height:2;">';Object.entries(ev.roles).forEach(function(e){body+='<div><strong>'+esc(e[0])+'</strong>：'+esc(e[1])+'</div>';});body+='</div></div>';}if(ev.location)body+='<div class="edit-field"><label>地點</label><div style="font-size:14px;">'+esc(ev.location)+'</div></div>';if(ev.counselorNote)body+='<div class="edit-field"><label>輔導行程</label><div style="font-size:13px;">'+esc(ev.counselorNote)+'</div></div>';if(ev.missionCountry)body+='<div class="edit-field"><label>宣教國家</label><div style="font-size:14px;">🌍 '+esc(ev.missionCountry)+'</div></div>';if(ev.mainSpeaker)body+='<div class="edit-field"><label>本堂講員</label><div style="font-size:14px;">'+esc(ev.mainSpeaker)+'</div></div>';if(ev.xinxiuSpeaker)body+='<div class="edit-field"><label>新秀福音中心</label><div style="font-size:14px;">'+esc(ev.xinxiuSpeaker)+'</div></div>';if(ev.songs)body+='<div class="edit-field"><label>詩歌</label><div style="font-size:13px;white-space:pre-line;">'+esc(ev.songs)+'</div></div>';var venue=detectVenue(ev);if(venue)body+='<div class="edit-field"><label>場地</label><div style="font-size:14px;">'+esc(venue)+'</div></div>';document.getElementById('calModalBody').innerHTML=body;var footer='<button class="btn-modal-cancel" onclick="closeCalEventModal()">關閉</button>';if(ev.isMyEvent&&ev.myRoles&&ev.myRoles.length){var tn=ev.myRoles[0]+'：'+ev.title.replace('[學生] ','');footer+='<button class="btn-modal-save" onclick="calStartTimer(\''+esc(tn)+'\');closeCalEventModal();">⏱ 開始計時</button>';}document.getElementById('calModalFooter').innerHTML=footer;document.getElementById('calEventModal').classList.add('show');}
 function closeCalEventModal(){document.getElementById('calEventModal').classList.remove('show');}
+
 // ============================================================
-//  匯出 / 匯入功能
+//  匯出 / 匯入
 // ============================================================
-function ioShowResult(type,msg){const el=document.getElementById('ioResult');el.className='io-result show '+type;el.innerHTML=msg;}
-function ioExport(){const hist=loadHist();if(!hist.length){ioShowResult('info','⚠ 目前沒有任何記錄可匯出');return;}const json=JSON.stringify(hist);const ta=document.getElementById('ioTextarea');ta.value=json;ta.focus();ta.select();try{navigator.clipboard.writeText(json).then(()=>{ioShowResult('success','✓ 已匯出 <b>'+hist.length+'</b> 筆記錄，並已自動複製到剪貼簿！');}).catch(()=>{ioShowResult('success','✓ 已匯出 <b>'+hist.length+'</b> 筆記錄，請手動全選複製上方文字框內容。');});}catch(e){ioShowResult('success','✓ 已匯出 <b>'+hist.length+'</b> 筆記錄，請手動全選複製上方文字框內容。');}}
-function ioImport(){const ta=document.getElementById('ioTextarea');const raw=ta.value.trim();if(!raw){ioShowResult('error','⚠ 請先在文字框中貼上匯出的 JSON 資料');return;}let incoming;try{incoming=JSON.parse(raw);}catch(e){ioShowResult('error','⚠ JSON 格式錯誤，請確認貼上的是完整的匯出資料');return;}if(!Array.isArray(incoming)){ioShowResult('error','⚠ 資料格式不正確（需為陣列）');return;}const valid=incoming.filter(r=>r.id&&r.task&&r.start&&r.end&&typeof r.dur==='number');if(!valid.length){ioShowResult('error','⚠ 沒有找到有效的任務記錄');return;}const existing=loadHist();const existingIds=new Set(existing.map(r=>r.id));let newCount=0;valid.forEach(r=>{if(!existingIds.has(r.id)){existing.push(r);existingIds.add(r.id);newCount++;}});existing.sort((a,b)=>new Date(b.start)-new Date(a.start));saveHist(existing);const totalNow=existing.length;const skipped=valid.length-newCount;let msg='✓ 匯入完成！新增 <b>'+newCount+'</b> 筆記錄，目前共 <b>'+totalNow+'</b> 筆。';if(skipped>0){msg+='<br>（'+skipped+' 筆重複記錄已自動略過）';}ioShowResult('success',msg);toast('✓ 已匯入 '+newCount+' 筆新記錄');renderHome();}
+function ioShowResult(type,msg){var el=document.getElementById('ioResult');el.className='io-result show '+type;el.innerHTML=msg;}
+function ioExport(){var hist=loadHist();if(!hist.length){ioShowResult('info','⚠ 目前沒有任何記錄可匯出');return;}var json=JSON.stringify(hist);var ta=document.getElementById('ioTextarea');ta.value=json;ta.focus();ta.select();try{navigator.clipboard.writeText(json).then(function(){ioShowResult('success','✓ 已匯出 <b>'+hist.length+'</b> 筆記錄，已自動複製！');}).catch(function(){ioShowResult('success','✓ 已匯出 <b>'+hist.length+'</b> 筆記錄，請手動複製。');});}catch(e){ioShowResult('success','✓ 已匯出 <b>'+hist.length+'</b> 筆記錄，請手動複製。');}}
+function ioImport(){var ta=document.getElementById('ioTextarea');var raw=ta.value.trim();if(!raw){ioShowResult('error','⚠ 請先貼上 JSON 資料');return;}var incoming;try{incoming=JSON.parse(raw);}catch(e){ioShowResult('error','⚠ JSON 格式錯誤');return;}if(!Array.isArray(incoming)){ioShowResult('error','⚠ 資料格式不正確');return;}var valid=incoming.filter(function(r){return r.id&&r.task&&r.start&&r.end&&typeof r.dur==='number';});if(!valid.length){ioShowResult('error','⚠ 沒有有效記錄');return;}var existing=loadHist();var existingIds=new Set(existing.map(function(r){return r.id;}));var newCount=0;valid.forEach(function(r){if(!existingIds.has(r.id)){existing.push(r);existingIds.add(r.id);newCount++;}});existing.sort(function(a,b){return new Date(b.start)-new Date(a.start);});saveHist(existing);ioShowResult('success','✓ 匯入完成！新增 <b>'+newCount+'</b> 筆，共 <b>'+existing.length+'</b> 筆。');toast('✓ 已匯入 '+newCount+' 筆');renderHome();}
+
 // ============================================================
-//  初始化
+//  初始化 + 啟動雲端同步
 // ============================================================
 updateGreeting();
 setInterval(updateGreeting,30000);
 updateGasStatus();
 updateCalApiStatus();
+updateLastSyncDisplay();
 renderHome();
 checkShowPWA();
 checkPauseExpiry();
-const taskNameEl=document.getElementById('taskName');
+var taskNameEl=document.getElementById('taskName');
 taskNameEl.addEventListener('input',function(){showSuggestions();ytCheckVisibility();});
 taskNameEl.addEventListener('focus',showSuggestions);
 taskNameEl.addEventListener('blur',hideSuggestions);
-taskNameEl.addEventListener('keydown',e=>{if(e.key==='Enter'&&!isRunning){document.getElementById('suggestList').classList.remove('show');startTimer();}});
-const catInputEl=document.getElementById('catInput');
+taskNameEl.addEventListener('keydown',function(e){if(e.key==='Enter'&&!isRunning){document.getElementById('suggestList').classList.remove('show');startTimer();}});
+var catInputEl=document.getElementById('catInput');
 catInputEl.addEventListener('input',showCatSuggestions);
 catInputEl.addEventListener('focus',showCatSuggestions);
 catInputEl.addEventListener('blur',hideCatSuggestions);
 ytUpdateSavedDisplay();
+
+// ★ 頁面載入 1.5 秒後自動觸發雲端同步
+setTimeout(function() {
+  if (loadGasUrl() && !isRunning) {
+    cloudSync();
+  }
+}, 1500);
 </script>
 </body>
 </html>
