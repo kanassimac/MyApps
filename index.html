@@ -1588,32 +1588,53 @@ function goTab(tab) {
   if(tab==='setup'){updateGasStatus();updateCalApiStatus();}
 }
 function loadGasUrl(){return localStorage.getItem(GAS_URL_KEY)||'';}
-function sendToGAS(data){
-  return new Promise((resolve,reject)=>{
-    const gasUrl=loadGasUrl();
-    if(!gasUrl){reject(new Error('尚未設定 GAS URL'));return;}
-    const cbName='_gasCb_'+Date.now()+'_'+Math.floor(Math.random()*10000);
-    const timeout=setTimeout(()=>{
-      delete window[cbName];
-      const s=document.getElementById('gasJsonpScript');if(s)s.remove();
-      reject(new Error('GAS 回應逾時（15秒）'));
-    },15000);
-    window[cbName]=function(result){
-      clearTimeout(timeout);delete window[cbName];
-      const s=document.getElementById('gasJsonpScript');if(s)s.remove();
-      if(result&&result.success){resolve(result);}
-      else{reject(new Error(result&&result.message||'GAS 回傳錯誤'));}
-    };
-    const old=document.getElementById('gasJsonpScript');if(old)old.remove();
-    const encoded=encodeURIComponent(JSON.stringify(data));
-    const script=document.createElement('script');
-    script.id='gasJsonpScript';
-    script.src=gasUrl+'?action=save&data='+encoded+'&callback='+cbName;
-    script.onerror=function(){
-      clearTimeout(timeout);delete window[cbName];script.remove();
-      reject(new Error('GAS 請求失敗，請檢查網址'));
-    };
-    document.body.appendChild(script);
+function sendToGAS(data, maxRetries) {
+  if (maxRetries === undefined) maxRetries = 2;
+  return new Promise(function(resolve, reject) {
+    var gasUrl = loadGasUrl();
+    if (!gasUrl) { reject(new Error('尚未設定 GAS URL')); return; }
+    var attemptNum = 0;
+    function attempt() {
+      attemptNum++;
+      var cbName = '_gasCb_' + Date.now() + '_' + Math.floor(Math.random() * 10000);
+      var timeout = setTimeout(function() {
+        delete window[cbName];
+        var s = document.getElementById('gasJsonpScript'); if (s) s.remove();
+        if (attemptNum <= maxRetries) {
+          console.log('[GAS] 回應逾時，第 ' + attemptNum + ' 次重試…');
+          toast('⏳ 同步逾時，重試中（' + attemptNum + '/' + maxRetries + '）…');
+          setTimeout(attempt, 2000);
+        } else {
+          reject(new Error('GAS 回應逾時（已重試 ' + maxRetries + ' 次）'));
+        }
+      }, 15000);
+      window[cbName] = function(result) {
+        clearTimeout(timeout);
+        delete window[cbName];
+        var s = document.getElementById('gasJsonpScript'); if (s) s.remove();
+        if (result && result.success) { resolve(result); }
+        else { reject(new Error(result && result.message || 'GAS 回傳錯誤')); }
+      };
+      var old = document.getElementById('gasJsonpScript'); if (old) old.remove();
+      var encoded = encodeURIComponent(JSON.stringify(data));
+      var script = document.createElement('script');
+      script.id = 'gasJsonpScript';
+      script.src = gasUrl + '?action=save&data=' + encoded + '&callback=' + cbName;
+      script.onerror = function() {
+        clearTimeout(timeout);
+        delete window[cbName];
+        script.remove();
+        if (attemptNum <= maxRetries) {
+          console.log('[GAS] script 載入失敗，第 ' + attemptNum + ' 次重試…');
+          toast('⏳ 連線失敗，重試中（' + attemptNum + '/' + maxRetries + '）…');
+          setTimeout(attempt, 2000);
+        } else {
+          reject(new Error('GAS 請求失敗（已重試 ' + maxRetries + ' 次），請檢查網址'));
+        }
+      };
+      document.body.appendChild(script);
+    }
+    attempt();
   });
 }
 function saveGasUrl(){const url=document.getElementById('gasUrlInput').value.trim();if(!url){toast('\u26a0 請輸入 GAS Web App 網址');return;}if(!url.startsWith('https://script.google.com/')){toast('\u26a0 網址需以 https://script.google.com/ 開頭');return;}localStorage.setItem(GAS_URL_KEY,url);updateGasStatus();toast('\u23f3 正在測試連線…');const cbName='_gasTestCb_'+Date.now();const timeout=setTimeout(()=>{delete window[cbName];toast('\u26a0 連線測試逾時，請確認 GAS 已部署為最新版本');},10000);window[cbName]=function(result){clearTimeout(timeout);delete window[cbName];const s=document.getElementById('gasTestScript');if(s)s.remove();if(result&&result.status==='ok'){toast('\u2713 連線成功！API 運作正常');}else{toast('\u26a0 API 回傳異常，請確認部署設定');}};const old=document.getElementById('gasTestScript');if(old)old.remove();const script=document.createElement('script');script.id='gasTestScript';script.src=url+'?callback='+cbName;script.onerror=function(){clearTimeout(timeout);delete window[cbName];script.remove();toast('\u26a0 連線失敗，請檢查網址是否正確');};document.body.appendChild(script);}
