@@ -1264,7 +1264,11 @@ async function stopTimer(fromAuto){
     // 通知 GAS 寫入 Google Calendar（背景執行，不阻擋）
     var calApi = loadCalApi();
     if (calApi) {
-      workerJsonp({ action: 'settings_set', data: JSON.stringify({ gas_url: calApi }) }).catch(function(){});
+      try {
+        var gasScript = document.createElement('script');
+        gasScript.src = calApi + '?action=save&data=' + encodeURIComponent(JSON.stringify(rec));
+        document.body.appendChild(gasScript);
+      } catch(e) { console.log('GAS Calendar 通知失敗：', e); }
     }
   } catch(err) {
     showSyncBadge('error','⚠','同步失敗：'+err.message);
