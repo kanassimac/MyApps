@@ -89,7 +89,6 @@ body {
   text-align: center; font-weight: 500;
 }
 .bg-notice.show { display: block; }
-/* ===== 雲端同步狀態列 ===== */
 .cloud-sync-bar {
   display: none;
   align-items: center; gap: 8px;
@@ -137,41 +136,6 @@ body {
 .page.active > *:nth-child(2) { animation-delay:.05s; }
 .page.active > *:nth-child(3) { animation-delay:.1s; }
 .page.active > *:nth-child(4) { animation-delay:.15s; }
-.setup-banner {
-  margin: 12px 16px 0;
-  background: linear-gradient(135deg, #1a3a5c, #0f2840);
-  border-radius: var(--radius);
-  padding: 16px 18px;
-  color: white;
-}
-.setup-banner.connected { background: linear-gradient(135deg, #064e3b, #065f46); }
-.setup-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-.setup-status { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; }
-.s-dot { width: 8px; height: 8px; border-radius: 50%; background: #f59e0b; }
-.s-dot.ok { background: var(--line-green); animation: blink 2s infinite; }
-.setup-url-row { display: flex; gap: 8px; align-items: center; }
-.setup-input {
-  flex: 1;
-  background: rgba(255,255,255,0.1);
-  border: 1px solid rgba(255,255,255,0.2);
-  border-radius: 8px;
-  padding: 9px 12px;
-  color: white;
-  font-size: 12px;
-  font-family: 'Space Mono', monospace;
-  outline: none;
-}
-.setup-input::placeholder { color: rgba(255,255,255,0.35); }
-.setup-input:focus { border-color: var(--line-green); }
-.btn-save-url {
-  padding: 9px 14px;
-  background: var(--line-green);
-  border: none; border-radius: 8px;
-  color: white; font-weight: 700; font-size: 13px;
-  cursor: pointer; white-space: nowrap;
-  font-family: 'Noto Sans TC', sans-serif;
-}
-.setup-hint { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 8px; line-height: 1.5; }
 .greeting-card {
   margin: 12px 16px 0;
   background: linear-gradient(135deg, #1a3a5c 0%, #0f2840 60%, #0a1f35 100%);
@@ -215,13 +179,6 @@ body {
 .icon-cal   { background:linear-gradient(135deg,#43e97b,#38f9d7); }
 .icon-todo  { background:linear-gradient(135deg,#fa709a,#fee140); }
 .icon-cfg   { background:linear-gradient(135deg,#a18cd1,#fbc2eb); }
-.recent-list { padding:0 16px; display:flex; flex-direction:column; gap:8px; }
-.recent-item { background:var(--white); border-radius:var(--radius-sm); padding:12px 14px; display:flex; align-items:center; gap:12px; box-shadow:var(--shadow); }
-.r-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
-.r-info { flex:1; min-width:0; }
-.r-name { font-size:14px; font-weight:500; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.r-meta { font-size:11px; color:var(--text-sub); margin-top:2px; }
-.r-dur  { font-family:'Space Mono',monospace; font-size:13px; font-weight:700; color:var(--accent); flex-shrink:0; }
 .page-header { padding:18px 20px 0; display:flex; align-items:center; gap:12px; }
 .page-title { font-size:18px; font-weight:700; }
 .input-card { margin:14px 16px 0; background:var(--white); border-radius:var(--radius); padding:16px; box-shadow:var(--shadow); position:relative; }
@@ -253,25 +210,6 @@ body {
 .suggest-item .s-name { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .suggest-item .s-count { font-size:11px; color:var(--text-light); font-family:'Space Mono',monospace; flex-shrink:0; margin-left:8px; }
 .suggest-item .s-cat { font-size:10px; color:var(--text-light); margin-left:6px; flex-shrink:0; }
-.cat-row { display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
-.cat-chip {
-  padding:6px 13px; border-radius:20px; border:1.5px solid var(--border);
-  font-size:12px; font-weight:500; cursor:pointer;
-  transition:all 0.15s; background:transparent; color:var(--text-sub);
-  font-family:'Noto Sans TC',sans-serif;
-}
-.cat-chip.active { border-color:var(--accent); background:var(--accent-soft); color:var(--accent); }
-.cat-chip:disabled { opacity:.4; pointer-events:none; }
-.custom-cat-wrap { display:none; margin-top:8px; }
-.custom-cat-wrap.show { display:flex; gap:8px; align-items:center; }
-.custom-cat-input {
-  flex:1; border:1.5px solid var(--border); border-radius:var(--radius-sm);
-  padding:8px 12px; font-size:13px; font-family:'Noto Sans TC',sans-serif;
-  color:var(--text); outline:none; transition:border-color 0.2s;
-}
-.custom-cat-input:focus { border-color:var(--accent); }
-.custom-cat-input:disabled { opacity:.4; }
-.custom-cat-hint { font-size:11px; color:var(--text-light); white-space:nowrap; }
 .yt-player-section {
   display: none;
   margin: 10px 16px 0;
@@ -300,23 +238,12 @@ body {
 }
 .yt-header-title { font-size: 13px; font-weight: 700; }
 .yt-header-sub { font-size: 11px; color: rgba(255,255,255,0.5); }
-.yt-toggle-icon {
-  font-size: 16px; transition: transform 0.3s;
-  color: rgba(255,255,255,0.6);
-}
+.yt-toggle-icon { font-size: 16px; transition: transform 0.3s; color: rgba(255,255,255,0.6); }
 .yt-toggle-icon.collapsed { transform: rotate(-90deg); }
 .yt-body { display: block; }
 .yt-body.collapsed { display: none; }
-.yt-embed-wrap {
-  position: relative;
-  width: 100%;
-  padding-top: 56.25%;
-  background: #000;
-}
-.yt-embed-wrap iframe {
-  position: absolute; top: 0; left: 0;
-  width: 100%; height: 100%; border: none;
-}
+.yt-embed-wrap { position: relative; width: 100%; padding-top: 56.25%; background: #000; }
+.yt-embed-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
 .yt-placeholder {
   position: absolute; top: 0; left: 0; width: 100%; height: 100%;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -324,13 +251,8 @@ body {
   background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
 }
 .yt-placeholder-icon { font-size: 40px; opacity: 0.4; }
-.yt-controls {
-  padding: 12px 16px;
-  display: flex; flex-direction: column; gap: 10px;
-}
-.yt-speed-row {
-  display: flex; align-items: center; justify-content: center; gap: 8px;
-}
+.yt-controls { padding: 12px 16px; display: flex; flex-direction: column; gap: 10px; }
+.yt-speed-row { display: flex; align-items: center; justify-content: center; gap: 8px; }
 .yt-speed-btn {
   width: 40px; height: 36px; border-radius: 8px;
   border: 1.5px solid var(--border); background: var(--white);
@@ -348,19 +270,7 @@ body {
   padding: 7px 12px;
 }
 .yt-speed-label { font-size: 11px; color: var(--text-light); text-align: center; margin-top: -4px; }
-.yt-speed-presets { display: flex; gap: 6px; justify-content: center; }
-.yt-preset-btn {
-  padding: 4px 10px; border-radius: 14px;
-  border: 1.5px solid var(--border); background: transparent;
-  font-size: 11px; font-weight: 600; cursor: pointer;
-  color: var(--text-sub); font-family: 'Space Mono', monospace;
-  transition: all 0.15s;
-}
-.yt-preset-btn:active { background: var(--accent-soft); }
-.yt-preset-btn.active { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
-.yt-url-row {
-  display: flex; gap: 8px; align-items: center;
-}
+.yt-url-row { display: flex; gap: 8px; align-items: center; }
 .yt-url-input {
   flex: 1; border: 1.5px solid var(--border); border-radius: var(--radius-sm);
   padding: 9px 12px; font-size: 12px;
@@ -377,14 +287,8 @@ body {
   white-space: nowrap; transition: opacity 0.15s;
 }
 .yt-url-btn:active { opacity: 0.8; }
-.yt-url-hint {
-  font-size: 11px; color: var(--text-light); line-height: 1.5;
-  padding: 0 2px;
-}
-.yt-url-hint code {
-  background: var(--bg); padding: 1px 5px; border-radius: 4px;
-  font-family: 'Space Mono', monospace; font-size: 10px;
-}
+.yt-url-hint { font-size: 11px; color: var(--text-light); line-height: 1.5; padding: 0 2px; }
+.yt-url-hint code { background: var(--bg); padding: 1px 5px; border-radius: 4px; font-family: 'Space Mono', monospace; font-size: 10px; }
 .yt-saved-url {
   display: none; padding: 8px 12px;
   background: var(--green-soft); border-radius: 8px;
@@ -393,9 +297,7 @@ body {
 }
 .yt-saved-url.show { display: flex; }
 .yt-saved-url-text { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: 'Space Mono', monospace; font-size: 11px; }
-.yt-saved-url-clear {
-  background: none; border: none; cursor: pointer; font-size: 14px; color: var(--danger); padding: 0 4px;
-}
+.yt-saved-url-clear { background: none; border: none; cursor: pointer; font-size: 14px; color: var(--danger); padding: 0 4px; }
 .timer-hero { margin:12px 16px 0; background:var(--white); border-radius:var(--radius); padding:26px 20px 22px; text-align:center; box-shadow:var(--shadow); position:relative; overflow:hidden; }
 .t-ring1 { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:190px; height:190px; border-radius:50%; border:1px solid var(--border); opacity:.4; pointer-events:none; }
 .t-ring2 { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:230px; height:230px; border-radius:50%; border:1px dashed var(--border); opacity:.2; pointer-events:none; }
@@ -424,87 +326,34 @@ body {
 .sync-badge.error   { background:#fef2f2; color:#991b1b; border:1px solid #fecaca; }
 .sync-badge.local   { background:#f9fafb; color:#6b7280; border:1px solid #e5e7eb; }
 .adjust-start-panel {
-  display: none;
-  margin: 10px 16px 0;
-  background: var(--white);
-  border-radius: var(--radius-sm);
-  box-shadow: var(--shadow);
-  overflow: hidden;
-  border: 1.5px solid transparent;
-  transition: all 0.3s;
+  display: none; margin: 10px 16px 0; background: var(--white);
+  border-radius: var(--radius-sm); box-shadow: var(--shadow); overflow: hidden;
+  border: 1.5px solid transparent; transition: all 0.3s;
 }
 .adjust-start-panel.show { display: block; }
 .adjust-start-header {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 10px 14px;
-  cursor: pointer; user-select: none;
-  background: var(--gold-soft);
-  border-bottom: 1px solid #fde68a;
+  padding: 10px 14px; cursor: pointer; user-select: none;
+  background: var(--gold-soft); border-bottom: 1px solid #fde68a;
 }
-.adjust-start-header-left {
-  display: flex; align-items: center; gap: 8px;
-  font-size: 13px; font-weight: 700; color: var(--gold);
-}
-.adjust-start-toggle {
-  font-size: 14px; color: var(--gold); transition: transform 0.2s;
-}
+.adjust-start-header-left { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; color: var(--gold); }
+.adjust-start-toggle { font-size: 14px; color: var(--gold); transition: transform 0.2s; }
 .adjust-start-toggle.collapsed { transform: rotate(-90deg); }
 .adjust-start-body { padding: 12px 14px; }
 .adjust-start-body.collapsed { display: none; }
-.adjust-start-hint {
-  font-size: 11px; color: var(--text-sub); line-height: 1.6; margin-bottom: 10px;
-}
-.adjust-start-current {
-  display: flex; align-items: center; justify-content: center; gap: 8px;
-  margin-bottom: 12px;
-  font-size: 13px; color: var(--text-sub);
-}
-.adjust-start-current .adj-time-val {
-  font-family: 'Space Mono', monospace;
-  font-size: 15px; font-weight: 700; color: var(--accent);
-  background: var(--accent-soft);
-  padding: 4px 12px; border-radius: 8px;
-}
-.adjust-quick-row {
-  display: flex; gap: 6px; flex-wrap: wrap; justify-content: center;
-  margin-bottom: 10px;
-}
-.adj-quick-btn {
-  padding: 7px 14px; border-radius: 20px;
-  border: 1.5px solid var(--border);
-  background: var(--white); color: var(--text-sub);
-  font-size: 12px; font-weight: 600; cursor: pointer;
-  font-family: 'Noto Sans TC', sans-serif;
-  transition: all 0.15s;
-}
+.adjust-start-hint { font-size: 11px; color: var(--text-sub); line-height: 1.6; margin-bottom: 10px; }
+.adjust-start-current { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 12px; font-size: 13px; color: var(--text-sub); }
+.adjust-start-current .adj-time-val { font-family: 'Space Mono', monospace; font-size: 15px; font-weight: 700; color: var(--accent); background: var(--accent-soft); padding: 4px 12px; border-radius: 8px; }
+.adjust-quick-row { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; margin-bottom: 10px; }
+.adj-quick-btn { padding: 7px 14px; border-radius: 20px; border: 1.5px solid var(--border); background: var(--white); color: var(--text-sub); font-size: 12px; font-weight: 600; cursor: pointer; font-family: 'Noto Sans TC', sans-serif; transition: all 0.15s; }
 .adj-quick-btn:active { transform: scale(0.95); background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
-.adjust-custom-row {
-  display: flex; gap: 8px; align-items: center;
-  padding-top: 10px; border-top: 1px solid var(--border);
-}
-.adjust-custom-row label {
-  font-size: 12px; font-weight: 600; color: var(--text-sub); white-space: nowrap;
-}
-.adjust-time-input {
-  flex: 1; border: 1.5px solid var(--border); border-radius: var(--radius-sm);
-  padding: 8px 12px; font-size: 13px;
-  font-family: 'Noto Sans TC', sans-serif; color: var(--text);
-  outline: none; transition: border-color 0.2s;
-}
+.adjust-custom-row { display: flex; gap: 8px; align-items: center; padding-top: 10px; border-top: 1px solid var(--border); }
+.adjust-custom-row label { font-size: 12px; font-weight: 600; color: var(--text-sub); white-space: nowrap; }
+.adjust-time-input { flex: 1; border: 1.5px solid var(--border); border-radius: var(--radius-sm); padding: 8px 12px; font-size: 13px; font-family: 'Noto Sans TC', sans-serif; color: var(--text); outline: none; transition: border-color 0.2s; }
 .adjust-time-input:focus { border-color: var(--accent); }
-.adj-apply-btn {
-  padding: 8px 14px; border-radius: 8px; border: none;
-  background: var(--accent); color: white;
-  font-size: 12px; font-weight: 700; cursor: pointer;
-  font-family: 'Noto Sans TC', sans-serif;
-  white-space: nowrap; transition: opacity 0.15s;
-}
+.adj-apply-btn { padding: 8px 14px; border-radius: 8px; border: none; background: var(--accent); color: white; font-size: 12px; font-weight: 700; cursor: pointer; font-family: 'Noto Sans TC', sans-serif; white-space: nowrap; transition: opacity 0.15s; }
 .adj-apply-btn:active { opacity: 0.8; }
-.adj-result-msg {
-  display: none; margin-top: 8px;
-  padding: 6px 10px; border-radius: 8px;
-  font-size: 12px; font-weight: 600; text-align: center;
-}
+.adj-result-msg { display: none; margin-top: 8px; padding: 6px 10px; border-radius: 8px; font-size: 12px; font-weight: 600; text-align: center; }
 .adj-result-msg.show { display: block; }
 .adj-result-msg.success { background: var(--green-soft); color: #15803d; }
 .adj-result-msg.error { background: #fef2f2; color: var(--danger); }
@@ -533,18 +382,10 @@ body {
 .h-txt { font-size:11px; color:var(--text-sub); margin-top:3px; }
 .date-range-bar { padding:10px 16px 0; }
 .range-quick { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px; }
-.rq-chip {
-  padding:5px 12px; border-radius:16px; border:1.5px solid var(--border);
-  font-size:11px; font-weight:600; cursor:pointer; background:var(--white);
-  color:var(--text-sub); font-family:'Noto Sans TC',sans-serif; transition:all 0.15s;
-}
+.rq-chip { padding:5px 12px; border-radius:16px; border:1.5px solid var(--border); font-size:11px; font-weight:600; cursor:pointer; background:var(--white); color:var(--text-sub); font-family:'Noto Sans TC',sans-serif; transition:all 0.15s; }
 .rq-chip.active { background:var(--accent); border-color:var(--accent); color:white; }
 .range-custom { display:flex; gap:8px; align-items:center; }
-.range-input {
-  flex:1; border:1.5px solid var(--border); border-radius:8px; padding:7px 10px;
-  font-size:12px; font-family:'Noto Sans TC',sans-serif; color:var(--text); outline:none;
-  background:var(--white);
-}
+.range-input { flex:1; border:1.5px solid var(--border); border-radius:8px; padding:7px 10px; font-size:12px; font-family:'Noto Sans TC',sans-serif; color:var(--text); outline:none; background:var(--white); }
 .range-input:focus { border-color:var(--accent); }
 .range-sep { font-size:12px; color:var(--text-light); }
 .filter-scroll { display:flex; gap:8px; padding:12px 16px; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
@@ -554,18 +395,10 @@ body {
 .task-filter-scroll { display:none; gap:6px; padding:0 16px 8px; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; flex-wrap:wrap; }
 .task-filter-scroll::-webkit-scrollbar { display:none; }
 .task-filter-scroll.show { display:flex; }
-.tf-chip {
-  padding:4px 11px; border-radius:14px; border:1.5px solid var(--border);
-  font-size:11px; font-weight:500; cursor:pointer; background:var(--white);
-  color:var(--text-sub); font-family:'Noto Sans TC',sans-serif; flex-shrink:0; transition:all 0.15s;
-}
+.tf-chip { padding:4px 11px; border-radius:14px; border:1.5px solid var(--border); font-size:11px; font-weight:500; cursor:pointer; background:var(--white); color:var(--text-sub); font-family:'Noto Sans TC',sans-serif; flex-shrink:0; transition:all 0.15s; }
 .tf-chip.active { background:#dbeafe; border-color:#93c5fd; color:var(--accent); }
 .cat-summary { padding:0 16px 8px; }
-.cat-sum-item {
-  display:flex; align-items:center; justify-content:space-between;
-  padding:8px 12px; background:var(--white); border-radius:8px;
-  margin-bottom:6px; box-shadow:var(--shadow);
-}
+.cat-sum-item { display:flex; align-items:center; justify-content:space-between; padding:8px 12px; background:var(--white); border-radius:8px; margin-bottom:6px; box-shadow:var(--shadow); }
 .cat-sum-left { display:flex; align-items:center; gap:8px; }
 .cat-sum-dot { width:10px; height:10px; border-radius:50%; }
 .cat-sum-name { font-size:13px; font-weight:600; }
@@ -607,10 +440,7 @@ body {
 }
 .batch-bar.show { display:flex; }
 .batch-actions { display:flex; gap:6px; }
-.batch-btn {
-  padding:6px 12px; border-radius:8px; border:none; font-size:12px; font-weight:600;
-  cursor:pointer; font-family:'Noto Sans TC',sans-serif; transition:opacity 0.15s;
-}
+.batch-btn { padding:6px 12px; border-radius:8px; border:none; font-size:12px; font-weight:600; cursor:pointer; font-family:'Noto Sans TC',sans-serif; transition:opacity 0.15s; }
 .batch-btn:active { opacity:0.7; }
 .batch-btn-cat { background:rgba(255,255,255,0.2); color:white; }
 .batch-btn-del { background:rgba(239,68,68,0.9); color:white; }
@@ -623,11 +453,7 @@ body {
 .batch-cat-sheet { background:var(--white); border-radius:var(--radius); padding:20px; width:90%; max-width:360px; }
 .batch-cat-title { font-size:15px; font-weight:700; margin-bottom:14px; }
 .batch-cat-options { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px; }
-.batch-cat-chip {
-  padding:8px 16px; border-radius:20px; border:1.5px solid var(--border);
-  font-size:13px; font-weight:500; cursor:pointer; background:transparent;
-  color:var(--text-sub); font-family:'Noto Sans TC',sans-serif; transition:all 0.15s;
-}
+.batch-cat-chip { padding:8px 16px; border-radius:20px; border:1.5px solid var(--border); font-size:13px; font-weight:500; cursor:pointer; background:transparent; color:var(--text-sub); font-family:'Noto Sans TC',sans-serif; transition:all 0.15s; }
 .batch-cat-chip.active { border-color:var(--accent); background:var(--accent-soft); color:var(--accent); }
 .batch-cat-btns { display:flex; gap:10px; }
 .batch-cat-btns button { flex:1; padding:12px; border-radius:var(--radius-sm); font-size:14px; font-weight:700; font-family:'Noto Sans TC',sans-serif; cursor:pointer; border:none; }
@@ -661,13 +487,6 @@ body {
 .step-list li { display:flex; gap:10px; padding:8px 0; border-bottom:1px solid var(--border); font-size:13px; line-height:1.5; }
 .step-list li:last-child { border-bottom:none; }
 .step-num { width:22px; height:22px; background:var(--accent); color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; flex-shrink:0; margin-top:1px; }
-/* ===== 行事曆頁樣式 ===== */
-.cal-api-banner { margin: 12px 16px 0; background: linear-gradient(135deg, #1a3a5c, #0f2840); border-radius: var(--radius); padding: 14px 16px; color: white; }
-.cal-api-banner.connected { background: linear-gradient(135deg, #064e3b, #065f46); }
-.cal-api-row { display: flex; gap: 8px; align-items: center; margin-top: 8px; }
-.cal-api-input { flex: 1; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 8px 12px; color: white; font-size: 11px; font-family: 'Space Mono', monospace; outline: none; }
-.cal-api-input::placeholder { color: rgba(255,255,255,0.35); }
-.cal-api-input:focus { border-color: var(--line-green); }
 .cal-loading { text-align:center; padding:40px 20px; color:var(--text-light); }
 .cal-loading .spin { display:inline-block; animation:spin 1s linear infinite; font-size:28px; }
 @keyframes spin { from{transform:rotate(0)} to{transform:rotate(360deg)} }
@@ -692,7 +511,6 @@ body {
 .cal-day:active { background:var(--accent-soft); }
 .cal-day.today { background:var(--accent-soft); font-weight:700; color:var(--accent); }
 .cal-day.selected { background:var(--accent); color:white; }
-.cal-day.selected .cal-dots span { background:white; }
 .cal-day.other-month { opacity:0.3; }
 .cal-day.has-mine { font-weight:700; }
 .cal-dots { display:flex; gap:2px; height:6px; align-items:center; }
@@ -702,20 +520,20 @@ body {
 .dot-mine { background:#EF4444; }
 .cal-day-detail { margin:10px 16px 0; }
 .cal-day-title { font-size:14px; font-weight:700; color:var(--text-sub); margin-bottom:8px; padding-left:2px; }
-.cal-event-card { border-radius: 8px; padding: 8px 12px; box-shadow: var(--shadow); margin-bottom: 6px; border-left: 3px solid var(--border); transition: transform 0.1s; font-size: 13px; }
+.cal-event-card { border-radius: 8px; padding: 8px 12px; box-shadow: var(--shadow); margin-bottom: 6px; border-left: 3px solid var(--border); transition: transform 0.1s; font-size: 13px; background: var(--white); }
 .cal-event-card:active { transform:scale(0.98); }
 .cal-event-card.mine { border-left-color:var(--line-green); }
 .cal-event-card.church { border-left-color:var(--accent); background: var(--cal-church-bg); }
 .cal-event-card.student { border-left-color:#06C755; background: var(--cal-student-bg); }
 .cal-event-card.off { opacity:0.55; border-left-color:var(--text-light); }
 .ce-compact-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; min-height: 24px; }
-.ce-compact-row .ce-src-tag { font-size: 10px; padding: 1px 6px; border-radius: 8px; font-weight: 700; flex-shrink: 0; line-height: 1.6; }
+.ce-src-tag { font-size: 10px; padding: 1px 6px; border-radius: 8px; font-weight: 700; flex-shrink: 0; line-height: 1.6; }
 .ce-src-tag.tag-church { background: rgba(45,125,210,0.15); color: var(--accent); }
 .ce-src-tag.tag-student { background: rgba(6,199,85,0.15); color: #15803d; }
-.ce-compact-row .ce-loc { font-size: 12px; color: var(--text-sub); flex-shrink: 0; }
-.ce-compact-row .ce-main-info { font-size: 13px; font-weight: 600; color: var(--text); flex: 1; min-width: 0; }
-.ce-compact-row .ce-venue-tag { font-size: 10px; padding: 1px 6px; border-radius: 8px; font-weight: 600; flex-shrink: 0; background: #fef3c7; color: #92400e; }
-.ce-compact-row .ce-my-badge-inline { font-size: 10px; font-weight: 700; padding: 1px 7px; border-radius: 10px; background: linear-gradient(135deg,#dcfce7,#bbf7d0); color: #15803d; flex-shrink: 0; }
+.ce-loc { font-size: 12px; color: var(--text-sub); flex-shrink: 0; }
+.ce-main-info { font-size: 13px; font-weight: 600; color: var(--text); flex: 1; min-width: 0; }
+.ce-venue-tag { font-size: 10px; padding: 1px 6px; border-radius: 8px; font-weight: 600; flex-shrink: 0; background: #fef3c7; color: #92400e; }
+.ce-my-badge-inline { font-size: 10px; font-weight: 700; padding: 1px 7px; border-radius: 10px; background: linear-gradient(135deg,#dcfce7,#bbf7d0); color: #15803d; flex-shrink: 0; }
 .ce-details-toggle { display: flex; align-items: center; gap: 4px; font-size: 11px; color: var(--accent); font-weight: 600; cursor: pointer; padding: 4px 0 0; user-select: none; }
 .ce-details-toggle:active { opacity: 0.6; }
 .ce-details-arrow { font-size: 11px; transition: transform 0.2s; display: inline-block; width: 12px; }
@@ -723,16 +541,8 @@ body {
 .ce-detail-row { display: flex; gap: 8px; padding: 3px 0; font-size: 12px; line-height: 1.6; flex-wrap: wrap; }
 .ce-detail-label { color: var(--text-sub); font-weight: 600; white-space: nowrap; min-width: 56px; }
 .ce-detail-value { color: var(--text); flex: 1; min-width: 0; word-break: break-word; white-space: pre-line; }
-.ce-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; }
-.ce-title { font-size:14px; font-weight:700; flex:1; }
-.ce-source { font-size:10px; padding:2px 8px; border-radius:10px; font-weight:600; }
-.ce-source.src-church { background:var(--accent-soft); color:var(--accent); }
-.ce-source.src-student { background:var(--green-soft); color:#15803d; }
 .ce-my-roles { display:flex; flex-wrap:wrap; gap:4px; margin-bottom:8px; }
 .ce-my-badge { font-size:11px; font-weight:700; padding:3px 10px; border-radius:12px; background:linear-gradient(135deg,#dcfce7,#bbf7d0); color:#15803d; }
-.ce-roles { font-size:12px; color:var(--text-sub); line-height:1.7; }
-.ce-roles strong { color:var(--text); font-weight:600; }
-.ce-note { font-size:11px; color:var(--gold); margin-top:6px; padding-top:6px; border-top:1px solid var(--border); line-height:1.5; }
 .cal-list-section { padding:0 16px; margin-top:10px; }
 .cal-list-date-header { font-size:12px; font-weight:700; color:var(--text-light); padding:8px 0 4px; border-bottom:1px solid var(--border); margin-bottom:6px; letter-spacing:0.05em; }
 .cal-empty { text-align:center; padding:40px 20px; color:var(--text-light); }
@@ -741,7 +551,6 @@ body {
 .cal-stat-card { background:var(--white); border-radius:var(--radius-sm); padding:12px; box-shadow:var(--shadow); text-align:center; }
 .cal-stat-num { font-family:'Space Mono',monospace; font-size:22px; font-weight:700; color:var(--accent); }
 .cal-stat-txt { font-size:11px; color:var(--text-sub); margin-top:2px; }
-/* ===== 匯出/匯入 ===== */
 .io-btn-row { display: flex; gap: 10px; margin-top: 12px; }
 .io-btn { flex: 1; padding: 13px 8px; border-radius: var(--radius-sm); border: none; font-size: 14px; font-weight: 700; font-family: 'Noto Sans TC', sans-serif; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: transform 0.15s, opacity 0.15s; }
 .io-btn:active { transform: scale(0.96); }
@@ -755,13 +564,17 @@ body {
 .io-result.success { background: var(--green-soft); color: #15803d; border: 1px solid #bbf7d0; }
 .io-result.error { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
 .io-result.info { background: var(--accent-soft); color: var(--accent); border: 1px solid #bfdbfe; }
-/* ===== 設定頁：密碼欄顯示/隱藏 ===== */
 .setting-secret-row { display: flex; gap: 8px; align-items: center; }
 .setting-secret-input { flex: 1; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 9px 12px; color: white; font-size: 12px; font-family: 'Space Mono', monospace; outline: none; }
 .setting-secret-input::placeholder { color: rgba(255,255,255,0.35); }
 .setting-secret-input:focus { border-color: var(--line-green); }
 .btn-toggle-vis { padding: 9px 10px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: white; font-size: 14px; cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
 .btn-toggle-vis:active { background: rgba(255,255,255,0.15); }
+.btn-save-url { padding: 9px 14px; background: var(--line-green); border: none; border-radius: 8px; color: white; font-weight: 700; font-size: 13px; cursor: pointer; white-space: nowrap; font-family: 'Noto Sans TC', sans-serif; }
+.setup-hint { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 8px; line-height: 1.5; }
+.s-dot { width: 8px; height: 8px; border-radius: 50%; background: #f59e0b; }
+.s-dot.ok { background: var(--line-green); animation: blink 2s infinite; }
+.setup-status { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; margin-bottom: 10px; }
 .tab-bar { position:fixed; bottom:0; left:50%; transform:translateX(-50%); width:100%; max-width:430px; background:var(--white); border-top:1px solid var(--border); display:flex; z-index:100; padding-bottom:env(safe-area-inset-bottom); }
 .tab-item { flex:1; padding:10px 0 8px; display:flex; flex-direction:column; align-items:center; gap:3px; cursor:pointer; border:none; background:transparent; -webkit-appearance:none; }
 .tab-icon { font-size:22px; transition:transform 0.2s; }
@@ -782,14 +595,10 @@ body {
     </div>
   </div>
   <div style="display:flex;align-items:center;gap:8px;">
-    <div class="wake-indicator" id="wakeIndicator">
-      <div class="wake-dot"></div>
-      <span>螢幕常亮</span>
-    </div>
+    <div class="wake-indicator" id="wakeIndicator"><div class="wake-dot"></div><span>螢幕常亮</span></div>
     <div class="nav-date" id="navDate"></div>
   </div>
 </div>
-<!-- ===== 雲端同步狀態列 ===== -->
 <div class="cloud-sync-bar" id="cloudSyncBar">
   <div class="cloud-sync-dot"></div>
   <span class="cloud-sync-text" id="cloudSyncText">正在同步…</span>
@@ -800,7 +609,8 @@ body {
   <div class="pwa-banner-text">📲 <b>加到主畫面</b>，像 App 一樣開啟<br>Safari → 分享 → 加入主畫面</div>
   <button class="pwa-banner-close" onclick="dismissPWA()">×</button>
 </div>
-<!-- ========== 主頁 ========== -->
+
+<!-- 主頁 -->
 <div class="page active" id="page-home">
   <div class="greeting-card">
     <div class="greeting-time" id="greetingTime">FRIDAY MORNING</div>
@@ -821,7 +631,8 @@ body {
     <button class="quick-btn" onclick="goTab('setup')"><div class="quick-icon icon-cfg">⚙️</div><div class="quick-label">設定</div><div class="quick-badge">API 設定</div></button>
   </div>
 </div>
-<!-- ========== 計時器頁 ========== -->
+
+<!-- 計時器頁 -->
 <div class="page" id="page-timer">
   <div class="page-header">
     <button class="back-btn" onclick="goTab('home')">←</button>
@@ -874,10 +685,7 @@ body {
           <input type="text" class="yt-url-input" id="ytUrlInput" placeholder="貼上 YouTube 影片連結" />
           <button class="yt-url-btn" onclick="ytLoadUrl()">播放</button>
         </div>
-        <div class="yt-url-hint">
-          支援帶時間戳的連結，例如 <code>?t=120</code> 或 <code>&t=5m30s</code><br>
-          播放後連結會自動儲存，下次選擇「速讀」時自動載入
-        </div>
+        <div class="yt-url-hint">支援帶時間戳的連結，例如 <code>?t=120</code></div>
       </div>
     </div>
   </div>
@@ -908,10 +716,7 @@ body {
     </div>
     <div class="adjust-start-body" id="adjBody">
       <div class="adjust-start-hint">忘了按開始？可以將起始時間往前推，讓計時更準確。</div>
-      <div class="adjust-start-current">
-        <span>目前起始：</span>
-        <span class="adj-time-val" id="adjCurrentTime">--:--</span>
-      </div>
+      <div class="adjust-start-current"><span>目前起始：</span><span class="adj-time-val" id="adjCurrentTime">--:--</span></div>
       <div class="adjust-quick-row">
         <button class="adj-quick-btn" onclick="adjustStartByMin(5)">-5 分鐘</button>
         <button class="adj-quick-btn" onclick="adjustStartByMin(10)">-10 分鐘</button>
@@ -941,7 +746,8 @@ body {
     <button class="action-btn btn-cancel" id="btnCancel" style="display:none" onclick="cancelTimer()">✕ 取消</button>
   </div>
 </div>
-<!-- ========== 行事曆頁 ========== -->
+
+<!-- 行事曆頁 -->
 <div class="page" id="page-calendar">
   <div class="page-header" style="justify-content:space-between">
     <div style="display:flex;align-items:center;gap:12px;">
@@ -951,7 +757,7 @@ body {
     <button class="back-btn" style="width:auto;padding:0 12px;border-radius:20px;font-size:12px;" onclick="calRefresh()">🔄 重新整理</button>
   </div>
   <div class="cal-stats-row" id="calStats" style="display:none">
-    <div class="cal-stat-card"><div class="cal-stat-num" id="calMyCount">0</div><div class="cal-stat-txt">我的服事（篩選範圍）</div></div>
+    <div class="cal-stat-card"><div class="cal-stat-num" id="calMyCount">0</div><div class="cal-stat-txt">我的服事</div></div>
     <div class="cal-stat-card"><div class="cal-stat-num" id="calAllCount">0</div><div class="cal-stat-txt">全部事件</div></div>
   </div>
   <div class="cal-filter-bar" id="calFilterBar">
@@ -974,7 +780,7 @@ body {
   <div id="calMonthView" style="display:none">
     <div class="cal-month-nav">
       <button class="cal-month-btn" onclick="calPrevMonth()">‹</button>
-      <div class="cal-month-title" id="calMonthTitle">2026 年 3 月</div>
+      <div class="cal-month-title" id="calMonthTitle">2026 年 5 月</div>
       <button class="cal-month-btn" onclick="calNextMonth()">›</button>
     </div>
     <div class="cal-grid-wrap">
@@ -983,15 +789,14 @@ body {
     </div>
     <div class="cal-day-detail" id="calDayDetail"></div>
   </div>
-  <div id="calListView">
-    <div class="cal-list-section" id="calListSection"></div>
-  </div>
+  <div id="calListView"><div class="cal-list-section" id="calListSection"></div></div>
   <div class="cal-loading" id="calLoading" style="display:none">
     <div class="spin">⏳</div>
     <p style="margin-top:12px;font-size:13px;">正在從 Google Sheets 載入資料…</p>
   </div>
 </div>
-<!-- ========== 記錄頁 ========== -->
+
+<!-- 記錄頁 -->
 <div class="page" id="page-history">
   <div class="page-header" style="justify-content:space-between">
     <div class="page-title">📊 歷史記錄</div>
@@ -1034,90 +839,48 @@ body {
   </div>
   <div class="hist-list" id="histList"></div>
 </div>
-<!-- ========== 設定頁 ========== -->
+
+<!-- 設定頁 -->
 <div class="page" id="page-setup">
   <div class="page-header">
     <button class="back-btn" onclick="goTab('home')">←</button>
     <div class="page-title">⚙️ 設定</div>
   </div>
-  <div class="setup-page-card" style="background:linear-gradient(135deg,#1a3a5c,#0f2840);color:white;" id="setupWebhookCard">
-    <div class="setup-status" style="margin-bottom:10px;">
-      <div class="s-dot" id="sDot"></div>
-      <span id="sText" style="font-size:13px;font-weight:600;">尚未設定任務同步 API</span>
+  <div class="setup-page-card" style="background:linear-gradient(135deg,#064e3b,#065f46);color:white;">
+    <div class="setup-status"><div class="s-dot ok"></div><span>☁️ Cloudflare D1 雲端同步已啟用</span></div>
+    <div style="font-size:13px;color:rgba(255,255,255,0.8);line-height:1.6;">
+      資料儲存於 Cloudflare D1，不依賴 Google OAuth，永遠不會授權失效。<br>
+      <b style="color:#6ee7b7;">上次同步：</b><span id="lastSyncTime">尚未同步</span>
     </div>
-    <div class="sp-title" style="color:white;">📋 GAS 任務同步 API</div>
-    <div class="sp-desc" style="color:rgba(255,255,255,0.6);margin-bottom:8px;font-size:11px;">☁️ 此 URL 設定後會自動同步到雲端，其他瀏覽器也能自動載入。</div>
-    <div class="setting-secret-row" style="margin-top:8px;">
-      <input type="password" class="setting-secret-input" id="gasUrlInput" placeholder="貼上 GAS Web App 部署網址（/exec 結尾）" />
-      <button class="btn-toggle-vis" onclick="toggleVis('gasUrlInput',this)" title="顯示/隱藏">👁</button>
-      <button class="btn-save-url" onclick="saveGasUrl()">儲存</button>
+    <div class="io-btn-row" style="margin-top:12px;">
+      <button class="io-btn" onclick="cloudSync()" style="background:var(--line-green);color:white;">☁️ 立即同步</button>
     </div>
-    <div class="setup-hint">設定一次即可。任務結束後將自動寫入 Google Calendar + Sheets。</div>
   </div>
   <div class="setup-page-card" style="background:linear-gradient(135deg,#1a3a5c,#0f2840);color:white;" id="setupCalApiCard">
-    <div class="setup-status" style="margin-bottom:10px;">
-      <div class="s-dot" id="calApiDot"></div>
-      <span id="calApiText" style="font-size:13px;font-weight:600;">尚未設定行事曆 API</span>
-    </div>
-    <div class="sp-title" style="color:white;">📅 行事曆 GAS API</div>
-    <div class="sp-desc" style="color:rgba(255,255,255,0.6);margin-bottom:8px;font-size:11px;">☁️ 此 URL 設定後會自動同步到雲端。</div>
-    <div class="setting-secret-row" style="margin-top:8px;">
+    <div class="setup-status"><div class="s-dot" id="calApiDot"></div><span id="calApiText">尚未設定行事曆 API</span></div>
+    <div style="font-size:13px;color:white;font-weight:700;margin-bottom:4px;">📅 行事曆 GAS API</div>
+    <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-bottom:8px;">用於在 Google Calendar 顯示任務記錄（選填）</div>
+    <div class="setting-secret-row">
       <input type="password" class="setting-secret-input" id="calApiInput" placeholder="貼上 GAS Web App 網址" />
       <button class="btn-toggle-vis" onclick="toggleVis('calApiInput',this)" title="顯示/隱藏">👁</button>
       <button class="btn-save-url" onclick="saveCalApi()">儲存</button>
     </div>
-    <div class="setup-hint">部署 Google Apps Script 後，把 Web App 網址貼在這裡。</div>
-  </div>
-  <!-- ===== 雲端同步專區 ===== -->
-  <div class="setup-page-card">
-    <div class="sp-title">☁️ 跨瀏覽器雲端同步</div>
-    <div class="sp-desc">
-      任務記錄會透過 GAS 任務同步 API 自動雙向同步。<br>
-      Safari、Chrome、LINE 開啟此頁時，會自動從雲端拉取最新記錄並合併。<br>
-      <b>上次同步：</b><span id="lastSyncTime">尚未同步</span>
-    </div>
-    <div class="io-btn-row">
-      <button class="io-btn io-btn-export" onclick="cloudSync()" style="background:var(--line-green);">☁️ 立即同步</button>
-    </div>
+    <div class="setup-hint">設定後，每次任務結束會自動寫入 Google Calendar。</div>
   </div>
   <div class="setup-page-card">
     <div class="sp-title">📦 資料匯出 / 匯入</div>
-    <div class="sp-desc">在不同瀏覽器或裝置間搬移任務記錄。從舊入口「匯出」，再到新入口「匯入合併」即可。</div>
+    <div class="sp-desc">在不同瀏覽器或裝置間搬移任務記錄。</div>
     <div class="io-btn-row">
       <button class="io-btn io-btn-export" onclick="ioExport()">📤 匯出記錄</button>
       <button class="io-btn io-btn-import" onclick="ioImport()">📥 匯入合併</button>
     </div>
     <textarea class="io-textarea" id="ioTextarea" placeholder="匯出的 JSON 會顯示在這裡；匯入時請將 JSON 貼到這裡"></textarea>
-    <div class="io-hint">
-      📤 <b>匯出</b>：點擊後會把所有記錄顯示在上方文字框，全選複製即可。<br>
-      📥 <b>匯入合併</b>：將複製的 JSON 貼入上方文字框，點擊後會<b>合併</b>（不會覆蓋已有的記錄）。
-    </div>
+    <div class="io-hint">📤 <b>匯出</b>：點擊後會把所有記錄顯示在上方文字框。<br>📥 <b>匯入合併</b>：將 JSON 貼入上方文字框，點擊後會合併（不會覆蓋已有的記錄）。</div>
     <div class="io-result" id="ioResult"></div>
   </div>
-  <div class="setup-page-card">
-    <div class="sp-title">🛠 GAS 任務同步設定步驟</div>
-    <ul class="step-list">
-      <li><div class="step-num">1</div><div>到 <b>script.google.com</b> 建立新專案，貼上「GAS 後端 <b>v3.0</b>」程式碼</div></li>
-      <li><div class="step-num">2</div><div>修改 <b>CALENDAR_ID</b> 為你的 Gmail 信箱（或日曆 ID）</div></li>
-      <li><div class="step-num">3</div><div>先在 GAS 編輯器中執行 <b>testSave()</b> 測試寫入是否正常</div></li>
-      <li><div class="step-num">4</div><div>「部署」→「新增部署」→ 類型選「網頁應用程式」</div></li>
-      <li><div class="step-num">5</div><div>執行身份選「我自己」，誰可存取選「所有人」</div></li>
-      <li><div class="step-num">6</div><div>複製部署網址（<b>/exec</b> 結尾），貼到上方「GAS 任務同步 API」欄位</div></li>
-    </ul>
-  </div>
-  <div class="setup-page-card">
-    <div class="sp-title">📅 行事曆 API 設定步驟</div>
-    <ul class="step-list">
-      <li><div class="step-num">1</div><div>到 <b>script.google.com</b> 新增專案，貼上提供的 GAS 程式碼</div></li>
-      <li><div class="step-num">2</div><div>修改 <b>CONFIG</b> 區的分頁名稱，對應你的實際 Sheet Tab 名稱</div></li>
-      <li><div class="step-num">3</div><div>「部署」→「新增部署」→ 類型選「網頁應用程式」</div></li>
-      <li><div class="step-num">4</div><div>執行身份選「我自己」，誰可存取選「所有人」</div></li>
-      <li><div class="step-num">5</div><div>複製部署網址，貼到設定頁面的行事曆 API 輸入框中</div></li>
-      <li><div class="step-num">6</div><div>先在 GAS 編輯器執行 <b>testGetAll()</b> 測試是否正常</div></li>
-    </ul>
-  </div>
 </div>
-<!-- ========== Modals ========== -->
+
+<!-- Modals -->
 <div class="modal-overlay" id="editModal" onclick="closeModalOnOverlay(event)">
   <div class="modal-sheet">
     <div class="modal-handle"></div>
@@ -1175,12 +938,16 @@ body {
 <div class="toast" id="toastEl"></div>
 <script>
 // ============================================================
+//  ★★★ Cloudflare Worker API 設定（永不失效）★★★
+// ============================================================
+const WORKER_URL = 'https://kanas-api.kanassimac-taitung.workers.dev';
+const WORKER_TOKEN = 'kanas2026';
+
+// ============================================================
 //  常數與全域狀態
 // ============================================================
 const STORAGE_KEY = 'kanas_hist_v2';
-const GAS_URL_KEY = 'kanas_gas_url';
 const CAL_API_KEY = 'kanas_cal_api_url';
-const CAL_DATA_KEY = 'kanas_cal_cache';
 const YT_URL_KEY = 'kanas_yt_url';
 const PAUSE_STATE_KEY = 'kanas_pause_state';
 const LAST_SYNC_KEY = 'kanas_last_sync';
@@ -1198,90 +965,62 @@ let nowClockVisible=true;
 let cloudSyncing=false;
 
 // ============================================================
-//  ★★★ 雲端同步核心模組 ★★★
+//  Worker JSONP 通用函式
 // ============================================================
-
-/**
- * 顯示/更新雲端同步狀態列
- */
-function showCloudBar(type, text, showAction) {
-  const bar = document.getElementById('cloudSyncBar');
-  bar.className = 'cloud-sync-bar show ' + type;
-  document.getElementById('cloudSyncText').textContent = text;
-  document.getElementById('cloudSyncAction').style.display = showAction ? '' : 'none';
-}
-function hideCloudBar() {
-  document.getElementById('cloudSyncBar').classList.remove('show');
-}
-
-/**
- * 用 JSONP 呼叫 GAS（通用）
- * @returns {Promise<object>}
- */
-function gasJsonp(gasUrl, params) {
+function workerJsonp(params) {
   return new Promise(function(resolve, reject) {
-    var cbName = '_gasCb_' + Date.now() + '_' + Math.floor(Math.random() * 100000);
+    var cbName = '_wCb_' + Date.now() + '_' + Math.floor(Math.random() * 100000);
     var timeout = setTimeout(function() {
       delete window[cbName];
-      var s = document.getElementById('gasJsonp_' + cbName); if(s) s.remove();
-      reject(new Error('GAS 回應逾時'));
+      var s = document.getElementById('wJsonp_' + cbName); if(s) s.remove();
+      reject(new Error('Worker 回應逾時'));
     }, 20000);
     window[cbName] = function(result) {
       clearTimeout(timeout);
       delete window[cbName];
-      var s = document.getElementById('gasJsonp_' + cbName); if(s) s.remove();
+      var s = document.getElementById('wJsonp_' + cbName); if(s) s.remove();
       resolve(result);
     };
-    var qs = 'callback=' + cbName;
+    var qs = 'token=' + WORKER_TOKEN + '&callback=' + cbName;
     Object.keys(params).forEach(function(k) { qs += '&' + k + '=' + encodeURIComponent(params[k]); });
-    var old = document.getElementById('gasJsonp_' + cbName); if(old) old.remove();
     var script = document.createElement('script');
-    script.id = 'gasJsonp_' + cbName;
-    script.src = gasUrl + '?' + qs;
+    script.id = 'wJsonp_' + cbName;
+    script.src = WORKER_URL + '?' + qs;
     script.onerror = function() {
-      clearTimeout(timeout);
-      delete window[cbName];
-      script.remove();
-      reject(new Error('GAS 請求失敗'));
+      clearTimeout(timeout); delete window[cbName]; script.remove();
+      reject(new Error('Worker 請求失敗'));
     };
     document.body.appendChild(script);
   });
 }
 
-/**
- * ★ 主要雲端同步函式：雙向合併
- * 1. 從 GAS ?action=list 拉取雲端記錄
- * 2. 與本地 localStorage 合併（以 id 為 key 去重）
- * 3. 將本地有但雲端沒有的記錄推送到雲端
- * 4. 將雲端有但本地沒有的記錄寫入本地
- * 5. 同步設定值
- */
+// ============================================================
+//  雲端同步狀態列
+// ============================================================
+function showCloudBar(type, text, showAction) {
+  var bar = document.getElementById('cloudSyncBar');
+  bar.className = 'cloud-sync-bar show ' + type;
+  document.getElementById('cloudSyncText').textContent = text;
+  document.getElementById('cloudSyncAction').style.display = showAction ? '' : 'none';
+}
+function hideCloudBar() { document.getElementById('cloudSyncBar').classList.remove('show'); }
+
+// ============================================================
+//  ★ 主要雲端同步（Cloudflare D1）★
+// ============================================================
 async function cloudSync() {
-  var gasUrl = loadGasUrl();
-  if (!gasUrl) {
-    showCloudBar('info', '⚠ 請先到設定頁設定 GAS 任務同步 API 網址', false);
-    setTimeout(hideCloudBar, 4000);
-    return;
-  }
   if (cloudSyncing) return;
   cloudSyncing = true;
   showCloudBar('syncing', '☁️ 正在從雲端拉取記錄…', false);
-
   try {
-    // === Step 1：拉取雲端記錄 ===
-    var result = await gasJsonp(gasUrl, { action: 'list' });
-    if (!result || !result.success) throw new Error(result?.message || 'API 回傳失敗');
-
+    var result = await workerJsonp({ action: 'list' });
+    if (!result || !result.success) throw new Error(result ? result.message : 'API 回傳失敗');
     var cloudRecords = result.records || [];
     var localHist = loadHist();
-
-    // === Step 2：合併 ===
     var localById = {};
     localHist.forEach(function(r) { localById[r.id] = r; });
     var cloudById = {};
     cloudRecords.forEach(function(r) { cloudById[r.id] = r; });
-
-    // 雲端有、本地沒有 → 加入本地
     var newFromCloud = 0;
     cloudRecords.forEach(function(r) {
       if (!localById[r.id]) {
@@ -1291,105 +1030,65 @@ async function cloudSync() {
         newFromCloud++;
       }
     });
-
-    // 本地有、雲端沒有、且尚未同步 → 推送到雲端
     var needPush = localHist.filter(function(r) { return !r.synced && !cloudById[r.id]; });
     var pushCount = 0;
-
-    showCloudBar('syncing', '☁️ 合併完成，正在推送 ' + needPush.length + ' 筆本地記錄…', false);
-
+    showCloudBar('syncing', '☁️ 正在推送 ' + needPush.length + ' 筆本地記錄…', false);
     for (var i = 0; i < needPush.length; i++) {
       try {
-        await gasJsonp(gasUrl, { action: 'save', data: JSON.stringify(needPush[i]) });
+        await workerJsonp({ action: 'save', data: JSON.stringify(needPush[i]) });
         needPush[i].synced = true;
         pushCount++;
-      } catch (e) {
-        console.log('推送失敗：', needPush[i].id, e);
-      }
+      } catch(e) { console.log('推送失敗：', e); }
     }
-
-    // 排序：最新的在前面
     localHist.sort(function(a, b) { return new Date(b.start) - new Date(a.start); });
     saveHist(localHist);
-
-    // === Step 3：同步設定值 ===
-    await syncSettingsFromCloud(gasUrl);
-
-    // === Step 4：完成 ===
     var now = new Date();
-    var syncTime = now.toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit' });
     localStorage.setItem(LAST_SYNC_KEY, now.toISOString());
     updateLastSyncDisplay();
-
     var msg = '✓ 同步完成！';
     var parts = [];
     if (newFromCloud > 0) parts.push('雲端新增 ' + newFromCloud + ' 筆');
     if (pushCount > 0) parts.push('推送 ' + pushCount + ' 筆');
-    if (parts.length) msg += parts.join('，');
-    else msg += '記錄已是最新';
-
+    msg += parts.length ? parts.join('，') : '記錄已是最新';
     showCloudBar('success', msg, true);
     toast('☁️ ' + msg);
-    setTimeout(function() { hideCloudBar(); }, 5000);
-
+    setTimeout(hideCloudBar, 5000);
     renderHome();
     if (document.getElementById('page-history').classList.contains('active')) {
       renderFilterChips(); renderHistPage();
     }
-  } catch (err) {
+  } catch(err) {
     showCloudBar('error', '⚠ 同步失敗：' + err.message, true);
-    setTimeout(function() { hideCloudBar(); }, 6000);
+    setTimeout(hideCloudBar, 6000);
   } finally {
     cloudSyncing = false;
   }
 }
 
-/**
- * 從雲端讀取設定並套用到本地
- */
-async function syncSettingsFromCloud(gasUrl) {
-  try {
-    var result = await gasJsonp(gasUrl, { action: 'settings_get' });
-    if (!result || !result.success) return;
-    var settings = result.settings || {};
-
-    // 行事曆 API URL：雲端有、本地沒有 → 自動套用
-    if (settings.cal_api_url && !localStorage.getItem(CAL_API_KEY)) {
-      localStorage.setItem(CAL_API_KEY, settings.cal_api_url);
-      updateCalApiStatus();
+// ============================================================
+//  儲存任務到 Worker（任務結束時呼叫）
+// ============================================================
+function sendToWorker(data, maxRetries) {
+  if (maxRetries === undefined) maxRetries = 2;
+  return new Promise(function(resolve, reject) {
+    var attemptNum = 0;
+    function attempt() {
+      attemptNum++;
+      workerJsonp({ action: 'save', data: JSON.stringify(data) })
+        .then(resolve)
+        .catch(function(err) {
+          if (attemptNum <= maxRetries) {
+            toast('⏳ 同步逾時，重試中（' + attemptNum + '/' + maxRetries + '）…');
+            setTimeout(attempt, 2000);
+          } else {
+            reject(err);
+          }
+        });
     }
-    // YouTube URL
-    if (settings.yt_url && !localStorage.getItem(YT_URL_KEY)) {
-      localStorage.setItem(YT_URL_KEY, settings.yt_url);
-      ytUpdateSavedDisplay();
-    }
-  } catch (e) {
-    console.log('設定同步失敗：', e);
-  }
+    attempt();
+  });
 }
 
-/**
- * 將本地設定推送到雲端（在使用者儲存設定時呼叫）
- */
-async function pushSettingsToCloud() {
-  var gasUrl = loadGasUrl();
-  if (!gasUrl) return;
-  var settings = {};
-  var calApi = localStorage.getItem(CAL_API_KEY);
-  if (calApi) settings.cal_api_url = calApi;
-  var ytUrl = localStorage.getItem(YT_URL_KEY);
-  if (ytUrl) settings.yt_url = ytUrl;
-  if (!Object.keys(settings).length) return;
-  try {
-    await gasJsonp(gasUrl, { action: 'settings_set', data: JSON.stringify(settings) });
-  } catch (e) {
-    console.log('設定推送失敗：', e);
-  }
-}
-
-/**
- * 更新「上次同步」顯示
- */
 function updateLastSyncDisplay() {
   var el = document.getElementById('lastSyncTime');
   if (!el) return;
@@ -1400,7 +1099,7 @@ function updateLastSyncDisplay() {
 }
 
 // ============================================================
-//  調整起始時間面板邏輯
+//  調整起始時間
 // ============================================================
 let adjPanelCollapsed = false;
 function toggleAdjustPanel() {
@@ -1445,7 +1144,7 @@ function adjustStartToExact() {
   document.getElementById('digits').textContent = fmtDur(elapsedMs);
   document.getElementById('mStart').textContent = fmtTime(startTime);
   updateAdjustDisplay();
-  showAdjResult('success', '✓ 起始時間已從 ' + fmtTime(oldStart) + ' 調整為 ' + fmtTime(startTime));
+  showAdjResult('success', '✓ 起始時間已調整為 ' + fmtTime(startTime));
   toast('⏪ 起始時間已調整為 ' + fmtTime(startTime));
 }
 function showAdjResult(type, msg) {
@@ -1473,10 +1172,9 @@ function checkPauseExpiry() {
     if (elapsed >= AUTO_TIMEOUT_MS) {
       if (isRunning && isPaused) { stopTimer(true); toast('⏱ 暫停超過 30 分鐘，已自動結束'); }
       else { autoFinishFromStorage(state); }
-      clearPauseState();
-      return true;
+      clearPauseState(); return true;
     }
-  } catch (e) { clearPauseState(); }
+  } catch(e) { clearPauseState(); }
   return false;
 }
 async function autoFinishFromStorage(state) {
@@ -1484,13 +1182,10 @@ async function autoFinishFromStorage(state) {
   var dur = Math.max(0, state.pausedAt - state.startTime - state.totalPausedMs);
   if (dur < 1000) { clearPauseState(); return; }
   var rec = { id: Date.now(), task: state.taskName, cat: state.cat, note: state.note || '', start: new Date(state.startTime).toISOString(), end: endTime.toISOString(), dur: dur, synced: false };
-  var hist = loadHist(); hist.unshift(rec);
-  var gasUrl = loadGasUrl();
-  if (gasUrl) {
-    try { await sendToGAS(rec); rec.synced = true; hist[0].synced = true; toast('⏱ 暫停逾時自動結束，已同步 ✓'); }
-    catch (err) { toast('⏱ 暫停逾時自動結束（同步失敗：' + err.message + '）'); }
-  } else { toast('⏱ 暫停逾時自動結束，已儲存本地'); }
-  saveHist(hist); renderHome();
+  var hist = loadHist(); hist.unshift(rec); saveHist(hist);
+  try { await sendToWorker(rec); rec.synced = true; hist[0].synced = true; saveHist(hist); toast('⏱ 暫停逾時自動結束，已同步 ✓'); }
+  catch(err) { toast('⏱ 暫停逾時自動結束（同步失敗）'); }
+  renderHome();
 }
 
 // ============================================================
@@ -1508,18 +1203,17 @@ function toggleVis(inputId, btn) {
 let ytPlayer = null, ytReady = false, ytCurrentSpeed = 1.0, ytBodyCollapsed = false, ytApiLoaded = false;
 function loadYTApi() { if (ytApiLoaded) return; ytApiLoaded = true; var tag = document.createElement('script'); tag.src = 'https://www.youtube.com/iframe_api'; document.head.appendChild(tag); }
 window.onYouTubeIframeAPIReady = function() { ytReady = true; var section = document.getElementById('ytSection'); if (section.classList.contains('show')) { var savedUrl = localStorage.getItem(YT_URL_KEY); if (savedUrl) { document.getElementById('ytUrlInput').value = savedUrl; ytLoadFromSaved(); } } };
-function parseYTUrl(url) { if (!url) return null; var videoId = null, startSeconds = 0; try { var urlObj = new URL(url); if (urlObj.hostname.includes('youtu.be')) { videoId = urlObj.pathname.slice(1).split('/')[0]; } else if (urlObj.hostname.includes('youtube.com')) { videoId = urlObj.searchParams.get('v'); } var tParam = urlObj.searchParams.get('t') || urlObj.searchParams.get('start'); if (tParam) { var hmMatch = tParam.match(/(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s?)?/); if (hmMatch) { startSeconds = parseInt(hmMatch[1]||0)*3600 + parseInt(hmMatch[2]||0)*60 + parseInt(hmMatch[3]||0); } if (!startSeconds && /^\d+$/.test(tParam)) startSeconds = parseInt(tParam); } } catch (e) { var match = url.match(/(?:v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/); if (match) videoId = match[1]; } return videoId ? { videoId, startSeconds } : null; }
+function parseYTUrl(url) { if (!url) return null; var videoId = null, startSeconds = 0; try { var urlObj = new URL(url); if (urlObj.hostname.includes('youtu.be')) { videoId = urlObj.pathname.slice(1).split('/')[0]; } else if (urlObj.hostname.includes('youtube.com')) { videoId = urlObj.searchParams.get('v'); } var tParam = urlObj.searchParams.get('t') || urlObj.searchParams.get('start'); if (tParam) { var hmMatch = tParam.match(/(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s?)?/); if (hmMatch) { startSeconds = parseInt(hmMatch[1]||0)*3600 + parseInt(hmMatch[2]||0)*60 + parseInt(hmMatch[3]||0); } if (!startSeconds && /^\d+$/.test(tParam)) startSeconds = parseInt(tParam); } } catch(e) { var match = url.match(/(?:v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/); if (match) videoId = match[1]; } return videoId ? { videoId, startSeconds } : null; }
 function ytCreatePlayer(videoId, startSeconds) { document.getElementById('ytPlaceholder').style.display = 'none'; if (ytPlayer) { ytPlayer.destroy(); ytPlayer = null; } var container = document.getElementById('ytPlayerContainer'); container.innerHTML = '<div id="ytIframe"></div>'; ytPlayer = new YT.Player('ytIframe', { width:'100%', height:'100%', videoId: videoId, playerVars: { start: startSeconds||0, autoplay:0, playsinline:1, rel:0, modestbranding:1 }, events: { onReady: function(event) { event.target.setPlaybackRate(ytCurrentSpeed); var iframe = container.querySelector('iframe'); if(iframe){iframe.style.position='absolute';iframe.style.top='0';iframe.style.left='0';iframe.style.width='100%';iframe.style.height='100%';} }, onStateChange: function(event) { var section = document.getElementById('ytSection'); if(event.data===YT.PlayerState.PLAYING){section.classList.add('active-border');if(!isRunning&&document.getElementById('taskName').value.trim()==='速讀')startTimer();if(isRunning&&isPaused)togglePause();}else if(event.data===YT.PlayerState.PAUSED){section.classList.remove('active-border');if(isRunning&&!isPaused)togglePause();}else{section.classList.remove('active-border');}} } }); }
-function ytLoadUrl() { var url = document.getElementById('ytUrlInput').value.trim(); if (!url) { toast('⚠ 請貼上 YouTube 連結'); return; } var parsed = parseYTUrl(url); if (!parsed) { toast('⚠ 無法辨識此 YouTube 連結'); return; } localStorage.setItem(YT_URL_KEY, url); ytUpdateSavedDisplay(); pushSettingsToCloud(); if (!ytApiLoaded) { loadYTApi(); var waitReady = setInterval(function() { if (ytReady) { clearInterval(waitReady); ytCreatePlayer(parsed.videoId, parsed.startSeconds); } }, 200); } else if (ytReady) { ytCreatePlayer(parsed.videoId, parsed.startSeconds); } toast('▶ 已載入影片'); }
+function ytLoadUrl() { var url = document.getElementById('ytUrlInput').value.trim(); if (!url) { toast('⚠ 請貼上 YouTube 連結'); return; } var parsed = parseYTUrl(url); if (!parsed) { toast('⚠ 無法辨識此 YouTube 連結'); return; } localStorage.setItem(YT_URL_KEY, url); ytUpdateSavedDisplay(); if (!ytApiLoaded) { loadYTApi(); var waitReady = setInterval(function() { if (ytReady) { clearInterval(waitReady); ytCreatePlayer(parsed.videoId, parsed.startSeconds); } }, 200); } else if (ytReady) { ytCreatePlayer(parsed.videoId, parsed.startSeconds); } toast('▶ 已載入影片'); }
 function ytLoadFromSaved() { var url = localStorage.getItem(YT_URL_KEY); if (!url) return; var parsed = parseYTUrl(url); if (!parsed) return; ytUpdateSavedDisplay(); if (ytReady) { ytCreatePlayer(parsed.videoId, parsed.startSeconds); } }
 function ytChangeSpeed(delta) { ytCurrentSpeed = Math.round((ytCurrentSpeed + delta) * 10) / 10; ytCurrentSpeed = Math.max(0.25, Math.min(3.0, ytCurrentSpeed)); ytApplySpeed(); }
-function ytSetSpeed(speed) { ytCurrentSpeed = speed; ytApplySpeed(); }
-function ytApplySpeed() { document.getElementById('ytSpeedDisplay').textContent = ytCurrentSpeed.toFixed(1) + 'x'; document.querySelectorAll('.yt-preset-btn').forEach(function(btn) { var val = parseFloat(btn.textContent); btn.classList.toggle('active', Math.abs(val - ytCurrentSpeed) < 0.01); }); if (ytPlayer && typeof ytPlayer.setPlaybackRate === 'function') { ytPlayer.setPlaybackRate(ytCurrentSpeed); } }
+function ytApplySpeed() { document.getElementById('ytSpeedDisplay').textContent = ytCurrentSpeed.toFixed(1) + 'x'; if (ytPlayer && typeof ytPlayer.setPlaybackRate === 'function') { ytPlayer.setPlaybackRate(ytCurrentSpeed); } }
 function toggleYtBody() { ytBodyCollapsed = !ytBodyCollapsed; document.getElementById('ytBody').classList.toggle('collapsed', ytBodyCollapsed); document.getElementById('ytToggleIcon').classList.toggle('collapsed', ytBodyCollapsed); document.getElementById('ytHeaderSub').textContent = ytBodyCollapsed ? '已收合，點擊展開' : '點擊展開／收合'; }
 function ytCheckVisibility() { var taskName = document.getElementById('taskName').value.trim(); var section = document.getElementById('ytSection'); var shouldShow = taskName === '速讀'; if (shouldShow && !section.classList.contains('show')) { section.classList.add('show'); loadYTApi(); var savedUrl = localStorage.getItem(YT_URL_KEY); if (savedUrl) { document.getElementById('ytUrlInput').value = savedUrl; ytUpdateSavedDisplay(); if (ytReady) { ytLoadFromSaved(); } } } else if (!shouldShow && section.classList.contains('show')) { section.classList.remove('show'); section.classList.remove('active-border'); if (ytPlayer && typeof ytPlayer.pauseVideo === 'function') { ytPlayer.pauseVideo(); } } }
 function ytUpdateSavedDisplay() { var savedUrl = localStorage.getItem(YT_URL_KEY); var el = document.getElementById('ytSavedUrl'); if (savedUrl) { el.classList.add('show'); document.getElementById('ytSavedUrlText').textContent = savedUrl; } else { el.classList.remove('show'); } }
-function ytClearSavedUrl() { localStorage.removeItem(YT_URL_KEY); ytUpdateSavedDisplay(); document.getElementById('ytUrlInput').value = ''; toast('已清除儲存的連結'); pushSettingsToCloud(); }
-function ytSaveCurrentPosition() { if (!ytPlayer || typeof ytPlayer.getCurrentTime !== 'function') return; try { var currentTime = Math.floor(ytPlayer.getCurrentTime()); if (currentTime <= 0) return; var videoUrl = ytPlayer.getVideoUrl(); if (!videoUrl) return; var parsed = parseYTUrl(videoUrl); if (!parsed) return; var newUrl = 'https://www.youtube.com/watch?v=' + parsed.videoId + '&t=' + currentTime; localStorage.setItem(YT_URL_KEY, newUrl); document.getElementById('ytUrlInput').value = newUrl; ytUpdateSavedDisplay(); pushSettingsToCloud(); } catch(e) {} }
+function ytClearSavedUrl() { localStorage.removeItem(YT_URL_KEY); ytUpdateSavedDisplay(); document.getElementById('ytUrlInput').value = ''; toast('已清除儲存的連結'); }
+function ytSaveCurrentPosition() { if (!ytPlayer || typeof ytPlayer.getCurrentTime !== 'function') return; try { var currentTime = Math.floor(ytPlayer.getCurrentTime()); if (currentTime <= 0) return; var videoUrl = ytPlayer.getVideoUrl(); if (!videoUrl) return; var parsed = parseYTUrl(videoUrl); if (!parsed) return; var newUrl = 'https://www.youtube.com/watch?v=' + parsed.videoId + '&t=' + currentTime; localStorage.setItem(YT_URL_KEY, newUrl); document.getElementById('ytUrlInput').value = newUrl; ytUpdateSavedDisplay(); } catch(e) {} }
 
 // ============================================================
 //  計時器核心
@@ -1533,41 +1227,8 @@ function goTab(tab) {
   if(tab==='history'){renderFilterChips();renderHistPage();}
   if(tab==='home'){renderHome();}
   if(tab==='calendar'){calInit();}
-  if(tab==='setup'){updateGasStatus();updateCalApiStatus();updateLastSyncDisplay();}
+  if(tab==='setup'){updateCalApiStatus();updateLastSyncDisplay();}
 }
-function loadGasUrl(){return localStorage.getItem(GAS_URL_KEY)||'';}
-function sendToGAS(data, maxRetries) {
-  if (maxRetries === undefined) maxRetries = 2;
-  return new Promise(function(resolve, reject) {
-    var gasUrl = loadGasUrl();
-    if (!gasUrl) { reject(new Error('尚未設定 GAS URL')); return; }
-    var attemptNum = 0;
-    function attempt() {
-      attemptNum++;
-      var cbName = '_gasCb_' + Date.now() + '_' + Math.floor(Math.random() * 10000);
-      var timeout = setTimeout(function() { delete window[cbName]; var s = document.getElementById('gasJsonpScript'); if(s)s.remove(); if(attemptNum<=maxRetries){toast('⏳ 同步逾時，重試中（'+attemptNum+'/'+maxRetries+'）…');setTimeout(attempt,2000);}else{reject(new Error('GAS 回應逾時'));} }, 15000);
-      window[cbName] = function(result) { clearTimeout(timeout); delete window[cbName]; var s = document.getElementById('gasJsonpScript'); if(s)s.remove(); if(result&&result.success){resolve(result);}else{reject(new Error(result&&result.message||'GAS 回傳錯誤'));} };
-      var old = document.getElementById('gasJsonpScript'); if(old)old.remove();
-      var encoded = encodeURIComponent(JSON.stringify(data));
-      var script = document.createElement('script'); script.id = 'gasJsonpScript'; script.src = gasUrl + '?action=save&data=' + encoded + '&callback=' + cbName;
-      script.onerror = function() { clearTimeout(timeout); delete window[cbName]; script.remove(); if(attemptNum<=maxRetries){toast('⏳ 連線失敗，重試中…');setTimeout(attempt,2000);}else{reject(new Error('GAS 請求失敗'));} };
-      document.body.appendChild(script);
-    }
-    attempt();
-  });
-}
-function saveGasUrl(){
-  var url=document.getElementById('gasUrlInput').value.trim();
-  if(!url){toast('⚠ 請輸入 GAS Web App 網址');return;}
-  if(!url.startsWith('https://script.google.com/')){toast('⚠ 網址需以 https://script.google.com/ 開頭');return;}
-  localStorage.setItem(GAS_URL_KEY,url);
-  updateGasStatus();
-  // 儲存後立刻推送設定到雲端 + 觸發首次同步
-  pushSettingsToCloud();
-  toast('✓ API 網址已儲存！正在執行首次雲端同步…');
-  setTimeout(cloudSync, 500);
-}
-function updateGasStatus(){var url=loadGasUrl();var dot=document.getElementById('sDot');var txt=document.getElementById('sText');var card=document.getElementById('setupWebhookCard');if(url){dot.className='s-dot ok';txt.textContent='✓ 任務同步 API 已連接';card.style.background='linear-gradient(135deg, #064e3b, #065f46)';document.getElementById('gasUrlInput').value=url;}else{dot.className='s-dot';txt.textContent='尚未設定任務同步 API';card.style.background='linear-gradient(135deg,#1a3a5c,#0f2840)';}}
 function getEffectiveCat(){var val=document.getElementById('catInput').value.trim();return val||'個人';}
 function getTaskFrequency(){var hist=loadHist();var freq={};hist.forEach(function(r){var key=r.task;if(!freq[key])freq[key]={count:0,cat:r.cat};freq[key].count++;});return Object.entries(freq).sort(function(a,b){return b[1].count-a[1].count;}).map(function(e){return{name:e[0],count:e[1].count,cat:e[1].cat};});}
 function getCatFrequency(){var hist=loadHist();var freq={};hist.forEach(function(r){if(!freq[r.cat])freq[r.cat]=0;freq[r.cat]++;});return Object.entries(freq).sort(function(a,b){return b[1]-a[1];}).map(function(e){return{cat:e[0],count:e[1]};});}
@@ -1594,12 +1255,21 @@ async function stopTimer(fromAuto){
   var effectiveCat=getEffectiveCat();
   var rec={id:Date.now(),task:taskName,cat:effectiveCat,note:document.getElementById('taskNote').value.trim(),start:startTime.toISOString(),end:endTime.toISOString(),dur:dur,synced:false};
   var hist=loadHist();hist.unshift(rec);saveHist(hist);
-  showSyncBadge('syncing','⏳','正在同步到 Google 日曆…');uiSyncing();
-  var gasUrl=loadGasUrl();
-  if(gasUrl){
-    try{await sendToGAS(rec);rec.synced=true;hist[0].synced=true;saveHist(hist);showSyncBadge('success','📅','已同步到 Google Calendar + Sheets ✓');toast('✓ 任務結束！已同步到 Google 日曆');}
-    catch(err){showSyncBadge('error','⚠','同步失敗：'+err.message);toast('⚠ 同步失敗：'+err.message);}
-  }else{showSyncBadge('local','💾','已儲存本地（尚未設定任務同步 API）');toast('✓ 任務已儲存！');}
+  showSyncBadge('syncing','⏳','正在同步到雲端…');uiSyncing();
+  try {
+    await sendToWorker(rec);
+    rec.synced=true;hist[0].synced=true;saveHist(hist);
+    showSyncBadge('success','☁️','已同步到 Cloudflare D1 ✓');
+    toast('✓ 任務結束！已同步到雲端');
+    // 通知 GAS 寫入 Google Calendar（背景執行，不阻擋）
+    var calApi = loadCalApi();
+    if (calApi) {
+      workerJsonp({ action: 'settings_set', data: JSON.stringify({ gas_url: calApi }) }).catch(function(){});
+    }
+  } catch(err) {
+    showSyncBadge('error','⚠','同步失敗：'+err.message);
+    toast('⚠ 同步失敗：'+err.message);
+  }
   uiIdle();document.getElementById('taskName').value='';document.getElementById('taskNote').value='';document.getElementById('catInput').value='';ytCheckVisibility();renderHome();
 }
 function cancelTimer(){
@@ -1640,9 +1310,9 @@ function openBatchCat(){if(!selectedIds.size){toast('⚠ 請先選擇記錄');re
 function pickBatchCat(btn,cat){document.querySelectorAll('.batch-cat-chip').forEach(function(c){c.classList.remove('active');});btn.classList.add('active');batchCatChoice=cat;}
 function closeBatchCat(){document.getElementById('batchCatModal').classList.remove('show');}
 function applyBatchCat(){if(!batchCatChoice){toast('⚠ 請選擇一個分類');return;}var hist=loadHist();var count=0;hist.forEach(function(r){if(selectedIds.has(r.id)){r.cat=batchCatChoice;r.synced=false;count++;}});saveHist(hist);closeBatchCat();toast('✓ 已將 '+count+' 筆記錄改為「'+batchCatChoice+'」');renderHistPage();}
-async function batchSync(){if(!selectedIds.size){toast('⚠ 請先選擇記錄');return;}var gasUrl=loadGasUrl();if(!gasUrl){toast('⚠ 尚未設定任務同步 API');return;}var hist=loadHist();var count=0,fail=0;for(var i=0;i<hist.length;i++){var r=hist[i];if(!selectedIds.has(r.id))continue;try{await sendToGAS(r);r.synced=true;count++;}catch(e){fail++;}}saveHist(hist);toast(fail>0?'✓ 同步 '+count+' 筆，'+fail+' 筆失敗':'✓ 已同步 '+count+' 筆記錄');renderHistPage();}
+async function batchSync(){if(!selectedIds.size){toast('⚠ 請先選擇記錄');return;}var hist=loadHist();var count=0,fail=0;for(var i=0;i<hist.length;i++){var r=hist[i];if(!selectedIds.has(r.id))continue;try{await sendToWorker(r);r.synced=true;count++;}catch(e){fail++;}}saveHist(hist);toast(fail>0?'✓ 同步 '+count+' 筆，'+fail+' 筆失敗':'✓ 已同步 '+count+' 筆記錄');renderHistPage();}
 function batchDelete(){if(!selectedIds.size){toast('⚠ 請先選擇記錄');return;}if(!confirm('確定刪除 '+selectedIds.size+' 筆記錄？'))return;var hist=loadHist().filter(function(r){return !selectedIds.has(r.id);});saveHist(hist);selectedIds.clear();updateBatchCount();toast('✓ 已刪除所選記錄');renderHistPage();renderHome();}
-function renderHistList(){var el=document.getElementById('histList');var data=getVisibleHist();if(!data.length){el.innerHTML='<div class="empty-hist"><div class="e-emoji">📭</div><p>尚無記錄</p></div>';return;}el.innerHTML=data.map(function(r){return '<div class="hist-item"><div style="display:flex;align-items:flex-start;"><div class="hi-select-wrap '+(selectMode?'show':'')+'"><input type="checkbox" class="hi-cb" id="cb-'+r.id+'" '+(selectedIds.has(r.id)?'checked':'')+' onchange="toggleSelectItem('+r.id+')" /></div><div style="flex:1;min-width:0;"><div class="hi-top"><div class="hi-name">'+esc(r.task)+(r.synced?'<span class="gcal-icon">📅</span>':'')+'</div><div class="hi-dur">'+fmtDur(r.dur)+'</div></div><div class="hi-bot"><div class="hi-time">'+fmtDate(new Date(r.start))+' '+fmtTime(new Date(r.start))+'–'+fmtTime(new Date(r.end))+'</div><div class="cat-tag cat-'+r.cat+'">'+esc(r.cat)+'</div></div>'+(r.note?'<div class="hi-note">'+esc(r.note)+'</div>':'')+'<div class="hi-actions"><button class="hi-btn hi-btn-edit" onclick="openEdit('+r.id+')">✏️ 編輯</button><button class="hi-btn hi-btn-resync" onclick="resyncRecord('+r.id+')">📅 同步</button><button class="hi-btn hi-btn-del" onclick="deleteRecord('+r.id+')">🗑 刪除</button></div></div></div></div>';}).join('');}
+function renderHistList(){var el=document.getElementById('histList');var data=getVisibleHist();if(!data.length){el.innerHTML='<div class="empty-hist"><div class="e-emoji">📭</div><p>尚無記錄</p></div>';return;}el.innerHTML=data.map(function(r){return '<div class="hist-item"><div style="display:flex;align-items:flex-start;"><div class="hi-select-wrap '+(selectMode?'show':'')+'"><input type="checkbox" class="hi-cb" id="cb-'+r.id+'" '+(selectedIds.has(r.id)?'checked':'')+' onchange="toggleSelectItem('+r.id+')" /></div><div style="flex:1;min-width:0;"><div class="hi-top"><div class="hi-name">'+esc(r.task)+(r.synced?'<span class="gcal-icon">☁️</span>':'')+'</div><div class="hi-dur">'+fmtDur(r.dur)+'</div></div><div class="hi-bot"><div class="hi-time">'+fmtDate(new Date(r.start))+' '+fmtTime(new Date(r.start))+'–'+fmtTime(new Date(r.end))+'</div><div class="cat-tag cat-'+r.cat+'">'+esc(r.cat)+'</div></div>'+(r.note?'<div class="hi-note">'+esc(r.note)+'</div>':'')+'<div class="hi-actions"><button class="hi-btn hi-btn-edit" onclick="openEdit('+r.id+')">✏️ 編輯</button><button class="hi-btn hi-btn-resync" onclick="resyncRecord('+r.id+')">☁️ 同步</button><button class="hi-btn hi-btn-del" onclick="deleteRecord('+r.id+')">🗑 刪除</button></div></div></div></div>';}).join('');}
 function clearAll(){if(confirm('確定清除所有記錄？')){localStorage.removeItem(STORAGE_KEY);renderHistPage();renderHome();toast('已清除所有記錄');}}
 function renderHome(){var hist=loadHist();var today=new Date().toDateString();var tr=hist.filter(function(r){return new Date(r.start).toDateString()===today;});var todayMs=tr.reduce(function(s,r){return s+r.dur;},0);var avgMs=hist.length?hist.reduce(function(s,r){return s+r.dur;},0)/hist.length:0;document.getElementById('homeCount').textContent=tr.length;document.getElementById('homeTime').textContent=fmtHM(todayMs);document.getElementById('homeAvg').textContent=hist.length?fmtHM(avgMs):'—';}
 function updateGreeting(){var now=new Date();var days=['SUNDAY','MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY'];var h=now.getHours();var p=h<5?'NIGHT':h<12?'MORNING':h<17?'AFTERNOON':h<21?'EVENING':'NIGHT';document.getElementById('greetingTime').textContent=days[now.getDay()]+' '+p;document.getElementById('navDate').innerHTML=(now.getMonth()+1)+'/'+now.getDate()+'<br>'+pad(now.getHours())+':'+pad(now.getMinutes());}
@@ -1652,9 +1322,9 @@ function openEdit(id){var hist=loadHist();var rec=hist.find(function(r){return r
 function selEditCat(btn){document.querySelectorAll('#editCatRow .edit-cat-chip').forEach(function(c){c.classList.remove('active');});btn.classList.add('active');editingCat=btn.dataset.cat;}
 function closeModal(){document.getElementById('editModal').classList.remove('show');editingId=null;}
 function closeModalOnOverlay(e){if(e.target===document.getElementById('editModal'))closeModal();}
-async function saveEdit(){var task=document.getElementById('editTask').value.trim();if(!task){toast('⚠ 任務名稱不能為空');return;}var startVal=document.getElementById('editStart').value;var endVal=document.getElementById('editEnd').value;if(!startVal||!endVal){toast('⚠ 請填入開始與結束時間');return;}var newStart=new Date(startVal),newEnd=new Date(endVal);if(newEnd<=newStart){toast('⚠ 結束時間必須晚於開始時間');return;}var newDur=newEnd.getTime()-newStart.getTime();var hist=loadHist();var idx=hist.findIndex(function(r){return r.id===editingId;});if(idx===-1){toast('⚠ 找不到此記錄');return;}hist[idx]=Object.assign({},hist[idx],{task:task,cat:editingCat,note:document.getElementById('editNote').value.trim(),start:newStart.toISOString(),end:newEnd.toISOString(),dur:newDur,synced:false});saveHist(hist);closeModal();var gasUrl=loadGasUrl();if(gasUrl){toast('⏳ 正在同步更新…');try{await sendToGAS(hist[idx]);hist[idx].synced=true;saveHist(hist);toast('✓ 已更新並同步 📅');}catch(err){toast('⚠ 本地已儲存，同步失敗：'+err.message);}}else{toast('✓ 已儲存修改');}renderHistPage();renderHome();}
-async function resyncRecord(id){var hist=loadHist();var rec=hist.find(function(r){return r.id===id;});if(!rec)return;var gasUrl=loadGasUrl();if(!gasUrl){toast('⚠ 尚未設定任務同步 API');return;}toast('⏳ 正在同步…');try{await sendToGAS(rec);var idx=hist.findIndex(function(r){return r.id===id;});hist[idx].synced=true;saveHist(hist);toast('✓ 已同步 📅');renderHistList();renderHome();}catch(err){toast('⚠ 同步失敗：'+err.message);}}
-function deleteRecord(id){if(!confirm('確定刪除此筆記錄？'))return;var hist=loadHist().filter(function(r){return r.id!==id;});saveHist(hist);renderHistPage();renderHome();toast('已刪除此記錄');}
+async function saveEdit(){var task=document.getElementById('editTask').value.trim();if(!task){toast('⚠ 任務名稱不能為空');return;}var startVal=document.getElementById('editStart').value;var endVal=document.getElementById('editEnd').value;if(!startVal||!endVal){toast('⚠ 請填入開始與結束時間');return;}var newStart=new Date(startVal),newEnd=new Date(endVal);if(newEnd<=newStart){toast('⚠ 結束時間必須晚於開始時間');return;}var newDur=newEnd.getTime()-newStart.getTime();var hist=loadHist();var idx=hist.findIndex(function(r){return r.id===editingId;});if(idx===-1){toast('⚠ 找不到此記錄');return;}hist[idx]=Object.assign({},hist[idx],{task:task,cat:editingCat,note:document.getElementById('editNote').value.trim(),start:newStart.toISOString(),end:newEnd.toISOString(),dur:newDur,synced:false});saveHist(hist);closeModal();try{await sendToWorker(hist[idx]);hist[idx].synced=true;saveHist(hist);toast('✓ 已更新並同步 ☁️');}catch(err){toast('⚠ 本地已儲存，同步失敗：'+err.message);}renderHistPage();renderHome();}
+async function resyncRecord(id){var hist=loadHist();var rec=hist.find(function(r){return r.id===id;});if(!rec)return;toast('⏳ 正在同步…');try{await sendToWorker(rec);var idx=hist.findIndex(function(r){return r.id===id;});hist[idx].synced=true;saveHist(hist);toast('✓ 已同步 ☁️');renderHistList();renderHome();}catch(err){toast('⚠ 同步失敗：'+err.message);}}
+function deleteRecord(id){if(!confirm('確定刪除此筆記錄？'))return;var hist=loadHist().filter(function(r){return r.id!==id;});saveHist(hist);workerJsonp({action:'delete',id:String(id)}).catch(function(){});renderHistPage();renderHome();toast('已刪除此記錄');}
 function toLocalDTInput(date){var off=date.getTimezoneOffset()*60000;return new Date(date.getTime()-off).toISOString().slice(0,16);}
 function fmtDur(ms){var t=Math.floor(Math.max(0,ms)/1000);return pad(Math.floor(t/3600))+':'+pad(Math.floor(t%3600/60))+':'+pad(t%60);}
 function fmtHM(ms){var m=Math.floor(ms/60000),h=Math.floor(m/60);return h>0?h+'h'+(m%60)+'m':m+'m';}
@@ -1671,10 +1341,9 @@ document.addEventListener('visibilitychange',async function(){
   if(document.visibilityState==='visible'){
     document.getElementById('bgNotice').classList.remove('show');
     if(checkPauseExpiry()) return;
-    if(isRunning&&isPaused&&pausedAt){ var elapsed=Date.now()-pausedAt; var rem=AUTO_TIMEOUT_MS-elapsed; if(rem>0){ cancelAuto(); document.getElementById('autoBar').classList.add('show'); autoInterval=setInterval(function(){var r=AUTO_TIMEOUT_MS-(Date.now()-pausedAt);if(r<=0){cancelAuto();stopTimer(true);toast('⏱ 暫停超過 30 分鐘，已自動結束');return;}document.getElementById('autoFill').style.width=(r/AUTO_TIMEOUT_MS*100)+'%';document.getElementById('autoCD').textContent=fmtDur(r);},1000); document.getElementById('autoFill').style.width=(rem/AUTO_TIMEOUT_MS*100)+'%'; document.getElementById('autoCD').textContent=fmtDur(rem); } }
+    if(isRunning&&isPaused&&pausedAt){ var elapsed=Date.now()-pausedAt; var rem=AUTO_TIMEOUT_MS-elapsed; if(rem>0){ cancelAuto(); document.getElementById('autoBar').classList.add('show'); autoInterval=setInterval(function(){var r=AUTO_TIMEOUT_MS-(Date.now()-pausedAt);if(r<=0){cancelAuto();stopTimer(true);return;}document.getElementById('autoFill').style.width=(r/AUTO_TIMEOUT_MS*100)+'%';document.getElementById('autoCD').textContent=fmtDur(r);},1000); document.getElementById('autoFill').style.width=(rem/AUTO_TIMEOUT_MS*100)+'%'; document.getElementById('autoCD').textContent=fmtDur(rem); } }
     if(isRunning&&!isPaused)await requestWakeLock();
-    // ★ 回到前景時，如果不在計時中，靜默同步一次
-    if(!isRunning && loadGasUrl()) { setTimeout(cloudSync, 1000); }
+    if(!isRunning) { setTimeout(cloudSync, 1000); }
   }else{
     if(isRunning)document.getElementById('bgNotice').classList.add('show');
   }
@@ -1687,12 +1356,30 @@ function dismissPWA(){document.getElementById('pwaBanner').classList.remove('sho
 function checkShowPWA(){if(window.navigator.standalone)return;if(localStorage.getItem('pwa_dismissed'))return;var isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);var isSafari=/^((?!chrome|android).)*safari/i.test(navigator.userAgent);if(isIOS&&isSafari)setTimeout(function(){document.getElementById('pwaBanner').classList.add('show');},3000);}
 
 // ============================================================
+//  行事曆 API（GAS，用於寫入 Google Calendar）
+// ============================================================
+function loadCalApi(){return localStorage.getItem(CAL_API_KEY)||'';}
+function saveCalApi(){
+  var url=document.getElementById('calApiInput').value.trim();
+  if(!url){toast('⚠ 請輸入 GAS Web App 網址');return;}
+  if(!url.startsWith('https://')){toast('⚠ 需以 https:// 開頭');return;}
+  localStorage.setItem(CAL_API_KEY,url);
+  updateCalApiStatus();
+  toast('✓ 行事曆 API 已儲存！');
+}
+function updateCalApiStatus(){
+  var url=loadCalApi();
+  var dot=document.getElementById('calApiDot');
+  var txt=document.getElementById('calApiText');
+  var card=document.getElementById('setupCalApiCard');
+  if(url){dot.className='s-dot ok';txt.textContent='✓ 行事曆 API 已連接';card.style.background='linear-gradient(135deg, #064e3b, #065f46)';document.getElementById('calApiInput').value=url;}
+  else{dot.className='s-dot';txt.textContent='尚未設定行事曆 API';card.style.background='linear-gradient(135deg,#1a3a5c,#0f2840)';}
+}
+
+// ============================================================
 //  行事曆功能
 // ============================================================
 let calEvents=[];let calCurrentFilter='mine';let calCurrentRange='3m';let calCurrentView='list';let calViewMonth=new Date().getMonth();let calViewYear=new Date().getFullYear();let calSelectedDate=null;
-function loadCalApi(){return localStorage.getItem(CAL_API_KEY)||'';}
-function saveCalApi(){var url=document.getElementById('calApiInput').value.trim();if(!url){toast('⚠ 請輸入 GAS Web App 網址');return;}if(!url.startsWith('https://')){toast('⚠ 需以 https:// 開頭');return;}localStorage.setItem(CAL_API_KEY,url);updateCalApiStatus();pushSettingsToCloud();toast('✓ 行事曆 API 已儲存！');calFetchData();}
-function updateCalApiStatus(){var url=loadCalApi();var dot=document.getElementById('calApiDot');var txt=document.getElementById('calApiText');var card=document.getElementById('setupCalApiCard');if(url){dot.className='s-dot ok';txt.textContent='✓ 行事曆 API 已連接';card.style.background='linear-gradient(135deg, #064e3b, #065f46)';document.getElementById('calApiInput').value=url;}else{dot.className='s-dot';txt.textContent='尚未設定行事曆 API';card.style.background='linear-gradient(135deg,#1a3a5c,#0f2840)';}}
 let calInited=false;
 function calInit(){if(!calInited&&loadCalApi()){calFetchData();calInited=true;}else{calRender();}}
 function calRefresh(){if(!loadCalApi()){toast('⚠ 請先到設定頁設定行事曆 API 網址');return;}calFetchData();}
@@ -1712,7 +1399,7 @@ function detectVenue(ev){if(!ev||ev.source!=='church')return '';if(!ev.date)retu
 function calToggleDetails(idx){var body=document.getElementById('ceDetails'+idx);var arrow=document.getElementById('ceArrow'+idx);if(!body)return;var show=body.style.display==='none';body.style.display=show?'block':'none';if(arrow)arrow.textContent=show?'▾':'▸';}
 function calRenderList(filtered){var el=document.getElementById('calListSection');if(!filtered.length){el.innerHTML='<div class="cal-empty"><div class="e-emoji">📭</div><p>篩選範圍內沒有事件</p></div>';return;}var groups={};filtered.forEach(function(ev){if(!groups[ev.date])groups[ev.date]=[];groups[ev.date].push(ev);});var sortedDates=Object.keys(groups).sort();var html='';sortedDates.forEach(function(dateStr){var d=new Date(dateStr+'T00:00:00');var label=d.toLocaleDateString('zh-TW',{month:'long',day:'numeric',weekday:'short'});var isToday=dateStr===new Date().toISOString().slice(0,10);html+='<div class="cal-list-date-header">'+(isToday?'📍 今天 — ':'')+label+'</div>';groups[dateStr].forEach(function(ev){html+=calRenderEventCard(ev);});});el.innerHTML=html;}
 function calStartTimer(taskName){document.getElementById('taskName').value=taskName;document.getElementById('catInput').value='行政';goTab('timer');ytCheckVisibility();toast('已帶入任務名稱');}
-function calShowEvent(idx){var ev=calEvents[idx];if(!ev)return;document.getElementById('calModalTitle').textContent='📅 '+ev.title;var body='';if(ev.isMyEvent&&ev.myRoles&&ev.myRoles.length){body+='<div class="ce-my-roles" style="margin-bottom:12px">'+ev.myRoles.map(function(r){return '<span class="ce-my-badge">⭐ '+esc(r)+'</span>';}).join('')+'</div>';}body+='<div class="edit-field"><label>日期</label><div style="font-size:14px;font-weight:600;">'+ev.date+'</div></div>';body+='<div class="edit-field"><label>來源</label><div style="font-size:14px;">'+(ev.source==='church'?'⛪ 教會事工表':'🎓 學生事工表')+'</div></div>';if(ev.roles&&Object.keys(ev.roles).length){body+='<div class="edit-field"><label>服事人員</label><div style="font-size:13px;line-height:2;">';Object.entries(ev.roles).forEach(function(e){body+='<div><strong>'+esc(e[0])+'</strong>：'+esc(e[1])+'</div>';});body+='</div></div>';}if(ev.location)body+='<div class="edit-field"><label>地點</label><div style="font-size:14px;">'+esc(ev.location)+'</div></div>';if(ev.counselorNote)body+='<div class="edit-field"><label>輔導行程</label><div style="font-size:13px;">'+esc(ev.counselorNote)+'</div></div>';if(ev.missionCountry)body+='<div class="edit-field"><label>宣教國家</label><div style="font-size:14px;">🌍 '+esc(ev.missionCountry)+'</div></div>';if(ev.mainSpeaker)body+='<div class="edit-field"><label>本堂講員</label><div style="font-size:14px;">'+esc(ev.mainSpeaker)+'</div></div>';if(ev.xinxiuSpeaker)body+='<div class="edit-field"><label>新秀福音中心</label><div style="font-size:14px;">'+esc(ev.xinxiuSpeaker)+'</div></div>';if(ev.songs)body+='<div class="edit-field"><label>詩歌</label><div style="font-size:13px;white-space:pre-line;">'+esc(ev.songs)+'</div></div>';var venue=detectVenue(ev);if(venue)body+='<div class="edit-field"><label>場地</label><div style="font-size:14px;">'+esc(venue)+'</div></div>';document.getElementById('calModalBody').innerHTML=body;var footer='<button class="btn-modal-cancel" onclick="closeCalEventModal()">關閉</button>';if(ev.isMyEvent&&ev.myRoles&&ev.myRoles.length){var tn=ev.myRoles[0]+'：'+ev.title.replace('[學生] ','');footer+='<button class="btn-modal-save" onclick="calStartTimer(\''+esc(tn)+'\');closeCalEventModal();">⏱ 開始計時</button>';}document.getElementById('calModalFooter').innerHTML=footer;document.getElementById('calEventModal').classList.add('show');}
+function calShowEvent(idx){var ev=calEvents[idx];if(!ev)return;document.getElementById('calModalTitle').textContent='📅 '+ev.title;var body='';if(ev.isMyEvent&&ev.myRoles&&ev.myRoles.length){body+='<div class="ce-my-roles" style="margin-bottom:12px">'+ev.myRoles.map(function(r){return '<span class="ce-my-badge">⭐ '+esc(r)+'</span>';}).join('')+'</div>';}body+='<div class="edit-field"><label>日期</label><div style="font-size:14px;font-weight:600;">'+ev.date+'</div></div>';body+='<div class="edit-field"><label>來源</label><div style="font-size:14px;">'+(ev.source==='church'?'⛪ 教會事工表':'🎓 學生事工表')+'</div></div>';if(ev.roles&&Object.keys(ev.roles).length){body+='<div class="edit-field"><label>服事人員</label><div style="font-size:13px;line-height:2;">';Object.entries(ev.roles).forEach(function(e){body+='<div><strong>'+esc(e[0])+'</strong>：'+esc(e[1])+'</div>';});body+='</div></div>';}if(ev.location)body+='<div class="edit-field"><label>地點</label><div style="font-size:14px;">'+esc(ev.location)+'</div></div>';document.getElementById('calModalBody').innerHTML=body;var footer='<button class="btn-modal-cancel" onclick="closeCalEventModal()">關閉</button>';if(ev.isMyEvent&&ev.myRoles&&ev.myRoles.length){var tn=ev.myRoles[0]+'：'+ev.title.replace('[學生] ','');footer+='<button class="btn-modal-save" onclick="calStartTimer(\''+esc(tn)+'\');closeCalEventModal();">⏱ 開始計時</button>';}document.getElementById('calModalFooter').innerHTML=footer;document.getElementById('calEventModal').classList.add('show');}
 function closeCalEventModal(){document.getElementById('calEventModal').classList.remove('show');}
 
 // ============================================================
@@ -1723,11 +1410,10 @@ function ioExport(){var hist=loadHist();if(!hist.length){ioShowResult('info','�
 function ioImport(){var ta=document.getElementById('ioTextarea');var raw=ta.value.trim();if(!raw){ioShowResult('error','⚠ 請先貼上 JSON 資料');return;}var incoming;try{incoming=JSON.parse(raw);}catch(e){ioShowResult('error','⚠ JSON 格式錯誤');return;}if(!Array.isArray(incoming)){ioShowResult('error','⚠ 資料格式不正確');return;}var valid=incoming.filter(function(r){return r.id&&r.task&&r.start&&r.end&&typeof r.dur==='number';});if(!valid.length){ioShowResult('error','⚠ 沒有有效記錄');return;}var existing=loadHist();var existingIds=new Set(existing.map(function(r){return r.id;}));var newCount=0;valid.forEach(function(r){if(!existingIds.has(r.id)){existing.push(r);existingIds.add(r.id);newCount++;}});existing.sort(function(a,b){return new Date(b.start)-new Date(a.start);});saveHist(existing);ioShowResult('success','✓ 匯入完成！新增 <b>'+newCount+'</b> 筆，共 <b>'+existing.length+'</b> 筆。');toast('✓ 已匯入 '+newCount+' 筆');renderHome();}
 
 // ============================================================
-//  初始化 + 啟動雲端同步
+//  初始化
 // ============================================================
 updateGreeting();
 setInterval(updateGreeting,30000);
-updateGasStatus();
 updateCalApiStatus();
 updateLastSyncDisplay();
 renderHome();
@@ -1743,12 +1429,9 @@ catInputEl.addEventListener('input',showCatSuggestions);
 catInputEl.addEventListener('focus',showCatSuggestions);
 catInputEl.addEventListener('blur',hideCatSuggestions);
 ytUpdateSavedDisplay();
-
-// ★ 頁面載入 1.5 秒後自動觸發雲端同步
+// 頁面載入後自動同步
 setTimeout(function() {
-  if (loadGasUrl() && !isRunning) {
-    cloudSync();
-  }
+  if (!isRunning) cloudSync();
 }, 1500);
 </script>
 </body>
